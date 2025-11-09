@@ -1,4 +1,5 @@
 import { TFile, normalizePath } from 'obsidian';
+import { Creature, BestiaryData } from 'src/models/Bestiary';
 
 export class StorageService {
     private plugin: any;
@@ -84,5 +85,63 @@ export class StorageService {
 
     async saveData(data: any): Promise<void> {
         await this.saveEncountersByDate(new Date(), data);
+    }
+
+    async loadBestiaryData(): Promise<BestiaryData> {
+        try {
+            const fileName = 'bestiary.json';
+            const filePath = this.getBestiaryFilePath(fileName);
+            
+            const file = this.plugin.app.vault.getAbstractFileByPath(filePath);
+            
+            if (file && file instanceof TFile) {
+                const content = await this.plugin.app.vault.read(file);
+                return JSON.parse(content);
+            }
+            
+            return { creatures: [], lastUpdated: Date.now() };
+        } catch (error) {
+            console.error('Error loading bestiary data:', error);
+            return { creatures: [], lastUpdated: Date.now() };
+        }
+    }
+
+    async saveBestiaryData(data: BestiaryData): Promise<void> {
+        try {
+            const fileName = 'bestiary.json';
+            const folderPath = this.getBestiaryFolderPath();
+            const filePath = this.getBestiaryFilePath(fileName);
+            
+            await this.ensureBestiaryFolder();
+            
+            let file = this.plugin.app.vault.getAbstractFileByPath(filePath);
+            
+            if (file && file instanceof TFile) {
+                await this.plugin.app.vault.modify(file, JSON.stringify(data, null, 2));
+            } else {
+                file = await this.plugin.app.vault.create(filePath, JSON.stringify(data, null, 2));
+            }
+            
+        } catch (error) {
+            console.error('Error saving bestiary data:', error);
+            throw error;
+        }
+    }
+
+    private getBestiaryFolderPath(): string {
+        return normalizePath(`${this.plugin.manifest.dir}/bestiary`);
+    }
+
+    private getBestiaryFilePath(fileName: string): string {
+        return normalizePath(`${this.getBestiaryFolderPath()}/${fileName}`);
+    }
+
+    private async ensureBestiaryFolder(): Promise<void> {
+        const folderPath = this.getBestiaryFolderPath();
+        const folder = this.plugin.app.vault.getAbstractFileByPath(folderPath);
+        
+        if (!folder) {
+            await this.plugin.app.vault.createFolder(folderPath);
+        }
     }
 }

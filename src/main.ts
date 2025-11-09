@@ -1,5 +1,7 @@
 import { Plugin } from 'obsidian';
 import { EncounterManagerSettings, DEFAULT_SETTINGS } from 'src/models/Settings';
+import { BestiaryService } from 'src/services/BestiaryService';
+import { BestiaryPanel, BESTIARY_VIEW_TYPE } from 'src/components/panels/BestiaryPanel';
 import { EncounterService } from 'src/services/EncounterService';
 import { UIService } from 'src/services/UIService';
 import { EncounterTypeModal } from 'src/components/modals/EncounterTypeModal';
@@ -9,6 +11,7 @@ export default class EncounterManagerPlugin extends Plugin {
     settings!: EncounterManagerSettings;
     encounterService!: EncounterService;
     uiService!: UIService;
+    bestiaryService!: BestiaryService;
 
     async onload() {
         console.log('Loading Encounter Manager plugin...');
@@ -19,8 +22,10 @@ export default class EncounterManagerPlugin extends Plugin {
             // Инициализация сервисов
             this.encounterService = new EncounterService(this);
             this.uiService = new UIService(this.app);
+            this.bestiaryService = new BestiaryService(this);
             
             await this.encounterService.initialize();
+            await this.bestiaryService.initialize();
 
             // Команды и UI
             this.addCommand({
@@ -31,11 +36,40 @@ export default class EncounterManagerPlugin extends Plugin {
                 }
             });
 
+            // Команда для открытия бестиария
+            this.addCommand({
+                id: 'open-bestiary',
+                name: 'Open Bestiary',
+                callback: () => {
+                    this.activateBestiaryView();
+                }
+            });
+
             this.addRibbonIcon('swords', 'Encounter Manager', () => {
                 new EncounterTypeModal(this.app, this).open();
             });
 
+            // Добавляем иконку для бестиария
+            this.addRibbonIcon('library', 'Open Bestiary', () => {
+                this.activateBestiaryView();
+            });
+
+            // Альтернативные иконки для бестиария (раскомментируйте одну из них):
+            // this.addRibbonIcon('feather', 'Open Bestiary', () => {
+            //     this.activateBestiaryView();
+            // });
+            
+            // this.addRibbonIcon('book-open', 'Open Bestiary', () => {
+            //     this.activateBestiaryView();
+            // });
+
             this.addSettingTab(new EncounterManagerSettingTab(this.app, this));
+
+            // Регистрируем панель бестиария
+            this.registerView(
+                BESTIARY_VIEW_TYPE,
+                (leaf) => new BestiaryPanel(leaf, this.bestiaryService)
+            );
 
             this.registerMarkdownCodeBlockProcessor('encounter', (source, el, ctx) => {
                 this.uiService.renderEncounterBlock(source, el, (type: string) => 
@@ -47,6 +81,36 @@ export default class EncounterManagerPlugin extends Plugin {
         } catch (error) {
             console.error('Failed to load Encounter Manager plugin:', error);
         }
+    }
+
+    // Метод для активации панели бестиария
+     async activateBestiaryView() {
+        const { workspace } = this.app;
+
+        // Проверяем, не открыта ли уже панель бестиария
+        let leaf = workspace.getLeavesOfType(BESTIARY_VIEW_TYPE)[0];
+
+        if (!leaf) {
+            // Создаем новую панель справа
+            const rightLeaf = workspace.getRightLeaf(false);
+            if (rightLeaf) {
+                leaf = rightLeaf;
+                await leaf.setViewState({
+                    type: BESTIARY_VIEW_TYPE,
+                    active: true,
+                });
+            } else {
+                // Если правой панели нет, создаем новую
+                leaf = workspace.getLeaf('tab');
+                await leaf.setViewState({
+                    type: BESTIARY_VIEW_TYPE,
+                    active: true,
+                });
+            }
+        }
+
+        // Активируем панель
+        workspace.revealLeaf(leaf);
     }
 
     async loadSettings() {

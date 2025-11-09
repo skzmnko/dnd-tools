@@ -222,3 +222,99 @@ button.mod-warning:hover {
 .encounter-info p {
   margin: 5px 0;
 }
+
+/* Стили для бестиария */
+.bestiary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.bestiary-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.bestiary-empty {
+    text-align: center;
+    color: var(--text-muted);
+    font-style: italic;
+    padding: 40px 20px;
+}
+
+.creature-item {
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+    padding: 15px;
+    background-color: var(--background-primary-alt);
+}
+
+.creature-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.creature-header h3 {
+    margin: 0;
+    color: var(--text-accent);
+}
+
+.creature-meta {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+    color: var(--text-muted);
+}
+
+.creature-stats {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 12px;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.creature-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.creature-actions button {
+    font-size: 0.8em;
+    padding: 4px 8px;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .bestiary-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+    
+    .creature-header {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .creature-meta, .creature-stats {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .creature-actions {
+        justify-content: stretch;
+    }
+    
+    .creature-actions button {
+        flex: 1;
+    }
+}
