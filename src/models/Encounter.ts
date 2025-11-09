@@ -23,6 +23,7 @@ export interface CombatEncounter extends Encounter {
   type: 'combat';
   difficulty: 'easy' | 'medium' | 'hard' | 'deadly';
   environment: string;
+  isLairActions: boolean;
 }
 
 export interface HazardEncounter extends Encounter {

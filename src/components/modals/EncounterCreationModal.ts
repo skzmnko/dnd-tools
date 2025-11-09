@@ -11,6 +11,7 @@ export class EncounterCreationModal extends Modal {
     // Поля для сражения
     difficulty: string = 'medium';
     environment: string = '';
+    isLairActions: boolean = false;
     participants: Participant[] = [];
 
     constructor(app: App, plugin: any, type: 'combat' | 'hazard' | 'chase' | 'random') {
@@ -66,8 +67,8 @@ export class EncounterCreationModal extends Modal {
 
                     // Добавляем специфичные поля
                     if (this.type === 'combat') {
-                        encounterData.difficulty = this.difficulty;
                         encounterData.environment = this.environment;
+                        encounterData.isLairActions = this.isLairActions;
                     }
 
                     const encounter = await this.plugin.encounterService.createEncounter(encounterData);
@@ -100,20 +101,6 @@ export class EncounterCreationModal extends Modal {
     renderCombatFields(contentEl: HTMLElement) {
         contentEl.createEl('h3', { text: 'Параметры сражения' });
 
-        // Сложность
-        new Setting(contentEl)
-            .setName('Сложность')
-            .setDesc('Уровень сложности сражения')
-            .addDropdown(dropdown => dropdown
-                .addOption('easy', 'Легкая')
-                .addOption('medium', 'Средняя')
-                .addOption('hard', 'Сложная')
-                .addOption('deadly', 'Смертельная')
-                .setValue(this.difficulty)
-                .onChange(value => {
-                    this.difficulty = value;
-                }));
-
         // Локация
         new Setting(contentEl)
             .setName('Локация')
@@ -122,6 +109,16 @@ export class EncounterCreationModal extends Modal {
                 .setPlaceholder('Лес, подземелье, город...')
                 .onChange(value => {
                     this.environment = value;
+                }));
+
+        // НОВОЕ: Чекбокс "Действия логова"
+        new Setting(contentEl)
+            .setName('Действия логова')
+            .setDesc('Включить специальные действия логова для этого энкаунтера')
+            .addToggle(toggle => toggle
+                .setValue(this.isLairActions)
+                .onChange(value => {
+                    this.isLairActions = value;
                 }));
 
         // Участники
