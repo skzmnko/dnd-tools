@@ -1,5 +1,5 @@
 import { App, MarkdownView, Editor } from 'obsidian';
-import { Encounter } from '../models/Encounter';
+import { Encounter } from 'src/models/Encounter';
 
 export class UIService {
   private app: App;

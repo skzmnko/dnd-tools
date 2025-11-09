@@ -1,9 +1,9 @@
 import { Plugin } from 'obsidian';
-import { EncounterManagerSettings, DEFAULT_SETTINGS } from './models/Settings';
-import { EncounterService } from './services/EncounterService';
-import { UIService } from './services/UIService';
-import { EncounterTypeModal } from './components/modals/EncounterTypeModal';
-import { EncounterManagerSettingTab } from './components/settings/EncounterManagerSettingTab';
+import { EncounterManagerSettings, DEFAULT_SETTINGS } from 'src/models/Settings';
+import { EncounterService } from 'src/services/EncounterService';
+import { UIService } from 'src/services/UIService';
+import { EncounterTypeModal } from 'src/components/modals/EncounterTypeModal';
+import { EncounterManagerSettingTab } from 'src/components/settings/EncounterManagerSettingTab';
 
 export default class EncounterManagerPlugin extends Plugin {
     settings!: EncounterManagerSettings;

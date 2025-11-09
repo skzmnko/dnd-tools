@@ -1,5 +1,5 @@
 import { App, Modal, Setting, Notice } from 'obsidian';
-import { Participant } from '../../models/Encounter';
+import { Participant } from 'src/models/Encounter';
 
 export class CombatParticipantModal extends Modal {
     parentModal: any; // Используем any чтобы избежать циклических зависимостей
