@@ -65,7 +65,7 @@ export class EncounterCreationModal extends Modal {
                         participants: this.participants
                     };
 
-                    // Добавляем специфичные поля
+                    // Добавляем специфичные поля для combat типа
                     if (this.type === 'combat') {
                         encounterData.environment = this.environment;
                         encounterData.isLairActions = this.isLairActions;
@@ -111,7 +111,7 @@ export class EncounterCreationModal extends Modal {
                     this.environment = value;
                 }));
 
-        // НОВОЕ: Чекбокс "Действия логова"
+        // Чекбокс "Действия логова"
         new Setting(contentEl)
             .setName('Действия логова')
             .setDesc('Включить специальные действия логова для этого энкаунтера')
@@ -119,6 +119,12 @@ export class EncounterCreationModal extends Modal {
                 .setValue(this.isLairActions)
                 .onChange(value => {
                     this.isLairActions = value;
+                    
+                    if (value) {
+                        this.addLairAsParticipant();
+                    } else {
+                        this.removeLairAsParticipant();
+                    }
                 }));
 
         // Участники
@@ -174,16 +180,19 @@ export class EncounterCreationModal extends Modal {
                 `${participant.name} (${participant.type}) - HP: ${participant.hp}/${participant.maxHp}, AC: ${participant.ac}`
             );
 
-            const removeBtn = participantEl.createEl('button', {
-                text: 'Удалить',
-                cls: 'mod-warning'
-            });
-            
-            removeBtn.style.marginLeft = '10px';
-            removeBtn.addEventListener('click', () => {
-                this.participants.splice(index, 1);
-                this.updateParticipantsList();
-            });
+            // Не показываем кнопку удаления для логова
+            if (participant.name !== 'Логово') {
+                const removeBtn = participantEl.createEl('button', {
+                    text: 'Удалить',
+                    cls: 'mod-warning'
+                });
+                
+                removeBtn.style.marginLeft = '10px';
+                removeBtn.addEventListener('click', () => {
+                    this.participants.splice(index, 1);
+                    this.updateParticipantsList();
+                });
+            }
         });
     }
 
@@ -195,5 +204,35 @@ export class EncounterCreationModal extends Modal {
         
         this.participants.push(newParticipant);
         this.updateParticipantsList();
+    }
+
+    // Метод: Добавление логова как участника
+    private addLairAsParticipant(): void {
+        // Проверяем, не добавлено ли уже логово
+        const lairExists = this.participants.some(participant => participant.name === 'Логово');
+        
+        if (!lairExists) {
+            const lairParticipant: Omit<Participant, 'id'> = {
+                name: 'Логово',
+                type: 'trap',
+                hp: 0,
+                maxHp: 0,
+                ac: 0,
+                notes: 'Специальные действия логова'
+            };
+            
+            this.addParticipant(lairParticipant);
+            new Notice('Логово добавлено в участники сражения');
+        }
+    }
+
+    // Метод: Удаление логова из участников
+    private removeLairAsParticipant(): void {
+        const lairIndex = this.participants.findIndex(participant => participant.name === 'Логово');
+        
+        if (lairIndex !== -1) {
+            this.participants.splice(lairIndex, 1);
+            this.updateParticipantsList();
+        }
     }
 }
