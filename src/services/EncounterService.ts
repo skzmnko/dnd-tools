@@ -64,8 +64,12 @@ export class EncounterService {
 
     private async loadEncounters(): Promise<void> {
         try {
-            const data = await this.storage.loadData();
+            const today = new Date();
+            console.log('Loading encounters for date:', today);
+            const data = await this.storage.loadEncountersByDate(today);
+            console.log('Loaded encounters data:', data);
             this.encounters = data?.encounters || [];
+            console.log('Encounters loaded:', this.encounters.length);
         } catch (error) {
             console.error('Error loading encounters:', error);
             this.encounters = [];
@@ -74,12 +78,24 @@ export class EncounterService {
 
     private async saveEncounters(): Promise<void> {
         try {
-            const data = await this.storage.loadData() || {};
-            data.encounters = this.encounters;
-            await this.storage.saveData(data);
+            const today = new Date();
+            console.log('Saving encounters for date:', today);
+            const data = {
+                encounters: this.encounters,
+                lastUpdated: Date.now(),
+                date: today.toISOString()
+            };
+            await this.storage.saveEncountersByDate(today, data);
+            console.log('Encounters saved successfully');
         } catch (error) {
             console.error('Error saving encounters:', error);
         }
+    }
+
+    // Метод для загрузки энкаунтеров за определенную дату
+    async loadEncountersForDate(date: Date): Promise<Encounter[]> {
+        const data = await this.storage.loadEncountersByDate(date);
+        return data?.encounters || [];
     }
 
     generateId(): string {

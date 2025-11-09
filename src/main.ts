@@ -56,4 +56,9 @@ export default class EncounterManagerPlugin extends Plugin {
     async saveSettings() {
         await this.saveData(this.settings);
     }
+
+    // Новый метод для получения пути к папке encounters
+    getEncountersFolderPath(): string {
+        return `${this.manifest.dir}/encounters`;
+    }
 }
