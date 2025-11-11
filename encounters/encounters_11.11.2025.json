@@ -1,0 +1,115 @@
+{
+  "encounters": [
+    {
+      "name": "base",
+      "description": "",
+      "type": "combat",
+      "participants": [
+        {
+          "name": "goblin",
+          "type": "monster",
+          "hp": 30,
+          "maxHp": 30,
+          "ac": 13,
+          "id": "part_cobv3ntv0"
+        }
+      ],
+      "environment": "",
+      "isLairActions": false,
+      "id": "enc_o8initzp1",
+      "created": 1762854434531,
+      "updated": 1762854434531
+    },
+    {
+      "name": "base 2",
+      "description": "",
+      "type": "combat",
+      "participants": [
+        {
+          "name": "mage",
+          "type": "monster",
+          "hp": 30,
+          "maxHp": 30,
+          "ac": 13,
+          "id": "part_w1nr30dem"
+        }
+      ],
+      "environment": "",
+      "isLairActions": false,
+      "id": "enc_7a6w6b97t",
+      "created": 1762854452293,
+      "updated": 1762854452293
+    },
+    {
+      "name": "base1",
+      "description": "",
+      "type": "combat",
+      "participants": [
+        {
+          "name": "goblin",
+          "type": "monster",
+          "hp": 30,
+          "maxHp": 30,
+          "ac": 13,
+          "id": "part_yha507e36"
+        }
+      ],
+      "environment": "",
+      "isLairActions": false,
+      "id": "enc_36wavzh9a",
+      "created": 1762854496238,
+      "updated": 1762854496238
+    },
+    {
+      "name": "danger zone",
+      "description": "",
+      "type": "hazard",
+      "participants": [],
+      "id": "enc_xi8fvplxn",
+      "created": 1762854529711,
+      "updated": 1762854529711
+    },
+    {
+      "name": "base3",
+      "description": "",
+      "type": "combat",
+      "participants": [
+        {
+          "name": "lich",
+          "type": "monster",
+          "hp": 30,
+          "maxHp": 30,
+          "ac": 13,
+          "id": "part_9c1rhvdii"
+        }
+      ],
+      "environment": "",
+      "isLairActions": false,
+      "id": "enc_0x1l4ckpo",
+      "created": 1762854563591,
+      "updated": 1762854563591
+    },
+    {
+      "name": "base4",
+      "description": "",
+      "type": "combat",
+      "participants": [
+        {
+          "name": "111",
+          "type": "monster",
+          "hp": 30,
+          "maxHp": 30,
+          "ac": 13,
+          "id": "part_ajwekn511"
+        }
+      ],
+      "environment": "",
+      "isLairActions": false,
+      "id": "enc_j4os24k9t",
+      "created": 1762854618668,
+      "updated": 1762854618668
+    }
+  ],
+  "lastUpdated": 1762854618669,
+  "date": "2025-11-11T09:50:18.668Z"
+}
