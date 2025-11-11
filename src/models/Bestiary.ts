@@ -5,7 +5,7 @@ export interface Creature {
     size: string;
     alignment: string;
     ac: number;
-    hp: number;
+    hit_dice: string;
     speed: string;
     str: number;
     dex: number;

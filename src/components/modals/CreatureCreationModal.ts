@@ -9,9 +9,9 @@ export class CreatureCreationModal extends Modal {
     name: string = '';
     type: string = '';
     size: string = 'Medium';
-    alignment: string = 'Истинно-Нейтральное';
+    alignment: string = 'Без мировоззрения';
     ac: number = 13;
-    hp: number = 30;
+    hit_dice: string = '8d8+24';
     speed: string = '30 футов';
     str: number = 10;
     dex: number = 10;
@@ -64,7 +64,7 @@ export class CreatureCreationModal extends Modal {
                         size: this.size,
                         alignment: this.alignment,
                         ac: this.ac,
-                        hp: this.hp,
+                        hit_dice: this.hit_dice,
                         speed: this.speed,
                         str: this.str,
                         dex: this.dex,
@@ -163,9 +163,9 @@ export class CreatureCreationModal extends Modal {
             .setName('Хиты (HP)')
             .setDesc('Хиты существа')
             .addText(text => text
-                .setPlaceholder('30')
-                .setValue(this.hp.toString())
-                .onChange(value => this.hp = Number(value) || 30));
+                .setPlaceholder('8d8+24')
+                .setValue(this.hit_dice)
+                .onChange(value => this.hit_dice = value));
 
         new Setting(contentEl)
             .setName('Скорость')
