@@ -13,12 +13,7 @@ export class CreatureCreationModal extends Modal {
     ac: number = 13;
     hit_dice: string = '8d8+24';
     speed: string = '30 футов';
-    str: number = 10;
-    dex: number = 10;
-    con: number = 10;
-    int: number = 10;
-    wis: number = 10;
-    cha: number = 10;
+    characteristics: number[] = [10, 10, 10, 10, 10, 10];
     skills: string = '';
     senses: string = '';
     languages: string = '';
@@ -66,12 +61,7 @@ export class CreatureCreationModal extends Modal {
                         ac: this.ac,
                         hit_dice: this.hit_dice,
                         speed: this.speed,
-                        str: this.str,
-                        dex: this.dex,
-                        con: this.con,
-                        int: this.int,
-                        wis: this.wis,
-                        cha: this.cha,
+                        characteristics: this.characteristics,
                         skills: this.skills,
                         senses: this.senses,
                         languages: this.languages,
@@ -194,7 +184,7 @@ export class CreatureCreationModal extends Modal {
         return modifier >= 0 ? `+${modifier}` : `${modifier}`;
     }
 
-    // НОВЫЙ МЕТОД: горизонтальное расположение характеристик с модификаторами
+    // // ОБНОВЛЕННЫЙ МЕТОД: работа с массивом characteristics
     renderHorizontalAbilityScores(contentEl: HTMLElement) {
         contentEl.createEl('h3', { text: 'Характеристики' });
 
@@ -203,14 +193,14 @@ export class CreatureCreationModal extends Modal {
             cls: 'abilities-horizontal-container' 
         });
 
-        // Массив характеристик с русскими сокращениями
+        // Массив характеристик с русскими сокращениями и индексами
         const abilities = [
-            { key: 'str', label: 'СИЛ', fullName: 'Сила' },
-            { key: 'dex', label: 'ЛОВ', fullName: 'Ловкость' },
-            { key: 'con', label: 'ТЕЛ', fullName: 'Телосложение' },
-            { key: 'int', label: 'ИНТ', fullName: 'Интеллект' },
-            { key: 'wis', label: 'МДР', fullName: 'Мудрость' },
-            { key: 'cha', label: 'ХАР', fullName: 'Харизма' }
+            { index: 0, label: 'СИЛ', fullName: 'Сила' },
+            { index: 1, label: 'ЛОВ', fullName: 'Ловкость' },
+            { index: 2, label: 'ТЕЛ', fullName: 'Телосложение' },
+            { index: 3, label: 'ИНТ', fullName: 'Интеллект' },
+            { index: 4, label: 'МДР', fullName: 'Мудрость' },
+            { index: 5, label: 'ХАР', fullName: 'Харизма' }
         ];
 
         abilities.forEach(ability => {
@@ -227,23 +217,21 @@ export class CreatureCreationModal extends Modal {
             // Поле ввода значения характеристики
             const input = abilityCol.createEl('input', {
                 type: 'text',
-                value: (this[ability.key as keyof CreatureCreationModal] as number).toString(),
+                value: this.characteristics[ability.index].toString(),
                 cls: 'ability-input'
             });
 
             // Подсказка при наведении
             input.title = ability.fullName;
 
-            // Поле для модификатора (readonly) - ИСПРАВЛЕНО: readonly вместо readOnly
+            // Поле для модификатора (readonly)
             const modifierInput = abilityCol.createEl('input', {
                 type: 'text',
-                value: this.formatModifier(this.calculateModifier(
-                    this[ability.key as keyof CreatureCreationModal] as number
-                )),
+                value: this.formatModifier(this.calculateModifier(this.characteristics[ability.index])),
                 cls: 'ability-modifier-input'
             });
-            modifierInput.setAttr('readonly', 'true');
 
+            modifierInput.setAttr('readonly', 'true');
             modifierInput.title = `Модификатор ${ability.fullName}`;
 
             // Обработчик изменения значения характеристики
@@ -251,7 +239,7 @@ export class CreatureCreationModal extends Modal {
                 const value = input.value;
                 const numValue = Number(value);
                 if (!isNaN(numValue)) {
-                    (this[ability.key as keyof CreatureCreationModal] as number) = numValue;
+                    this.characteristics[ability.index] = numValue;
                     const modifier = this.calculateModifier(numValue);
                     modifierInput.value = this.formatModifier(modifier);
                 }
@@ -264,7 +252,7 @@ export class CreatureCreationModal extends Modal {
                 const value = (e.target as HTMLInputElement).value;
                 const numValue = Number(value);
                 if (isNaN(numValue) || value.trim() === '') {
-                    (this[ability.key as keyof CreatureCreationModal] as number) = 10;
+                    this.characteristics[ability.index] = 10;
                     (e.target as HTMLInputElement).value = '10';
                     const modifier = this.calculateModifier(10);
                     modifierInput.value = this.formatModifier(modifier);

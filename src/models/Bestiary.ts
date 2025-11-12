@@ -7,12 +7,7 @@ export interface Creature {
     ac: number;
     hit_dice: string;
     speed: string;
-    str: number;
-    dex: number;
-    con: number;
-    int: number;
-    wis: number;
-    cha: number;
+    characteristics: number[];
     skills: string;
     senses: string;
     languages: string;
