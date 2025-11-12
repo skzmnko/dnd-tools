@@ -84,6 +84,7 @@ export class BestiaryPanel extends ItemView {
         const stats = creatureEl.createDiv({ cls: 'creature-stats' });
         stats.createEl('span', { text: `AC: ${creature.ac}` });
         stats.createEl('span', { text: `HP: ${creature.hit_dice}` });
+        stats.createEl('span', { text: `Бонус мастерства: +${creature.proficiency_bonus}` });
         
         // Кнопки действий (для будущего использования)
         const actions = creatureEl.createDiv({ cls: 'creature-actions' });

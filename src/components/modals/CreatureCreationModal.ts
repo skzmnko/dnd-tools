@@ -13,6 +13,7 @@ export class CreatureCreationModal extends Modal {
     ac: number = 13;
     hit_dice: string = '8d8+24';
     speed: string = '30 футов';
+    proficiency_bonus: number = 2;
     characteristics: number[] = [10, 10, 10, 10, 10, 10];
     skills: string = '';
     senses: string = '';
@@ -61,6 +62,7 @@ export class CreatureCreationModal extends Modal {
                         ac: this.ac,
                         hit_dice: this.hit_dice,
                         speed: this.speed,
+                        proficiency_bonus: this.proficiency_bonus,
                         characteristics: this.characteristics,
                         skills: this.skills,
                         senses: this.senses,
@@ -164,6 +166,19 @@ export class CreatureCreationModal extends Modal {
                 .setPlaceholder('30 ft., fly 60 ft.')
                 .setValue(this.speed)
                 .onChange(value => this.speed = value));
+        
+        new Setting(contentEl)
+            .setName('Бонус мастерства')
+            .setDesc('Бонус мастерства существа')
+            .addText(text => text
+                .setPlaceholder('2')
+                .setValue(this.proficiency_bonus.toString())
+                .onChange(value => {
+                    const numValue = Number(value);
+                    if (!isNaN(numValue) && numValue >= 0) {
+                        this.proficiency_bonus = numValue;
+                    }
+                }));
 
         new Setting(contentEl)
             .setName('Место обитания')
