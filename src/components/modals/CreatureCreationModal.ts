@@ -16,6 +16,7 @@ export class CreatureCreationModal extends Modal {
     initiative: number = 0;
     proficiency_bonus: number = 2;
     characteristics: number[] = [10, 10, 10, 10, 10, 10];
+    saving_throws_proficiency: boolean[] = [false, false, false, false, false, false]; // Владение спасбросками
     skills: string = '';
     senses: string = '';
     languages: string = '';
@@ -43,6 +44,9 @@ export class CreatureCreationModal extends Modal {
         // Характеристики - теперь с модификаторами
         this.renderHorizontalAbilityScores(contentEl);
         
+        // Спасброски - новый блок
+        this.renderSavingThrows(contentEl);
+        
         // Дополнительные поля
         this.renderAdditionalFields(contentEl);
 
@@ -57,6 +61,9 @@ export class CreatureCreationModal extends Modal {
                         return;
                     }
 
+                    // Вычисляем числовые значения спасбросков перед сохранением
+                    const saving_throws = this.calculateSavingThrows();
+
                     const creatureData: Omit<Creature, 'id' | 'created' | 'updated'> = {
                         name: this.name,
                         type: this.type,
@@ -68,6 +75,7 @@ export class CreatureCreationModal extends Modal {
                         initiative: this.initiative,
                         proficiency_bonus: this.proficiency_bonus,
                         characteristics: this.characteristics,
+                        saving_throws: saving_throws, // Сохраняем числовые значения
                         skills: this.skills,
                         senses: this.senses,
                         languages: this.languages,
@@ -98,6 +106,17 @@ export class CreatureCreationModal extends Modal {
                 .onClick(() => {
                     this.close();
                 }));
+    }
+
+    // НОВЫЙ МЕТОД: вычисление числовых значений спасбросков
+    private calculateSavingThrows(): number[] {
+        return this.characteristics.map((abilityScore, index) => {
+            const baseModifier = this.calculateModifier(abilityScore);
+            if (this.saving_throws_proficiency[index]) {
+                return baseModifier + this.proficiency_bonus;
+            }
+            return baseModifier;
+        });
     }
 
     renderBasicFields(contentEl: HTMLElement) {
@@ -192,6 +211,7 @@ export class CreatureCreationModal extends Modal {
                     const numValue = Number(value);
                     if (!isNaN(numValue) && numValue >= 0) {
                         this.proficiency_bonus = numValue;
+                        this.updateSavingThrowsFields(); // Обновляем спасброски при изменении бонуса
                     }
                 }));
 
@@ -220,7 +240,16 @@ export class CreatureCreationModal extends Modal {
         return modifier >= 0 ? `+${modifier}` : `${modifier}`;
     }
 
-    // // ОБНОВЛЕННЫЙ МЕТОД: работа с массивом characteristics
+    // Метод для расчета значения спасброска (для отображения в UI)
+    private calculateSavingThrowValue(abilityIndex: number): number {
+        const baseModifier = this.calculateModifier(this.characteristics[abilityIndex]);
+        if (this.saving_throws_proficiency[abilityIndex]) {
+            return baseModifier + this.proficiency_bonus;
+        }
+        return baseModifier;
+    }
+
+    // ОБНОВЛЕННЫЙ МЕТОД: работа с массивом characteristics
     renderHorizontalAbilityScores(contentEl: HTMLElement) {
         contentEl.createEl('h3', { text: 'Характеристики' });
 
@@ -283,6 +312,9 @@ export class CreatureCreationModal extends Modal {
                         this.initiative = this.calculateInitiative();
                         this.updateInitiativeField();
                     }
+                    
+                    // Обновляем спасброски при изменении характеристик
+                    this.updateSavingThrowsFields();
                 }
             };
 
@@ -302,6 +334,9 @@ export class CreatureCreationModal extends Modal {
                         this.initiative = this.calculateInitiative();
                         this.updateInitiativeField();
                     }
+                    
+                    // Обновляем спасброски при изменении характеристик
+                    this.updateSavingThrowsFields();
                 }
             });
         });
@@ -310,13 +345,102 @@ export class CreatureCreationModal extends Modal {
         this.addHorizontalAbilitiesStyles(contentEl);
     }
 
+    // НОВЫЙ МЕТОД: рендер спасбросков
+    renderSavingThrows(contentEl: HTMLElement) {
+        // Заголовок
+        const savingThrowsHeader = contentEl.createEl('h3', { 
+            text: 'Спасброски',
+            cls: 'saving-throws-header'
+        });
+        savingThrowsHeader.style.textAlign = 'center';
+        savingThrowsHeader.style.marginTop = '20px';
+
+        // Контейнер для спасбросков
+        const savingThrowsContainer = contentEl.createDiv({ 
+            cls: 'saving-throws-container' 
+        });
+
+        // Массив спасбросков с русскими названиями
+        const savingThrows = [
+            { index: 0, label: 'СИЛ', fullName: 'Спасбросок силы' },
+            { index: 1, label: 'ЛОВ', fullName: 'Спасбросок ловкости' },
+            { index: 2, label: 'ТЕЛ', fullName: 'Спасбросок телосложения' },
+            { index: 3, label: 'ИНТ', fullName: 'Спасбросок интеллекта' },
+            { index: 4, label: 'МДР', fullName: 'Спасбросок мудрости' },
+            { index: 5, label: 'ХАР', fullName: 'Спасбросок харизмы' }
+        ];
+
+        savingThrows.forEach(savingThrow => {
+            const savingThrowCol = savingThrowsContainer.createDiv({ 
+                cls: 'saving-throw-column' 
+            });
+
+            // Заголовок колонки
+            savingThrowCol.createEl('div', { 
+                text: savingThrow.label,
+                cls: 'saving-throw-label'
+            });
+
+            // Поле для значения спасброска (readonly)
+            const savingThrowInput = savingThrowCol.createEl('input', {
+                type: 'text',
+                value: this.formatModifier(this.calculateSavingThrowValue(savingThrow.index)),
+                cls: 'saving-throw-input'
+            });
+
+            savingThrowInput.setAttr('readonly', 'true');
+            savingThrowInput.title = savingThrow.fullName;
+
+            // Обработчик клика - переключаем состояние владения спасброском
+            savingThrowInput.addEventListener('click', () => {
+                this.toggleSavingThrowProficiency(savingThrow.index, savingThrowInput);
+            });
+
+            // Добавляем подсказку о кликабельности
+            const hint = savingThrowCol.createEl('div', {
+                text: 'клик',
+                cls: 'saving-throw-hint'
+            });
+        });
+
+        // Добавляем CSS стили для спасбросков
+        this.addSavingThrowsStyles(contentEl);
+    }
+
+    // Метод для переключения состояния владения спасброском
+    private toggleSavingThrowProficiency(abilityIndex: number, inputElement: HTMLInputElement) {
+        this.saving_throws_proficiency[abilityIndex] = !this.saving_throws_proficiency[abilityIndex];
+        
+        // Обновляем визуальное состояние
+        if (this.saving_throws_proficiency[abilityIndex]) {
+            inputElement.addClass('saving-throw-active');
+            inputElement.title += ' (владение)';
+        } else {
+            inputElement.removeClass('saving-throw-active');
+            inputElement.title = inputElement.title.replace(' (владение)', '');
+        }
+        
+        // Обновляем значение
+        inputElement.value = this.formatModifier(this.calculateSavingThrowValue(abilityIndex));
+    }
+
+    // Метод для обновления всех полей спасбросков
+    private updateSavingThrowsFields() {
+        const savingThrowInputs = this.containerEl.querySelectorAll('.saving-throw-input');
+        savingThrowInputs.forEach((input, index) => {
+            if (index < this.saving_throws_proficiency.length) {
+                (input as HTMLInputElement).value = this.formatModifier(this.calculateSavingThrowValue(index));
+            }
+        });
+    }
+
     private updateInitiativeField(): void {
         if (this.initiativeInput) {
             this.initiativeInput.value = this.formatModifier(this.initiative);
         }
     }
 
-    // Метод для добавления CSS стилей
+    // Метод для добавления CSS стилей характеристик
     private addHorizontalAbilitiesStyles(contentEl: HTMLElement) {
         const style = contentEl.createEl('style');
         style.textContent = `
@@ -382,6 +506,69 @@ export class CreatureCreationModal extends Modal {
         `;
     }
 
+    // НОВЫЙ МЕТОД: добавление CSS стилей для спасбросков
+    private addSavingThrowsStyles(contentEl: HTMLElement) {
+        const style = contentEl.createEl('style');
+        style.textContent = `
+            .saving-throws-container {
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
+                margin-bottom: 20px;
+                flex-wrap: wrap;
+            }
+            
+            .saving-throw-column {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                flex: 1;
+                min-width: 60px;
+            }
+            
+            .saving-throw-label {
+                font-weight: bold;
+                font-size: 14px;
+                margin-bottom: 5px;
+                color: var(--text-normal);
+            }
+            
+            .saving-throw-input {
+                width: 100%;
+                text-align: center;
+                padding: 5px;
+                border: 1px solid var(--background-modifier-border);
+                border-radius: 4px;
+                background: var(--background-secondary);
+                color: var(--text-normal);
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+            
+            .saving-throw-input:hover {
+                background: var(--background-modifier-hover);
+            }
+            
+            .saving-throw-input.saving-throw-active {
+                background: var(--interactive-accent);
+                color: var(--text-on-accent);
+                border-color: var(--interactive-accent-hover);
+                font-weight: bold;
+            }
+            
+            .saving-throw-hint {
+                font-size: 10px;
+                color: var(--text-muted);
+                margin-top: 2px;
+                font-style: italic;
+            }
+            
+            .saving-throw-input[readonly] {
+                cursor: pointer;
+            }
+        `;
+    }
+
     renderAdditionalFields(contentEl: HTMLElement) {
         contentEl.createEl('h3', { text: 'Дополнительные характеристики' });
 
@@ -423,7 +610,7 @@ export class CreatureCreationModal extends Modal {
             .addTextArea(text => text
                 .setPlaceholder('Укус: +5 к попаданию, 10 (2к6 + 3) колющего урона')
                 .setValue(this.actions)
-                .onChange(value => this.actions = value)); // ИСПРАВЛЕНО: onChange вместо onClick
+                .onChange(value => this.actions = value));
 
         new Setting(contentEl)
             .setName('Легендарные действия')

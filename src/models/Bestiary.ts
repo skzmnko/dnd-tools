@@ -10,6 +10,7 @@ export interface Creature {
     initiative: number;
     proficiency_bonus: number;
     characteristics: number[];
+    saving_throws: number[];
     skills: string;
     senses: string;
     languages: string;
