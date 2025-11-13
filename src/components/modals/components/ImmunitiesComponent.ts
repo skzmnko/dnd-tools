@@ -9,7 +9,10 @@ export class ImmunitiesComponent {
 
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
-        section.createEl('h3', { text: 'Иммунитеты и сопротивления' });
+        section.createEl('h3', { 
+            text: 'Иммунитеты и сопротивления',
+            cls: 'section-title'
+        });
 
         this.renderDamageResistances(section);
         this.renderDamageVulnerabilities(section);

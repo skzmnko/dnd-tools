@@ -8,7 +8,10 @@ export class ReactionsComponent {
 
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
-        section.createEl('h3', { text: 'Реакции' });
+        section.createEl('h3', { 
+            text: 'Реакции',
+            cls: 'section-title'
+        });
 
         this.renderAddReactionForm(section);
         this.renderReactionsList(section);

@@ -8,7 +8,10 @@ export class LegendaryActionsComponent {
 
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
-        section.createEl('h3', { text: 'Легендарные действия' });
+        section.createEl('h3', { 
+            text: 'Легендарные действия',
+            cls: 'section-title'
+        });
 
         this.renderAddLegendaryActionForm(section);
         this.renderLegendaryActionsList(section);

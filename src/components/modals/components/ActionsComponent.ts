@@ -8,7 +8,10 @@ export class ActionsComponent {
 
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
-        section.createEl('h3', { text: 'Действия' });
+        section.createEl('h3', { 
+            text: 'Действия',
+            cls: 'section-title'
+        });
 
         this.renderAddActionForm(section);
         this.renderActionsList(section);

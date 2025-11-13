@@ -11,7 +11,10 @@ export class CoreParametersComponent {
 
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
-        section.createEl('h3', { text: 'Основные параметры' });
+        section.createEl('h3', { 
+            text: 'Основные параметры',
+            cls: 'section-title'
+        });
 
         new Setting(section)
             .setName('Класс брони (AC)')

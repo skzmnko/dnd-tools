@@ -7,7 +7,10 @@ export class AdditionalFieldsComponent {
 
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
-        section.createEl('h3', { text: 'Дополнительные характеристики' });
+        section.createEl('h3', { 
+            text: 'Дополнительные характеристики',
+            cls: 'section-title'
+        });
 
         new Setting(section)
             .setName('Навыки')

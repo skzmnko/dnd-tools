@@ -8,12 +8,15 @@ export class AbilityScoresComponent {
 
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
+        container.createEl('h3', { 
+            text: 'Характеристики',
+            cls: 'section-title'
+        });
         this.renderAbilities(section);
         this.renderSavingThrows(section);
     }
 
     private renderAbilities(container: HTMLElement) {
-        container.createEl('h3', { text: 'Характеристики' });
 
         const abilitiesContainer = container.createDiv({ cls: 'abilities-horizontal-container' });
 

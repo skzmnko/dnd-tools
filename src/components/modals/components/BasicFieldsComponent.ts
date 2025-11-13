@@ -11,7 +11,10 @@ export class BasicFieldsComponent {
 
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
-        section.createEl('h3', { text: 'Общая информация' });
+        section.createEl('h3', { 
+            text: 'Общая информация',
+            cls: 'section-title'
+        });
 
         new Setting(section)
             .setName('Имя')

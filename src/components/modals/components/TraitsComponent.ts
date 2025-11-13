@@ -8,7 +8,10 @@ export class TraitsComponent {
 
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
-        section.createEl('h3', { text: 'Черты' });
+        section.createEl('h3', { 
+            text: 'Черты',
+            cls: 'section-title'
+        });
 
         this.renderAddTraitForm(section);
         this.renderTraitsList(section);

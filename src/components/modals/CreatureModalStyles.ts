@@ -258,4 +258,26 @@ export const CreatureModalStyles = `
     min-height: 100px !important;
     width: 100% !important;
 }
+
+/* Центрирование заголовков */
+.creature-modal-title {
+    text-align: center !important;
+    width: 100% !important;
+    margin-bottom: 20px !important;
+}
+
+.creature-section h3 {
+    text-align: center !important;
+    width: 100% !important;
+    margin: 20px 0 15px 0 !important;
+    border-bottom: 1px solid var(--background-modifier-border) !important;
+    padding-bottom: 8px !important;
+}
+
+/* Специфичные стили для основного заголовка модального окна */
+.modal-container h2 {
+    text-align: center !important;
+    width: 100% !important;
+    margin-bottom: 25px !important;
+}
 `;

@@ -8,7 +8,10 @@ export class BonusActionsComponent {
 
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
-        section.createEl('h3', { text: 'Бонусные действия' });
+        section.createEl('h3', { 
+            text: 'Бонусные действия',
+            cls: 'section-title'
+        });
 
         this.renderAddBonusActionForm(section);
         this.renderBonusActionsList(section);
