@@ -1,5 +1,5 @@
 import { App, Modal, Setting, Notice } from 'obsidian';
-import { Creature, CreatureTrait } from 'src/models/Bestiary';
+import { Creature, CreatureTrait, CreatureAction } from 'src/models/Bestiary';
 import { DAMAGE_TYPES, CONDITION_NAMES, CREATURE_SIZES, ALIGNMENTS, DamageType } from 'src/constants/Constants';
 
 export class CreatureCreationModal extends Modal {
@@ -27,13 +27,17 @@ export class CreatureCreationModal extends Modal {
     languages: string = '';
     habitat: string = '';
     traits: CreatureTrait[] = [];
-    actions: string = '';
+    actions: CreatureAction[] = [];
     legendaryActions: string = '';
     notes: string = '';
 
     // Поля для новой черты
     private newTraitName: string = '';
     private newTraitDesc: string = '';
+
+    // Поля для нового действия
+    private newActionName: string = '';
+    private newActionDesc: string = '';
 
     private initiativeInput: HTMLInputElement | null = null;
 
@@ -715,6 +719,126 @@ export class CreatureCreationModal extends Modal {
         });
     }
 
+    // НОВЫЙ МЕТОД: рендер поля действий
+    renderActionsField(contentEl: HTMLElement) {
+        contentEl.createEl('h3', { text: 'Действия' });
+
+        // Контейнер для добавления нового действия
+        const addActionContainer = contentEl.createDiv({ cls: 'add-action-container' });
+        
+        // Поле для названия действия
+        new Setting(addActionContainer)
+            .setName('Название действия')
+            .setDesc('Название боевого действия или способности')
+            .addText(text => text
+                .setPlaceholder('Укус')
+                .onChange(value => this.newActionName = value));
+
+        // Поле для описания действия
+        new Setting(addActionContainer)
+            .setName('Описание действия')
+            .setDesc('Подробное описание действия и его эффектов')
+            .addTextArea(text => text
+                .setPlaceholder('Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 10 (2d6 + 3) piercing damage.')
+                .onChange(value => this.newActionDesc = value));
+
+        // Кнопка добавления действия
+        new Setting(addActionContainer)
+            .addButton(btn => btn
+                .setButtonText('Добавить действие')
+                .setCta()
+                .onClick(() => {
+                    if (!this.newActionName.trim()) {
+                        new Notice('Пожалуйста, введите название действия');
+                        return;
+                    }
+
+                    if (this.actions.length >= 10) {
+                        new Notice('Достигнуто максимальное количество действий (10)');
+                        return;
+                    }
+
+                    const newAction: CreatureAction = {
+                        name: this.newActionName,
+                        desc: this.newActionDesc
+                    };
+
+                    this.actions.push(newAction);
+                    
+                    // Очищаем поля ввода
+                    this.newActionName = '';
+                    this.newActionDesc = '';
+                    
+                    // Обновляем поля ввода
+                    const nameInput = addActionContainer.querySelector('input[placeholder="Укус"]') as HTMLInputElement;
+                    const descInput = addActionContainer.querySelector('textarea') as HTMLTextAreaElement;
+                    if (nameInput) nameInput.value = '';
+                    if (descInput) descInput.value = '';
+
+                    this.updateActionsList();
+                    new Notice(`Действие "${newAction.name}" добавлено`);
+                }));
+
+        // Список добавленных действий
+        this.renderActionsList(contentEl);
+
+        // Добавляем CSS стили для действий
+        this.addActionsStyles(contentEl);
+    }
+
+    // НОВЫЙ МЕТОД: рендер списка действий
+    private renderActionsList(container: HTMLElement) {
+        const actionsListContainer = container.createDiv({ cls: 'actions-list-container' });
+        actionsListContainer.createEl('div', { 
+            text: 'Добавленные действия:',
+            cls: 'actions-list-title'
+        });
+        
+        const actionsListEl = actionsListContainer.createDiv({ 
+            cls: 'actions-list',
+            attr: { id: 'actions-list' }
+        });
+        
+        this.updateActionsList();
+    }
+
+    // НОВЫЙ МЕТОД: обновление списка действий
+    private updateActionsList() {
+        const actionsListEl = this.containerEl.querySelector('#actions-list');
+        if (!actionsListEl) return;
+        
+        actionsListEl.empty();
+        
+        if (this.actions.length === 0) {
+            actionsListEl.createEl('div', { 
+                text: 'Действия не добавлены',
+                cls: 'actions-empty'
+            });
+            return;
+        }
+        
+        this.actions.forEach((action, index) => {
+            const actionItem = actionsListEl.createDiv({ cls: 'action-item' });
+            
+            const actionHeader = actionItem.createDiv({ cls: 'action-header' });
+            actionHeader.createEl('strong', { text: action.name });
+            
+            const actionDesc = actionItem.createDiv({ cls: 'action-desc' });
+            actionDesc.setText(action.desc);
+            
+            const removeBtn = actionItem.createEl('button', {
+                text: 'Удалить',
+                cls: 'action-remove mod-warning'
+            });
+            
+            removeBtn.addEventListener('click', () => {
+                this.actions.splice(index, 1);
+                this.updateActionsList();
+                new Notice(`Действие "${action.name}" удалено`);
+            });
+        });
+    }
+
     // ОБНОВЛЕННЫЙ МЕТОД: рендер дополнительных полей
     renderAdditionalFields(contentEl: HTMLElement) {
         contentEl.createEl('h3', { text: 'Дополнительные характеристики' });
@@ -749,13 +873,8 @@ export class CreatureCreationModal extends Modal {
         // ОБНОВЛЕНО: заменяем старое поле черт на новую структуру
         this.renderTraitsField(contentEl);
 
-        new Setting(contentEl)
-            .setName('Действия')
-            .setDesc('Боевые действия')
-            .addTextArea(text => text
-                .setPlaceholder('Укус: +5 к попаданию, 10 (2к6 + 3) колющего урона')
-                .setValue(this.actions)
-                .onChange(value => this.actions = value));
+        // ОБНОВЛЕНО: заменяем старое поле действий на новую структуру
+        this.renderActionsField(contentEl);
 
         new Setting(contentEl)
             .setName('Легендарные действия')
@@ -1021,6 +1140,72 @@ export class CreatureCreationModal extends Modal {
             }
             
             .traits-empty {
+                color: var(--text-muted);
+                font-style: italic;
+                text-align: center;
+                padding: 20px;
+                border: 1px dashed var(--background-modifier-border);
+                border-radius: 4px;
+            }
+        `;
+    }
+
+    // НОВЫЙ МЕТОД: добавление CSS стилей для действий
+    private addActionsStyles(contentEl: HTMLElement) {
+        const style = contentEl.createEl('style');
+        style.textContent = `
+            .add-action-container {
+                margin-bottom: 20px;
+                border: 1px solid var(--background-modifier-border);
+                border-radius: 4px;
+                padding: 15px;
+                background: var(--background-secondary);
+            }
+            
+            .actions-list-container {
+                margin-bottom: 20px;
+            }
+            
+            .actions-list-title {
+                font-weight: bold;
+                margin-bottom: 10px;
+                color: var(--text-normal);
+                font-size: 14px;
+            }
+            
+            .actions-list {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .action-item {
+                border: 1px solid var(--background-modifier-border);
+                border-radius: 4px;
+                padding: 10px;
+                background: var(--background-primary);
+                position: relative;
+            }
+            
+            .action-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 5px;
+            }
+            
+            .action-desc {
+                color: var(--text-muted);
+                font-size: 14px;
+                line-height: 1.4;
+                margin-bottom: 8px;
+            }
+            
+            .action-remove {
+                margin-top: 5px;
+            }
+            
+            .actions-empty {
                 color: var(--text-muted);
                 font-style: italic;
                 text-align: center;

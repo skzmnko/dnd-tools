@@ -2,6 +2,10 @@ export interface CreatureTrait {
     name: string;
     desc: string;
 }
+export interface CreatureAction {
+    name: string;
+    desc: string;
+}
 export interface Creature {
     id: string;
     name: string;
@@ -24,7 +28,7 @@ export interface Creature {
     languages: string;
     habitat: string;
     traits: CreatureTrait[];
-    actions: string;
+    actions: CreatureAction[];
     legendaryActions: string;
     notes: string;
     created: number;
