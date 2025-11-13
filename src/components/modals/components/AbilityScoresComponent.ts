@@ -64,12 +64,12 @@ export class AbilityScoresComponent {
                 const modifier = this.calculateModifier(numValue);
                 modifierInput.value = this.formatModifier(modifier);
                 
-                // Уведомляем об изменении характеристики
                 if (this.onAbilityChangeCallback) {
                     this.onAbilityChangeCallback();
                 }
+
+                this.updateSavingThrowsDisplay();
                 
-                // Если изменилась ловкость, обновляем инициативу
                 if (ability.index === 1) {
                     this.updateInitiative();
                 }
@@ -87,12 +87,12 @@ export class AbilityScoresComponent {
                 const modifier = this.calculateModifier(10);
                 modifierInput.value = this.formatModifier(modifier);
                 
-                // Уведомляем об изменении характеристики
                 if (this.onAbilityChangeCallback) {
                     this.onAbilityChangeCallback();
                 }
                 
-                // Если изменилась ловкость, обновляем инициативу
+                this.updateSavingThrowsDisplay();
+
                 if (ability.index === 1) {
                     this.updateInitiative();
                 }

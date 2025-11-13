@@ -4,7 +4,6 @@ export class AdditionalFieldsComponent {
     private skills: string = '';
     private senses: string = '';
     private languages: string = '';
-    private legendaryActions: string = '';
     private notes: string = '';
 
     render(container: HTMLElement) {
@@ -36,14 +35,6 @@ export class AdditionalFieldsComponent {
                 .onChange(value => this.languages = value));
 
         new Setting(section)
-            .setName('Легендарные действия')
-            .setDesc('Легендарные действия')
-            .addTextArea(text => text
-                .setPlaceholder('Существо может совершить 3 легендарных действия...')
-                .setValue(this.legendaryActions)
-                .onChange(value => this.legendaryActions = value));
-
-        new Setting(section)
             .setName('Заметки')
             .setDesc('Дополнительные заметки')
             .addTextArea(text => text
@@ -56,6 +47,5 @@ export class AdditionalFieldsComponent {
     getSkills(): string { return this.skills; }
     getSenses(): string { return this.senses; }
     getLanguages(): string { return this.languages; }
-    getLegendaryActions(): string { return this.legendaryActions; }
     getNotes(): string { return this.notes; }
 }
