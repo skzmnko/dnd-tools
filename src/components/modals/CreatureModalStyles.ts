@@ -226,20 +226,6 @@ export const CreatureModalStyles = `
 }
 
 /* Стили для текстовых областей с фиксированным размером */
-.fixed-textarea {
-    resize: none !important;
-    min-height: 80px !important;
-    width: 100% !important;
-}
-
-/* Стили для широких текстовых областей */
-.wide-textarea {
-    resize: none !important;
-    min-height: 100px !important;
-    width: 100% !important;
-}
-
-/* Специфичные стили для различных типов полей */
 .languages-textarea,
 .skills-textarea,
 .senses-textarea,
@@ -260,24 +246,11 @@ export const CreatureModalStyles = `
 }
 
 /* Центрирование заголовков */
-.creature-modal-title {
-    text-align: center !important;
-    width: 100% !important;
-    margin-bottom: 20px !important;
-}
-
 .creature-section h3 {
     text-align: center !important;
     width: 100% !important;
     margin: 20px 0 15px 0 !important;
     border-bottom: 1px solid var(--background-modifier-border) !important;
     padding-bottom: 8px !important;
-}
-
-/* Специфичные стили для основного заголовка модального окна */
-.modal-container h2 {
-    text-align: center !important;
-    width: 100% !important;
-    margin-bottom: 25px !important;
 }
 `;
