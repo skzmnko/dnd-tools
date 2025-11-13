@@ -3,7 +3,6 @@ import { Setting } from 'obsidian';
 export class AdditionalFieldsComponent {
     private skills: string = '';
     private senses: string = '';
-    private languages: string = '';
     private notes: string = '';
 
     render(container: HTMLElement) {
@@ -27,14 +26,6 @@ export class AdditionalFieldsComponent {
                 .onChange(value => this.senses = value));
 
         new Setting(section)
-            .setName('Языки')
-            .setDesc('Известные языки')
-            .addTextArea(text => text
-                .setPlaceholder('Общий, Драконий')
-                .setValue(this.languages)
-                .onChange(value => this.languages = value));
-
-        new Setting(section)
             .setName('Заметки')
             .setDesc('Дополнительные заметки')
             .addTextArea(text => text
@@ -46,6 +37,5 @@ export class AdditionalFieldsComponent {
     // Геттеры
     getSkills(): string { return this.skills; }
     getSenses(): string { return this.senses; }
-    getLanguages(): string { return this.languages; }
     getNotes(): string { return this.notes; }
 }

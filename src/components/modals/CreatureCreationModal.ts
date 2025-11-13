@@ -1,27 +1,28 @@
 import { App, Modal, Setting, Notice } from 'obsidian';
 import { Creature } from 'src/models/Bestiary';
-import { CREATURE_SIZES, ALIGNMENTS } from 'src/constants/Constants';
-import { CreatureModalStyles } from 'src/components/modals/CreatureModalStyles';
-import { BasicFieldsComponent } from 'src/components/modals/components/BasicFieldsComponent';
-import { AbilityScoresComponent } from 'src/components/modals/components/AbilityScoresComponent';
-import { ImmunitiesComponent } from 'src/components/modals/components/ImmunitiesComponent';
-import { TraitsComponent } from 'src/components/modals/components/TraitsComponent';
-import { ActionsComponent } from 'src/components/modals/components/ActionsComponent';
-import { BonusActionsComponent } from 'src/components/modals/components/BonusActionsComponent';
-import { ReactionsComponent } from 'src/components/modals/components/ReactionsComponent';
-import { LegendaryActionsComponent } from 'src/components/modals/components/LegendaryActionsComponent';
-import { AdditionalFieldsComponent } from 'src/components/modals/components/AdditionalFieldsComponent';
+import { CreatureModalStyles } from './CreatureModalStyles';
+import { BasicFieldsComponent } from './components/BasicFieldsComponent';
+import { CoreParametersComponent } from './components/CoreParametersComponent';
+import { AbilityScoresComponent } from './components/AbilityScoresComponent';
+import { AdditionalFieldsComponent } from './components/AdditionalFieldsComponent';
+import { ImmunitiesComponent } from './components/ImmunitiesComponent';
+import { TraitsComponent } from './components/TraitsComponent';
+import { ActionsComponent } from './components/ActionsComponent';
+import { BonusActionsComponent } from './components/BonusActionsComponent';
+import { ReactionsComponent } from './components/ReactionsComponent';
+import { LegendaryActionsComponent } from './components/LegendaryActionsComponent';
 
 export class CreatureCreationModal extends Modal {
     private basicFields: BasicFieldsComponent;
+    private coreParameters: CoreParametersComponent;
     private abilityScores: AbilityScoresComponent;
+    private additionalFields: AdditionalFieldsComponent;
     private immunities: ImmunitiesComponent;
     private traits: TraitsComponent;
     private actions: ActionsComponent;
     private bonusActions: BonusActionsComponent;
     private reactions: ReactionsComponent;
     private legendaryActions: LegendaryActionsComponent;
-    private additionalFields: AdditionalFieldsComponent;
 
     constructor(
         app: App, 
@@ -31,14 +32,15 @@ export class CreatureCreationModal extends Modal {
         super(app);
         
         this.basicFields = new BasicFieldsComponent();
+        this.coreParameters = new CoreParametersComponent();
         this.abilityScores = new AbilityScoresComponent();
+        this.additionalFields = new AdditionalFieldsComponent();
         this.immunities = new ImmunitiesComponent();
         this.traits = new TraitsComponent();
         this.actions = new ActionsComponent();
         this.bonusActions = new BonusActionsComponent();
         this.reactions = new ReactionsComponent();
         this.legendaryActions = new LegendaryActionsComponent();
-        this.additionalFields = new AdditionalFieldsComponent();
     }
 
     onOpen() {
@@ -48,6 +50,8 @@ export class CreatureCreationModal extends Modal {
         this.applyStyles(contentEl);
         this.renderComponents(contentEl);
         this.renderSaveButtons(contentEl);
+        
+        // Устанавливаем связь между компонентами после рендера
         this.setupComponentConnections();
     }
 
@@ -57,27 +61,32 @@ export class CreatureCreationModal extends Modal {
     }
 
     private setupComponentConnections() {
-        this.basicFields.onProficiencyBonusChange((bonus: number) => {
+        // При изменении бонуса мастерства обновляем спасброски
+        this.coreParameters.onProficiencyBonusChange((bonus: number) => {
             this.abilityScores.setProficiencyBonus(bonus);
         });
 
+        // При изменении характеристик обновляем инициативу
         this.abilityScores.onAbilityChange(() => {
-            this.abilityScores.updateInitiative();
+            this.coreParameters.updateInitiative(this.abilityScores.getInitiative());
         });
     }
 
     private renderComponents(contentEl: HTMLElement) {
-        // Основные поля
+        // Общая информация
         this.basicFields.render(contentEl);
+
+        // Основные параметры
+        this.coreParameters.render(contentEl);
 
         // Характеристики и спасброски
         this.abilityScores.render(contentEl);
 
+        // Дополнительные характеристики
+        this.additionalFields.render(contentEl);
+
         // Иммунитеты и сопротивления
         this.immunities.render(contentEl);
-
-        // Дополнительные поля
-        this.additionalFields.render(contentEl);
 
         // Черты
         this.traits.render(contentEl);
@@ -117,21 +126,21 @@ export class CreatureCreationModal extends Modal {
             type: this.basicFields.getType(),
             size: this.basicFields.getSize(),
             alignment: this.basicFields.getAlignment(),
-            ac: this.basicFields.getAC(),
-            hit_dice: this.basicFields.getHitDice(),
-            speed: this.basicFields.getSpeed(),
+            habitat: this.basicFields.getHabitat(),
+            languages: this.basicFields.getLanguages(),
+            ac: this.coreParameters.getAC(),
+            hit_dice: this.coreParameters.getHitDice(),
+            speed: this.coreParameters.getSpeed(),
+            proficiency_bonus: this.coreParameters.getProficiencyBonus(),
             initiative: this.abilityScores.getInitiative(),
-            proficiency_bonus: this.basicFields.getProficiencyBonus(),
             characteristics: this.abilityScores.getCharacteristics(),
             saving_throws: this.abilityScores.calculateSavingThrows(),
             skills: this.additionalFields.getSkills(),
+            senses: this.additionalFields.getSenses(),
             damage_resistances: this.immunities.getDamageResistances(),
             damage_vulnerabilities: this.immunities.getDamageVulnerabilities(),
             damage_immunities: this.immunities.getDamageImmunities(),
             condition_immunities: this.immunities.getConditionImmunities(),
-            senses: this.additionalFields.getSenses(),
-            languages: this.additionalFields.getLanguages(),
-            habitat: this.basicFields.getHabitat(),
             traits: this.traits.getTraits(),
             actions: this.actions.getActions(),
             bonus_actions: this.bonusActions.getBonusActions(),

@@ -4,14 +4,12 @@ export class AbilityScoresComponent {
     private characteristics: number[] = [10, 10, 10, 10, 10, 10];
     private saving_throws_proficiency: boolean[] = [false, false, false, false, false, false];
     private proficiency_bonus: number = 2;
-    private initiativeInput: HTMLInputElement | null = null;
     private onAbilityChangeCallback: (() => void) | null = null;
 
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
         this.renderAbilities(section);
         this.renderSavingThrows(section);
-        this.renderInitiative(section);
     }
 
     private renderAbilities(container: HTMLElement) {
@@ -64,15 +62,13 @@ export class AbilityScoresComponent {
                 const modifier = this.calculateModifier(numValue);
                 modifierInput.value = this.formatModifier(modifier);
                 
+                // Уведомляем об изменении характеристики
                 if (this.onAbilityChangeCallback) {
                     this.onAbilityChangeCallback();
                 }
-
-                this.updateSavingThrowsDisplay();
                 
-                if (ability.index === 1) {
-                    this.updateInitiative();
-                }
+                // Обновляем спасброски при изменении любой характеристики
+                this.updateSavingThrowsDisplay();
             }
         };
 
@@ -87,15 +83,13 @@ export class AbilityScoresComponent {
                 const modifier = this.calculateModifier(10);
                 modifierInput.value = this.formatModifier(modifier);
                 
+                // Уведомляем об изменении характеристики
                 if (this.onAbilityChangeCallback) {
                     this.onAbilityChangeCallback();
                 }
                 
+                // Обновляем спасброски при изменении любой характеристики
                 this.updateSavingThrowsDisplay();
-
-                if (ability.index === 1) {
-                    this.updateInitiative();
-                }
             }
         });
     }
@@ -147,18 +141,6 @@ export class AbilityScoresComponent {
         });
     }
 
-    private renderInitiative(container: HTMLElement) {
-        new Setting(container)
-            .setName('Инициатива')
-            .setDesc('Бонус инициативы (рассчитывается автоматически как модификатор ловкости)')
-            .addText(text => {
-                this.initiativeInput = text.inputEl;
-                text.setPlaceholder('+0')
-                    .setValue(this.formatModifier(this.getInitiative()))
-                    .setDisabled(true);
-            });
-    }
-
     private toggleSavingThrowProficiency(abilityIndex: number, inputElement: HTMLInputElement) {
         this.saving_throws_proficiency[abilityIndex] = !this.saving_throws_proficiency[abilityIndex];
         
@@ -203,10 +185,13 @@ export class AbilityScoresComponent {
         return this.calculateModifier(this.characteristics[1]); // Ловкость (индекс 1)
     }
 
-    updateInitiative(): void {
-        if (this.initiativeInput) {
-            this.initiativeInput.value = this.formatModifier(this.getInitiative());
-        }
+    private updateSavingThrowsDisplay(): void {
+        const savingThrowInputs = document.querySelectorAll('.saving-throw-input');
+        savingThrowInputs.forEach((input, index) => {
+            if (index < this.saving_throws_proficiency.length) {
+                (input as HTMLInputElement).value = this.formatModifier(this.calculateSavingThrowValue(index));
+            }
+        });
     }
 
     // Колбэк для изменения характеристик
@@ -221,14 +206,5 @@ export class AbilityScoresComponent {
         this.proficiency_bonus = bonus; 
         // Обновляем отображение спасбросков при изменении бонуса мастерства
         this.updateSavingThrowsDisplay();
-    }
-
-    private updateSavingThrowsDisplay() {
-        const savingThrowInputs = document.querySelectorAll('.saving-throw-input');
-        savingThrowInputs.forEach((input, index) => {
-            if (index < this.saving_throws_proficiency.length) {
-                (input as HTMLInputElement).value = this.formatModifier(this.calculateSavingThrowValue(index));
-            }
-        });
     }
 }

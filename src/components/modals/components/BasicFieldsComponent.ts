@@ -6,16 +6,12 @@ export class BasicFieldsComponent {
     private type: string = '';
     private size: string = 'Medium';
     private alignment: string = 'Без мировоззрения';
-    private ac: number = 13;
-    private hit_dice: string = '8d8+24';
-    private speed: string = '30 футов';
-    private proficiency_bonus: number = 2;
     private habitat: string = '';
-    private onProficiencyBonusChangeCallback: ((bonus: number) => void) | null = null;
+    private languages: string = '';
 
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
-        section.createEl('h3', { text: 'Основные характеристики' });
+        section.createEl('h3', { text: 'Общая информация' });
 
         new Setting(section)
             .setName('Имя')
@@ -54,58 +50,20 @@ export class BasicFieldsComponent {
             });
 
         new Setting(section)
-            .setName('Класс брони (AC)')
-            .setDesc('Класс брони')
-            .addText(text => text
-                .setPlaceholder('13')
-                .setValue(this.ac.toString())
-                .onChange(value => this.ac = Number(value) || 13));
-
-        new Setting(section)
-            .setName('Хиты (HP)')
-            .setDesc('Хиты существа')
-            .addText(text => text
-                .setPlaceholder('8d8+24')
-                .setValue(this.hit_dice)
-                .onChange(value => this.hit_dice = value));
-
-        new Setting(section)
-            .setName('Скорость')
-            .setDesc('Скорость перемещения')
-            .addText(text => text
-                .setPlaceholder('30 ft., fly 60 ft.')
-                .setValue(this.speed)
-                .onChange(value => this.speed = value));
-
-        new Setting(section)
-            .setName('Бонус мастерства')
-            .setDesc('Бонус мастерства существа')
-            .addText(text => text
-                .setPlaceholder('2')
-                .setValue(this.proficiency_bonus.toString())
-                .onChange(value => {
-                    const numValue = Number(value);
-                    if (!isNaN(numValue) && numValue >= 0) {
-                        this.proficiency_bonus = numValue;
-                        // Уведомляем об изменении бонуса мастерства
-                        if (this.onProficiencyBonusChangeCallback) {
-                            this.onProficiencyBonusChangeCallback(numValue);
-                        }
-                    }
-                }));
-
-        new Setting(section)
             .setName('Место обитания')
             .setDesc('Типичная среда обитания существа')
             .addText(text => text
                 .setPlaceholder('Горы, леса, подземелья...')
                 .setValue(this.habitat)
                 .onChange(value => this.habitat = value));
-    }
 
-    // Колбэк для изменения бонуса мастерства
-    onProficiencyBonusChange(callback: (bonus: number) => void) {
-        this.onProficiencyBonusChangeCallback = callback;
+        new Setting(section)
+            .setName('Языки')
+            .setDesc('Известные языки')
+            .addTextArea(text => text
+                .setPlaceholder('Общий, Драконий')
+                .setValue(this.languages)
+                .onChange(value => this.languages = value));
     }
 
     // Геттеры
@@ -113,9 +71,6 @@ export class BasicFieldsComponent {
     getType(): string { return this.type; }
     getSize(): string { return this.size; }
     getAlignment(): string { return this.alignment; }
-    getAC(): number { return this.ac; }
-    getHitDice(): string { return this.hit_dice; }
-    getSpeed(): string { return this.speed; }
-    getProficiencyBonus(): number { return this.proficiency_bonus; }
     getHabitat(): string { return this.habitat; }
+    getLanguages(): string { return this.languages; }
 }
