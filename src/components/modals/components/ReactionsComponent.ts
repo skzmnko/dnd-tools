@@ -63,7 +63,7 @@ export class ReactionsComponent {
                     this.newReactionName = '';
                     this.newReactionDesc = '';
                     
-                    const nameInput = addReactionContainer.querySelector(`input[placeholder="${i18n.t('REACTIONS.ADD_FORM.NAME_PLACEHOLDER')}"]`) as HTMLInputElement;
+                    const nameInput = addReactionContainer.querySelector(`input[placeholder="${i18n.t('ACTIONS.REACTION_NAME_PLACEHOLDER')}"]`) as HTMLInputElement;
                     const descInput = addReactionContainer.querySelector('textarea') as HTMLTextAreaElement;
                     if (nameInput) nameInput.value = '';
                     if (descInput) descInput.value = '';

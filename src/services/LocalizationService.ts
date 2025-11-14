@@ -1,4 +1,4 @@
-import { LOCALE_EN, LOCALE_RU, LocaleKey } from 'src/constants/i18n';
+import { LOCALE_EN, LOCALE_RU, LocaleKey } from 'src/constants/bestiary_i18n';
 
 export class LocalizationService {
     private currentLocale: 'en' | 'ru' = 'en';

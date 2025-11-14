@@ -28,16 +28,16 @@ export const CREATURE_SIZES = [
 export type CreatureSize = typeof CREATURE_SIZES[number]['value'];
 
 export const ALIGNMENTS = [
-    { value: 'Без мировоззрения', label: 'Без мировоззрения' },
-    { value: 'Законно-Доброе', label: 'Законно-Доброе' },
-    { value: 'Нейтрально-Доброе', label: 'Нейтрально-Доброе' },
-    { value: 'Хаотично-Доброе', label: 'Хаотично-Доброе' },
-    { value: 'Законно-Нейтральное', label: 'Законно-Нейтральное' },
-    { value: 'Истинно-Нейтральное', label: 'Истинно-Нейтральное' },
-    { value: 'Хаотично-Нейтральное', label: 'Хаотично-Нейтральное' },
-    { value: 'Законно-Злое', label: 'Законно-Злое' },
-    { value: 'Нейтрально-Злое', label: 'Нейтрально-Злое' },
-    { value: 'Хаотично-Злое', label: 'Хаотично-Злое' }
+    { value: 'No Alignment', label: 'Без мировоззрения' },
+    { value: 'Lawful Good', label: 'Законно-Доброе' },
+    { value: 'Neutral Good', label: 'Нейтрально-Доброе' },
+    { value: 'Chaotic Good', label: 'Хаотично-Доброе' },
+    { value: 'Lawful Neutral', label: 'Законно-Нейтральное' },
+    { value: 'Neutral', label: 'Истинно-Нейтральное' },
+    { value: 'Chaotic Neutral', label: 'Хаотично-Нейтральное' },
+    { value: 'Lawful Evil', label: 'Законно-Злое' },
+    { value: 'Neutral Evil', label: 'Нейтрально-Злое' },
+    { value: 'Chaotic Evil', label: 'Хаотично-Злое' }
 ] as const;
 
 export type Alignment = typeof ALIGNMENTS[number]['value'];

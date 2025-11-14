@@ -63,7 +63,7 @@ export class TraitsComponent {
                     this.newTraitName = '';
                     this.newTraitDesc = '';
                     
-                    const nameInput = addTraitContainer.querySelector(`input[placeholder="${i18n.t('TRAITS.TRAIT_NAME')}"]`) as HTMLInputElement;
+                    const nameInput = addTraitContainer.querySelector(`input[placeholder="${i18n.t('TRAITS.TRAIT_NAME_PLACEHOLDER')}"]`) as HTMLInputElement;
                     const descInput = addTraitContainer.querySelector('textarea') as HTMLTextAreaElement;
                     if (nameInput) nameInput.value = '';
                     if (descInput) descInput.value = '';

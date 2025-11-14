@@ -63,7 +63,7 @@ export class LegendaryActionsComponent {
                     this.newLegendaryActionName = '';
                     this.newLegendaryActionDesc = '';
                     
-                    const nameInput = addLegendaryActionContainer.querySelector(`input[placeholder="${i18n.t('ACTIONS.LEGENDARY_ACTION_NAME')}"]`) as HTMLInputElement;
+                    const nameInput = addLegendaryActionContainer.querySelector(`input[placeholder="${i18n.t('ACTIONS.LEGENDARY_ACTION_NAME_PLACEHOLDER')}"]`) as HTMLInputElement;
                     const descInput = addLegendaryActionContainer.querySelector('textarea') as HTMLTextAreaElement;
                     if (nameInput) nameInput.value = '';
                     if (descInput) descInput.value = '';
