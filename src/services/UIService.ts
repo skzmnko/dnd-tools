@@ -33,7 +33,6 @@ export class UIService {
       
       const openBtn = header.createEl('button', { text: 'Открыть энкаунтер', cls: 'mod-cta' });
       openBtn.addEventListener('click', () => {
-        // Здесь будет вызов модального окна просмотра
       });
 
       if (encounterData.description) {
@@ -71,7 +70,6 @@ export class UIService {
           });
         }
         break;
-      // ... другие типы
     }
   }
 }

@@ -1,4 +1,5 @@
 import { Setting } from 'obsidian';
+import { i18n } from 'src/services/LocalizationService';
 
 export class AdditionalFieldsComponent {
     private skills: string = '';
@@ -8,15 +9,15 @@ export class AdditionalFieldsComponent {
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
         section.createEl('h3', { 
-            text: 'Дополнительные характеристики',
+            text: i18n.t('ADDITIONAL_FIELDS.TITLE'),
             cls: 'section-title'
         });
 
         new Setting(section)
-            .setName('Навыки')
-            .setDesc('Навыки существа')
+            .setName(i18n.t('ADDITIONAL_FIELDS.SKILLS'))
+            .setDesc(i18n.t('ADDITIONAL_FIELDS.SKILLS_DESC'))
             .addTextArea(text => {
-                text.setPlaceholder('Восприятие +2, Скрытность +4')
+                text.setPlaceholder(i18n.t('ADDITIONAL_FIELDS.SKILLS_PLACEHOLDER'))
                 .setValue(this.skills)
                 .onChange(value => this.skills = value);
                 text.inputEl.addClass('skills-textarea');
@@ -24,10 +25,10 @@ export class AdditionalFieldsComponent {
             });
 
         new Setting(section)
-            .setName('Чувства')
-            .setDesc('Особые чувства')
+            .setName(i18n.t('ADDITIONAL_FIELDS.SENSES'))
+            .setDesc(i18n.t('ADDITIONAL_FIELDS.SENSES_DESC'))
             .addTextArea(text => {
-                text.setPlaceholder('Тёмное зрение 60 ft., пассивное Восприятие 12')
+                text.setPlaceholder(i18n.t('ADDITIONAL_FIELDS.SENSES_PLACEHOLDER'))
                 .setValue(this.senses)
                 .onChange(value => this.senses = value);
             text.inputEl.addClass('senses-textarea');
@@ -35,10 +36,10 @@ export class AdditionalFieldsComponent {
             });
 
         new Setting(section)
-            .setName('Заметки')
-            .setDesc('Дополнительные заметки')
+            .setName(i18n.t('ADDITIONAL_FIELDS.NOTES'))
+            .setDesc(i18n.t('ADDITIONAL_FIELDS.NOTES_DESC'))
             .addTextArea(text => {
-                text.setPlaceholder('Особое поведение, тактика боя и т.д.')
+                text.setPlaceholder(i18n.t('ADDITIONAL_FIELDS.NOTES_PLACEHOLDER'))
                 .setValue(this.notes)
                 .onChange(value => this.notes = value);
                 text.inputEl.addClass('notes-textarea');
@@ -46,7 +47,6 @@ export class AdditionalFieldsComponent {
             });
     }
 
-    // Геттеры
     getSkills(): string { return this.skills; }
     getSenses(): string { return this.senses; }
     getNotes(): string { return this.notes; }

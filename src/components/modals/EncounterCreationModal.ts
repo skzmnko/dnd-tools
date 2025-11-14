@@ -8,7 +8,6 @@ export class EncounterCreationModal extends Modal {
     name: string = '';
     description: string = '';
     
-    // Поля для сражения
     difficulty: string = 'medium';
     environment: string = '';
     isLairActions: boolean = false;
@@ -25,7 +24,6 @@ export class EncounterCreationModal extends Modal {
         const typeLabel = this.plugin.encounterService.getEncounterTypeLabel(this.type);
         contentEl.createEl('h2', { text: `Создание энкаунтера: ${typeLabel}` });
 
-        // Общие поля для всех типов
         new Setting(contentEl)
             .setName('Название')
             .setDesc('Название энкаунтера')
@@ -44,10 +42,8 @@ export class EncounterCreationModal extends Modal {
                     this.description = value;
                 }));
 
-        // Специфичные поля в зависимости от типа
         this.renderTypeSpecificFields(contentEl);
 
-        // Кнопка создания
         new Setting(contentEl)
             .addButton(btn => btn
                 .setButtonText('Создать энкаунтер')
@@ -65,7 +61,6 @@ export class EncounterCreationModal extends Modal {
                         participants: this.participants
                     };
 
-                    // Добавляем специфичные поля для combat типа
                     if (this.type === 'combat') {
                         encounterData.environment = this.environment;
                         encounterData.isLairActions = this.isLairActions;
@@ -73,7 +68,6 @@ export class EncounterCreationModal extends Modal {
 
                     const encounter = await this.plugin.encounterService.createEncounter(encounterData);
                     
-                    // Вставляем энкаунтер в текущую заметку
                     this.plugin.uiService.insertEncounterToCurrentNote(encounter);
                     
                     this.close();
@@ -101,7 +95,6 @@ export class EncounterCreationModal extends Modal {
     renderCombatFields(contentEl: HTMLElement) {
         contentEl.createEl('h3', { text: 'Параметры сражения' });
 
-        // Локация
         new Setting(contentEl)
             .setName('Локация')
             .setDesc('Место проведения сражения')
@@ -111,7 +104,6 @@ export class EncounterCreationModal extends Modal {
                     this.environment = value;
                 }));
 
-        // Чекбокс "Действия логова"
         new Setting(contentEl)
             .setName('Действия логова')
             .setDesc('Включить специальные действия логова для этого энкаунтера')
@@ -127,7 +119,6 @@ export class EncounterCreationModal extends Modal {
                     }
                 }));
 
-        // Участники
         contentEl.createEl('h3', { text: 'Участники сражения' });
         
         const addParticipantBtn = contentEl.createEl('button', { 
@@ -139,24 +130,20 @@ export class EncounterCreationModal extends Modal {
             new CombatParticipantModal(this.app, this).open();
         });
 
-        // Список добавленных участников
         this.participantsContainer = contentEl.createDiv({ cls: 'participants-list' });
         this.updateParticipantsList();
     }
 
     renderHazardFields(contentEl: HTMLElement) {
         contentEl.createEl('h3', { text: 'Параметры опасной области' });
-        // Добавьте поля для опасных областей
     }
 
     renderChaseFields(contentEl: HTMLElement) {
         contentEl.createEl('h3', { text: 'Параметры погони' });
-        // Добавьте поля для погони
     }
 
     renderRandomFields(contentEl: HTMLElement) {
         contentEl.createEl('h3', { text: 'Параметры случайного события' });
-        // Добавьте поля для случайных событий
     }
 
     participantsContainer: HTMLElement;
@@ -180,7 +167,6 @@ export class EncounterCreationModal extends Modal {
                 `${participant.name} (${participant.type}) - HP: ${participant.hp}/${participant.maxHp}, AC: ${participant.ac}`
             );
 
-            // Не показываем кнопку удаления для логова
             if (participant.name !== 'Логово') {
                 const removeBtn = participantEl.createEl('button', {
                     text: 'Удалить',
@@ -206,9 +192,7 @@ export class EncounterCreationModal extends Modal {
         this.updateParticipantsList();
     }
 
-    // Метод: Добавление логова как участника
     private addLairAsParticipant(): void {
-        // Проверяем, не добавлено ли уже логово
         const lairExists = this.participants.some(participant => participant.name === 'Логово');
         
         if (!lairExists) {
@@ -226,7 +210,6 @@ export class EncounterCreationModal extends Modal {
         }
     }
 
-    // Метод: Удаление логова из участников
     private removeLairAsParticipant(): void {
         const lairIndex = this.participants.findIndex(participant => participant.name === 'Логово');
         

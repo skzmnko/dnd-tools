@@ -1,4 +1,5 @@
 import { Setting } from 'obsidian';
+import { i18n } from 'src/services/LocalizationService';
 
 export class AbilityScoresComponent {
     private characteristics: number[] = [10, 10, 10, 10, 10, 10];
@@ -9,7 +10,7 @@ export class AbilityScoresComponent {
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
         section.createEl('h3', { 
-            text: 'Характеристики',
+            text: i18n.t('ABILITY_SCORES.TITLE'),
             cls: 'section-title'
         });
         this.renderAbilities(section);
@@ -21,12 +22,12 @@ export class AbilityScoresComponent {
         const abilitiesContainer = container.createDiv({ cls: 'abilities-horizontal-container' });
 
         const abilities = [
-            { index: 0, label: 'СИЛ', fullName: 'Сила' },
-            { index: 1, label: 'ЛОВ', fullName: 'Ловкость' },
-            { index: 2, label: 'ТЕЛ', fullName: 'Телосложение' },
-            { index: 3, label: 'ИНТ', fullName: 'Интеллект' },
-            { index: 4, label: 'МДР', fullName: 'Мудрость' },
-            { index: 5, label: 'ХАР', fullName: 'Харизма' }
+            { index: 0, label: i18n.t('ABILITY_SCORES.ABILITIES.STR'), fullName: i18n.t('ABILITY_SCORES.ABILITIES.STR_FULL') },
+            { index: 1, label: i18n.t('ABILITY_SCORES.ABILITIES.DEX'), fullName: i18n.t('ABILITY_SCORES.ABILITIES.DEX_FULL') },
+            { index: 2, label: i18n.t('ABILITY_SCORES.ABILITIES.CON'), fullName: i18n.t('ABILITY_SCORES.ABILITIES.CON_FULL') },
+            { index: 3, label: i18n.t('ABILITY_SCORES.ABILITIES.INT'), fullName: i18n.t('ABILITY_SCORES.ABILITIES.INT_FULL') },
+            { index: 4, label: i18n.t('ABILITY_SCORES.ABILITIES.WIS'), fullName: i18n.t('ABILITY_SCORES.ABILITIES.WIS_FULL') },
+            { index: 5, label: i18n.t('ABILITY_SCORES.ABILITIES.CHA'), fullName: i18n.t('ABILITY_SCORES.ABILITIES.CHA_FULL') }
         ];
 
         abilities.forEach(ability => this.renderAbilityColumn(abilitiesContainer, ability));
@@ -55,7 +56,7 @@ export class AbilityScoresComponent {
         });
 
         modifierInput.setAttr('readonly', 'true');
-        modifierInput.title = `Модификатор ${ability.fullName}`;
+        modifierInput.title = `${ability.fullName} ${i18n.t('ABILITY_SCORES.MODIFIER_HINT')}`;
 
         const updateModifier = () => {
             const value = input.value;
@@ -65,12 +66,10 @@ export class AbilityScoresComponent {
                 const modifier = this.calculateModifier(numValue);
                 modifierInput.value = this.formatModifier(modifier);
                 
-                // Уведомляем об изменении характеристики
                 if (this.onAbilityChangeCallback) {
                     this.onAbilityChangeCallback();
                 }
                 
-                // Обновляем спасброски при изменении любой характеристики
                 this.updateSavingThrowsDisplay();
             }
         };
@@ -86,12 +85,10 @@ export class AbilityScoresComponent {
                 const modifier = this.calculateModifier(10);
                 modifierInput.value = this.formatModifier(modifier);
                 
-                // Уведомляем об изменении характеристики
                 if (this.onAbilityChangeCallback) {
                     this.onAbilityChangeCallback();
                 }
                 
-                // Обновляем спасброски при изменении любой характеристики
                 this.updateSavingThrowsDisplay();
             }
         });
@@ -99,7 +96,7 @@ export class AbilityScoresComponent {
 
     private renderSavingThrows(container: HTMLElement) {
         const savingThrowsHeader = container.createEl('h3', { 
-            text: 'Спасброски',
+            text: i18n.t('ABILITY_SCORES.SAVING_THROWS'),
             cls: 'saving-throws-header'
         });
         savingThrowsHeader.style.textAlign = 'center';
@@ -108,12 +105,12 @@ export class AbilityScoresComponent {
         const savingThrowsContainer = container.createDiv({ cls: 'saving-throws-container' });
 
         const savingThrows = [
-            { index: 0, label: 'СИЛ', fullName: 'Спасбросок силы' },
-            { index: 1, label: 'ЛОВ', fullName: 'Спасбросок ловкости' },
-            { index: 2, label: 'ТЕЛ', fullName: 'Спасбросок телосложения' },
-            { index: 3, label: 'ИНТ', fullName: 'Спасбросок интеллекта' },
-            { index: 4, label: 'МДР', fullName: 'Спасбросок мудрости' },
-            { index: 5, label: 'ХАР', fullName: 'Спасбросок харизмы' }
+            { index: 0, label: i18n.t('ABILITY_SCORES.ABILITIES.STR'), fullName: `${i18n.t('ABILITY_SCORES.SAVING_THROWS')} ${i18n.t('ABILITY_SCORES.ABILITIES.STR_FULL')}` },
+            { index: 1, label: i18n.t('ABILITY_SCORES.ABILITIES.DEX'), fullName: `${i18n.t('ABILITY_SCORES.SAVING_THROWS')} ${i18n.t('ABILITY_SCORES.ABILITIES.DEX_FULL')}` },
+            { index: 2, label: i18n.t('ABILITY_SCORES.ABILITIES.CON'), fullName: `${i18n.t('ABILITY_SCORES.SAVING_THROWS')} ${i18n.t('ABILITY_SCORES.ABILITIES.CON_FULL')}` },
+            { index: 3, label: i18n.t('ABILITY_SCORES.ABILITIES.INT'), fullName: `${i18n.t('ABILITY_SCORES.SAVING_THROWS')} ${i18n.t('ABILITY_SCORES.ABILITIES.INT_FULL')}` },
+            { index: 4, label: i18n.t('ABILITY_SCORES.ABILITIES.WIS'), fullName: `${i18n.t('ABILITY_SCORES.SAVING_THROWS')} ${i18n.t('ABILITY_SCORES.ABILITIES.WIS_FULL')}` },
+            { index: 5, label: i18n.t('ABILITY_SCORES.ABILITIES.CHA'), fullName: `${i18n.t('ABILITY_SCORES.SAVING_THROWS')} ${i18n.t('ABILITY_SCORES.ABILITIES.CHA_FULL')}` }
         ];
 
         savingThrows.forEach(savingThrow => {
@@ -138,7 +135,7 @@ export class AbilityScoresComponent {
             });
 
             const hint = savingThrowCol.createEl('div', {
-                text: 'клик',
+                text: i18n.t('ABILITY_SCORES.CLICK_HINT'),
                 cls: 'saving-throw-hint'
             });
         });
@@ -149,10 +146,10 @@ export class AbilityScoresComponent {
         
         if (this.saving_throws_proficiency[abilityIndex]) {
             inputElement.addClass('saving-throw-active');
-            inputElement.title += ' (владение)';
+            inputElement.title += ` (${i18n.t('ABILITY_SCORES.PROFICIENCY_HINT')})`;
         } else {
             inputElement.removeClass('saving-throw-active');
-            inputElement.title = inputElement.title.replace(' (владение)', '');
+            inputElement.title = inputElement.title.replace(` (${i18n.t('ABILITY_SCORES.PROFICIENCY_HINT')})`, '');
         }
         
         inputElement.value = this.formatModifier(this.calculateSavingThrowValue(abilityIndex));
@@ -185,7 +182,7 @@ export class AbilityScoresComponent {
     }
 
     getInitiative(): number {
-        return this.calculateModifier(this.characteristics[1]); // Ловкость (индекс 1)
+        return this.calculateModifier(this.characteristics[1]);
     }
 
     private updateSavingThrowsDisplay(): void {
@@ -197,17 +194,14 @@ export class AbilityScoresComponent {
         });
     }
 
-    // Колбэк для изменения характеристик
     onAbilityChange(callback: () => void) {
         this.onAbilityChangeCallback = callback;
     }
 
-    // Геттеры и сеттеры
     getCharacteristics(): number[] { return this.characteristics; }
     getSavingThrowsProficiency(): boolean[] { return this.saving_throws_proficiency; }
     setProficiencyBonus(bonus: number) { 
         this.proficiency_bonus = bonus; 
-        // Обновляем отображение спасбросков при изменении бонуса мастерства
         this.updateSavingThrowsDisplay();
     }
 }

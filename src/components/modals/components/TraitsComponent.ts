@@ -1,5 +1,6 @@
 import { Setting, Notice } from 'obsidian';
 import { CreatureTrait } from 'src/models/Bestiary';
+import { i18n } from 'src/services/LocalizationService';
 
 export class TraitsComponent {
     private traits: CreatureTrait[] = [];
@@ -9,7 +10,7 @@ export class TraitsComponent {
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
         section.createEl('h3', { 
-            text: 'Черты',
+            text: i18n.t('TRAITS.TITLE'),
             cls: 'section-title'
         });
 
@@ -21,17 +22,17 @@ export class TraitsComponent {
         const addTraitContainer = container.createDiv({ cls: 'add-trait-container' });
         
         new Setting(addTraitContainer)
-            .setName('Название черты')
-            .setDesc('Название особой черты или способности')
+            .setName(i18n.t('TRAITS.TRAIT_NAME'))
+            .setDesc(i18n.t('TRAITS.TRAIT_NAME_DESC'))
             .addText(text => text
-                .setPlaceholder('Амфибия')
+                .setPlaceholder(i18n.t('TRAITS.TRAIT_NAME_PLACEHOLDER'))
                 .onChange(value => this.newTraitName = value));
 
         new Setting(addTraitContainer)
-            .setName('Описание черты')
-            .setDesc('Подробное описание черты')
+            .setName(i18n.t('TRAITS.TRAIT_DESC'))
+            .setDesc(i18n.t('TRAITS.TRAIT_DESC_DESC'))
             .addTextArea(text => {
-                text.setPlaceholder('Существо может дышать как воздухом, так и водой...')
+                text.setPlaceholder(i18n.t('TRAITS.TRAIT_DESC_PLACEHOLDER'))
                 .onChange(value => this.newTraitDesc = value);
                 text.inputEl.addClass('trait-desc-textarea');
                 text.inputEl.addClass('wide-textarea');
@@ -39,16 +40,16 @@ export class TraitsComponent {
 
         new Setting(addTraitContainer)
             .addButton(btn => btn
-                .setButtonText('Добавить черту')
+                .setButtonText(i18n.t('TRAITS.ADD_TRAIT'))
                 .setCta()
                 .onClick(() => {
                     if (!this.newTraitName.trim()) {
-                        new Notice('Пожалуйста, введите название черты');
+                        new Notice(i18n.t('TRAITS.VALIDATION'));
                         return;
                     }
 
                     if (this.traits.length >= 10) {
-                        new Notice('Достигнуто максимальное количество черт (10)');
+                        new Notice(i18n.t('TRAITS.MAX_REACHED'));
                         return;
                     }
 
@@ -62,20 +63,20 @@ export class TraitsComponent {
                     this.newTraitName = '';
                     this.newTraitDesc = '';
                     
-                    const nameInput = addTraitContainer.querySelector('input[placeholder="Амфибия"]') as HTMLInputElement;
+                    const nameInput = addTraitContainer.querySelector(`input[placeholder="${i18n.t('TRAITS.TRAIT_NAME')}"]`) as HTMLInputElement;
                     const descInput = addTraitContainer.querySelector('textarea') as HTMLTextAreaElement;
                     if (nameInput) nameInput.value = '';
                     if (descInput) descInput.value = '';
 
                     this.updateTraitsList(container);
-                    new Notice(`Черта "${newTrait.name}" добавлена`);
+                    new Notice(i18n.t('TRAITS.SUCCESS', { name: newTrait.name }));
                 }));
     }
 
     private renderTraitsList(container: HTMLElement) {
         const traitsListContainer = container.createDiv({ cls: 'traits-list-container' });
         traitsListContainer.createEl('div', { 
-            text: 'Добавленные черты:',
+            text: i18n.t('TRAITS.ADDED_TRAITS'),
             cls: 'traits-list-title'
         });
         
@@ -95,7 +96,7 @@ export class TraitsComponent {
         
         if (this.traits.length === 0) {
             traitsListEl.createEl('div', { 
-                text: 'Черты не добавлены',
+                text: i18n.t('TRAITS.NO_TRAITS'),
                 cls: 'traits-empty'
             });
             return;
@@ -111,14 +112,14 @@ export class TraitsComponent {
             traitDesc.setText(trait.desc);
             
             const removeBtn = traitItem.createEl('button', {
-                text: 'Удалить',
+                text: i18n.t('COMMON.DELETE'),
                 cls: 'trait-remove mod-warning'
             });
             
             removeBtn.addEventListener('click', () => {
                 this.traits.splice(index, 1);
                 this.updateTraitsList(container);
-                new Notice(`Черта "${trait.name}" удалена`);
+                new Notice(i18n.t('TRAITS.DELETE_SUCCESS', { name: trait.name }));
             });
         });
     }

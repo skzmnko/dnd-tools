@@ -1,5 +1,6 @@
 import { Setting, Notice } from 'obsidian';
 import { CreatureAction } from 'src/models/Bestiary';
+import { i18n } from 'src/services/LocalizationService';
 
 export class LegendaryActionsComponent {
     private legendary_actions: CreatureAction[] = [];
@@ -9,7 +10,7 @@ export class LegendaryActionsComponent {
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
         section.createEl('h3', { 
-            text: 'Легендарные действия',
+            text: i18n.t('ACTIONS.LEGENDARY_ACTIONS'),
             cls: 'section-title'
         });
 
@@ -21,17 +22,17 @@ export class LegendaryActionsComponent {
         const addLegendaryActionContainer = container.createDiv({ cls: 'add-action-container' });
         
         new Setting(addLegendaryActionContainer)
-            .setName('Название легендарного действия')
-            .setDesc('Название легендарного действия')
+            .setName(i18n.t('ACTIONS.LEGENDARY_ACTION_NAME'))
+            .setDesc(i18n.t('ACTIONS.LEGENDARY_ACTION_NAME_DESC'))
             .addText(text => text
-                .setPlaceholder('Дыхание дракона')
+                .setPlaceholder(i18n.t('ACTIONS.LEGENDARY_ACTION_NAME_PLACEHOLDER'))
                 .onChange(value => this.newLegendaryActionName = value));
 
         new Setting(addLegendaryActionContainer)
-            .setName('Описание легендарного действия')
-            .setDesc('Подробное описание легендарного действия и его эффектов')
+            .setName(i18n.t('ACTIONS.LEGENDARY_ACTION_DESC'))
+            .setDesc(i18n.t('ACTIONS.LEGENDARY_ACTION_DESC_DESC'))
             .addTextArea(text => {
-                text.setPlaceholder('Существо может совершить одно легендарное действие в конце хода другого существа...')
+                text.setPlaceholder(i18n.t('ACTIONS.LEGENDARY_ACTION_DESC_PLACEHOLDER'))
                 .onChange(value => this.newLegendaryActionDesc = value);
                 text.inputEl.addClass('legendary-action-desc-textarea');
                 text.inputEl.addClass('wide-textarea');
@@ -39,16 +40,16 @@ export class LegendaryActionsComponent {
 
         new Setting(addLegendaryActionContainer)
             .addButton(btn => btn
-                .setButtonText('Добавить легендарное действие')
+                .setButtonText(i18n.t('ACTIONS.ADD_LEGENDARY_ACTION'))
                 .setCta()
                 .onClick(() => {
                     if (!this.newLegendaryActionName.trim()) {
-                        new Notice('Пожалуйста, введите название легендарного действия');
+                        new Notice(i18n.t('ACTIONS.LEGENDARY_VALIDATION'));
                         return;
                     }
 
                     if (this.legendary_actions.length >= 10) {
-                        new Notice('Достигнуто максимальное количество легендарных действий (10)');
+                        new Notice(i18n.t('ACTIONS.LEGENDARY_MAX_REACHED'));
                         return;
                     }
 
@@ -62,20 +63,20 @@ export class LegendaryActionsComponent {
                     this.newLegendaryActionName = '';
                     this.newLegendaryActionDesc = '';
                     
-                    const nameInput = addLegendaryActionContainer.querySelector('input[placeholder="Дыхание дракона"]') as HTMLInputElement;
+                    const nameInput = addLegendaryActionContainer.querySelector(`input[placeholder="${i18n.t('ACTIONS.LEGENDARY_ACTION_NAME')}"]`) as HTMLInputElement;
                     const descInput = addLegendaryActionContainer.querySelector('textarea') as HTMLTextAreaElement;
                     if (nameInput) nameInput.value = '';
                     if (descInput) descInput.value = '';
 
                     this.updateLegendaryActionsList(container);
-                    new Notice(`Легендарное действие "${newLegendaryAction.name}" добавлено`);
+                    new Notice(i18n.t('ACTIONS.LEGENDARY_SUCCESS', { name: newLegendaryAction.name }));
                 }));
     }
 
     private renderLegendaryActionsList(container: HTMLElement) {
         const legendaryActionsListContainer = container.createDiv({ cls: 'actions-list-container' });
         legendaryActionsListContainer.createEl('div', { 
-            text: 'Добавленные легендарные действия:',
+            text: i18n.t('ACTIONS.ADDED_LEGENDARY_ACTIONS'),
             cls: 'actions-list-title'
         });
         
@@ -95,7 +96,7 @@ export class LegendaryActionsComponent {
         
         if (this.legendary_actions.length === 0) {
             legendaryActionsListEl.createEl('div', { 
-                text: 'Легендарные действия не добавлены',
+                text: i18n.t('ACTIONS.NO_LEGENDARY_ACTIONS'),
                 cls: 'actions-empty'
             });
             return;
@@ -111,18 +112,17 @@ export class LegendaryActionsComponent {
             legendaryActionDesc.setText(legendaryAction.desc);
             
             const removeBtn = legendaryActionItem.createEl('button', {
-                text: 'Удалить',
+                text: i18n.t('COMMON.DELETE'),
                 cls: 'action-remove mod-warning'
             });
             
             removeBtn.addEventListener('click', () => {
                 this.legendary_actions.splice(index, 1);
                 this.updateLegendaryActionsList(container);
-                new Notice(`Легендарное действие "${legendaryAction.name}" удалено`);
+                new Notice(i18n.t('ACTIONS.LEGENDARY_DELETE_SUCCESS', { name: legendaryAction.name }));
             });
         });
     }
 
-    // Геттеры
     getLegendaryActions(): CreatureAction[] { return this.legendary_actions; }
 }

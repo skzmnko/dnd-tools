@@ -1,9 +1,10 @@
 import { Setting } from 'obsidian';
+import { i18n } from 'src/services/LocalizationService';
 
 export class CoreParametersComponent {
     private ac: number = 13;
     private hit_dice: string = '8d8+24';
-    private speed: string = '30 футов';
+    private speed: string = '30 ft.';
     private proficiency_bonus: number = 2;
     private initiativeInput: HTMLInputElement | null = null;
     private onProficiencyBonusChangeCallback: ((bonus: number) => void) | null = null;
@@ -12,38 +13,37 @@ export class CoreParametersComponent {
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
         section.createEl('h3', { 
-            text: 'Основные параметры',
+            text: i18n.t('CORE_PARAMETERS.TITLE'),
             cls: 'section-title'
         });
 
         new Setting(section)
-            .setName('Класс брони (AC)')
-            .setDesc('Класс брони')
+            .setName(i18n.t('CORE_PARAMETERS.AC'))
+            .setDesc(i18n.t('CORE_PARAMETERS.AC_DESC'))
             .addText(text => text
                 .setPlaceholder('13')
                 .setValue(this.ac.toString())
                 .onChange(value => this.ac = Number(value) || 13));
 
         new Setting(section)
-            .setName('Хиты (HP)')
-            .setDesc('Хиты существа')
+            .setName(i18n.t('CORE_PARAMETERS.HP'))
+            .setDesc(i18n.t('CORE_PARAMETERS.HP_DESC'))
             .addText(text => text
-                .setPlaceholder('8d8+24')
+                .setPlaceholder('CORE_PARAMETERS.HP_PLACEHOLDER')
                 .setValue(this.hit_dice)
                 .onChange(value => this.hit_dice = value));
 
         new Setting(section)
-            .setName('Скорость')
-            .setDesc('Скорость перемещения')
+            .setName(i18n.t('CORE_PARAMETERS.SPEED'))
+            .setDesc(i18n.t('CORE_PARAMETERS.SPEED_DESC'))
             .addText(text => text
-                .setPlaceholder('30 ft., fly 60 ft.')
+                .setPlaceholder('CORE_PARAMETERS.SPEED_PLACEHOLDER')
                 .setValue(this.speed)
                 .onChange(value => this.speed = value));
 
-        // Инициатива (только отображение)
         new Setting(section)
-            .setName('Инициатива')
-            .setDesc('Бонус инициативы (рассчитывается автоматически как модификатор ловкости)')
+            .setName(i18n.t('CORE_PARAMETERS.INITIATIVE'))
+            .setDesc(i18n.t('CORE_PARAMETERS.INITIATIVE_DESC'))
             .addText(text => {
                 this.initiativeInput = text.inputEl;
                 text.setPlaceholder('+0')
@@ -52,8 +52,8 @@ export class CoreParametersComponent {
             });
 
         new Setting(section)
-            .setName('Бонус мастерства')
-            .setDesc('Бонус мастерства существа')
+            .setName(i18n.t('CORE_PARAMETERS.PROFICIENCY_BONUS'))
+            .setDesc(i18n.t('CORE_PARAMETERS.PROFICIENCY_BONUS_DESC'))
             .addText(text => text
                 .setPlaceholder('2')
                 .setValue(this.proficiency_bonus.toString())
@@ -61,7 +61,6 @@ export class CoreParametersComponent {
                     const numValue = Number(value);
                     if (!isNaN(numValue) && numValue >= 0) {
                         this.proficiency_bonus = numValue;
-                        // Уведомляем об изменении бонуса мастерства
                         if (this.onProficiencyBonusChangeCallback) {
                             this.onProficiencyBonusChangeCallback(numValue);
                         }
@@ -69,19 +68,16 @@ export class CoreParametersComponent {
                 }));
     }
 
-    // Метод для обновления инициативы
     updateInitiative(initiative: number): void {
         if (this.initiativeInput) {
             this.initiativeInput.value = initiative >= 0 ? `+${initiative}` : `${initiative}`;
         }
     }
 
-    // Колбэк для изменения бонуса мастерства
     onProficiencyBonusChange(callback: (bonus: number) => void) {
         this.onProficiencyBonusChangeCallback = callback;
     }
 
-    // Геттеры
     getAC(): number { return this.ac; }
     getHitDice(): string { return this.hit_dice; }
     getSpeed(): string { return this.speed; }

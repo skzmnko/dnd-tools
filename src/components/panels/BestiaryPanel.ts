@@ -31,7 +31,6 @@ export class BestiaryPanel extends ItemView {
     }
 
     async onClose() {
-        // Cleanup
     }
 
     async loadCreatures() {
@@ -41,12 +40,9 @@ export class BestiaryPanel extends ItemView {
     render() {
         const container = this.containerEl.children[1];
         container.empty();
-
-        // Заголовок
         const header = container.createDiv({ cls: 'bestiary-header' });
         header.createEl('h2', { text: 'Бестиарий' });
 
-        // Кнопка добавления
         const addButton = header.createEl('button', { 
             text: 'Добавить существо',
             cls: 'mod-cta'
@@ -55,7 +51,6 @@ export class BestiaryPanel extends ItemView {
             this.openCreatureCreationModal();
         });
 
-        // Список существ
         const creaturesList = container.createDiv({ cls: 'bestiary-list' });
 
         if (this.creatures.length === 0) {
@@ -86,14 +81,13 @@ export class BestiaryPanel extends ItemView {
         stats.createEl('span', { text: `HP: ${creature.hit_dice}` });
         stats.createEl('span', { text: `Бонус мастерства: +${creature.proficiency_bonus}` });
         
-        // Кнопки действий (для будущего использования)
         const actions = creatureEl.createDiv({ cls: 'creature-actions' });
         const editBtn = actions.createEl('button', { 
             text: 'Редактировать',
             cls: 'mod-secondary'
         });
         editBtn.addEventListener('click', () => {
-            // TODO: Реализовать редактирование
+            // TODO: implement edit logic
             new Notice('Редактирование в разработке');
         });
 
@@ -102,7 +96,7 @@ export class BestiaryPanel extends ItemView {
             cls: 'mod-warning'
         });
         deleteBtn.addEventListener('click', async () => {
-            // TODO: Реализовать удаление с подтверждением
+            // TODO: implement delete logic
             const success = await this.bestiaryService.deleteCreature(creature.id);
             if (success) {
                 new Notice(`Существо "${creature.name}" удалено`);

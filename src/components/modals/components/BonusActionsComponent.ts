@@ -1,5 +1,6 @@
 import { Setting, Notice } from 'obsidian';
 import { CreatureAction } from 'src/models/Bestiary';
+import { i18n } from 'src/services/LocalizationService';
 
 export class BonusActionsComponent {
     private bonus_actions: CreatureAction[] = [];
@@ -9,7 +10,7 @@ export class BonusActionsComponent {
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
         section.createEl('h3', { 
-            text: 'Бонусные действия',
+            text: i18n.t('ACTIONS.BONUS_ACTIONS'),
             cls: 'section-title'
         });
 
@@ -21,17 +22,17 @@ export class BonusActionsComponent {
         const addBonusActionContainer = container.createDiv({ cls: 'add-action-container' });
         
         new Setting(addBonusActionContainer)
-            .setName('Название бонусного действия')
-            .setDesc('Название бонусного действия')
+            .setName(i18n.t('ACTIONS.BONUS_ACTION_NAME'))
+            .setDesc(i18n.t('ACTIONS.BONUS_ACTION_NAME_DESC'))
             .addText(text => text
-                .setPlaceholder('Быстрое заклинание')
+                .setPlaceholder(i18n.t('ACTIONS.BONUS_ACTION_NAME_PLACEHOLDER'))
                 .onChange(value => this.newBonusActionName = value));
 
         new Setting(addBonusActionContainer)
-            .setName('Описание бонусного действия')
-            .setDesc('Подробное описание бонусного действия и его эффектов')
+            .setName(i18n.t('ACTIONS.BONUS_ACTION_DESC'))
+            .setDesc(i18n.t('ACTIONS.BONUS_ACTION_DESC_DESC'))
             .addTextArea(text => {
-                text.setPlaceholder('Существо может совершить одно бонусное действие...')
+                text.setPlaceholder(i18n.t('ACTIONS.BONUS_ACTION_DESC_PLACEHOLDER'))
                 .onChange(value => this.newBonusActionDesc = value);
                 text.inputEl.addClass('bonus-action-desc-textarea');
                 text.inputEl.addClass('wide-textarea');
@@ -39,16 +40,16 @@ export class BonusActionsComponent {
 
         new Setting(addBonusActionContainer)
             .addButton(btn => btn
-                .setButtonText('Добавить бонусное действие')
+                .setButtonText(i18n.t('ACTIONS.ADD_BONUS_ACTION'))
                 .setCta()
                 .onClick(() => {
                     if (!this.newBonusActionName.trim()) {
-                        new Notice('Пожалуйста, введите название бонусного действия');
+                        new Notice(i18n.t('ACTIONS.BONUS_VALIDATION'));
                         return;
                     }
 
                     if (this.bonus_actions.length >= 10) {
-                        new Notice('Достигнуто максимальное количество бонусных действий (10)');
+                        new Notice(i18n.t('ACTIONS.BONUS_MAX_REACHED'));
                         return;
                     }
 
@@ -62,20 +63,20 @@ export class BonusActionsComponent {
                     this.newBonusActionName = '';
                     this.newBonusActionDesc = '';
                     
-                    const nameInput = addBonusActionContainer.querySelector('input[placeholder="Быстрое заклинание"]') as HTMLInputElement;
+                    const nameInput = addBonusActionContainer.querySelector('input') as HTMLInputElement;
                     const descInput = addBonusActionContainer.querySelector('textarea') as HTMLTextAreaElement;
                     if (nameInput) nameInput.value = '';
                     if (descInput) descInput.value = '';
 
                     this.updateBonusActionsList(container);
-                    new Notice(`Бонусное действие "${newBonusAction.name}" добавлено`);
+                    new Notice(i18n.t('ACTIONS.BONUS_SUCCESS', { name: newBonusAction.name }));
                 }));
     }
 
     private renderBonusActionsList(container: HTMLElement) {
         const bonusActionsListContainer = container.createDiv({ cls: 'actions-list-container' });
         bonusActionsListContainer.createEl('div', { 
-            text: 'Добавленные бонусные действия:',
+            text: i18n.t('ACTIONS.ADDED_BONUS_ACTIONS'),
             cls: 'actions-list-title'
         });
         
@@ -95,7 +96,7 @@ export class BonusActionsComponent {
         
         if (this.bonus_actions.length === 0) {
             bonusActionsListEl.createEl('div', { 
-                text: 'Бонусные действия не добавлены',
+                text: i18n.t('ACTIONS.NO_BONUS_ACTIONS'),
                 cls: 'actions-empty'
             });
             return;
@@ -111,14 +112,14 @@ export class BonusActionsComponent {
             bonusActionDesc.setText(bonusAction.desc);
             
             const removeBtn = bonusActionItem.createEl('button', {
-                text: 'Удалить',
+                text: i18n.t('COMMON.DELETE'),
                 cls: 'action-remove mod-warning'
             });
             
             removeBtn.addEventListener('click', () => {
                 this.bonus_actions.splice(index, 1);
                 this.updateBonusActionsList(container);
-                new Notice(`Бонусное действие "${bonusAction.name}" удалено`);
+                new Notice(i18n.t('ACTIONS.BONUS_DELETE_SUCCESS', { name: bonusAction.name }));
             });
         });
     }

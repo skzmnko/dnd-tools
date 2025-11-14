@@ -2,7 +2,7 @@ import { App, Modal, Setting, Notice } from 'obsidian';
 import { Participant } from 'src/models/Encounter';
 
 export class CombatParticipantModal extends Modal {
-    parentModal: any; // Используем any чтобы избежать циклических зависимостей
+    parentModal: any;
     name: string = '';
     type: 'pc' | 'npc' | 'monster' | 'trap' = 'monster';
     hp: number = 30;
@@ -18,7 +18,6 @@ export class CombatParticipantModal extends Modal {
         const { contentEl } = this;
         contentEl.createEl('h3', { text: 'Добавить участника' });
 
-        // Имя участника
         new Setting(contentEl)
             .setName('Имя')
             .setDesc('Имя участника')
@@ -28,7 +27,6 @@ export class CombatParticipantModal extends Modal {
                     this.name = value;
                 }));
 
-        // Тип участника
         new Setting(contentEl)
             .setName('Тип')
             .setDesc('Тип участника')
@@ -42,7 +40,6 @@ export class CombatParticipantModal extends Modal {
                     this.type = value as any;
                 }));
 
-        // HP
         new Setting(contentEl)
             .setName('Текущие HP')
             .setDesc('Текущие очки здоровья')
@@ -54,7 +51,6 @@ export class CombatParticipantModal extends Modal {
                     this.maxHp = Math.max(this.maxHp, this.hp);
                 }));
 
-        // Max HP
         new Setting(contentEl)
             .setName('Максимальные HP')
             .setDesc('Максимальные очки здоровья')
@@ -66,7 +62,6 @@ export class CombatParticipantModal extends Modal {
                     this.hp = Math.min(this.hp, this.maxHp);
                 }));
 
-        // AC
         new Setting(contentEl)
             .setName('Класс брони (AC)')
             .setDesc('Класс брони')
@@ -77,7 +72,6 @@ export class CombatParticipantModal extends Modal {
                     this.ac = Number(value) || 10;
                 }));
 
-        // Кнопки
         new Setting(contentEl)
             .addButton(btn => btn
                 .setButtonText('Добавить')

@@ -92,7 +92,6 @@ export class EncounterService {
         }
     }
 
-    // Метод для загрузки энкаунтеров за определенную дату
     async loadEncountersForDate(date: Date): Promise<Encounter[]> {
         const data = await this.storage.loadEncountersByDate(date);
         return data?.encounters || [];

@@ -33,7 +33,6 @@ export class BestiaryService {
 
         console.log('Creating new creature:', creature.name);
         
-        // Добавляем и сразу сохраняем
         this.creatures.push(creature);
         
         try {
@@ -41,7 +40,6 @@ export class BestiaryService {
             console.log('Creature created successfully, total creatures:', this.creatures.length);
             return creature;
         } catch (error) {
-            // Откатываем изменения в памяти при ошибке сохранения
             this.creatures.pop();
             console.error('Failed to save creature, rolling back:', error);
             throw error;
@@ -75,7 +73,6 @@ export class BestiaryService {
             await this.saveCreatures();
             return this.creatures[index];
         } catch (error) {
-            // Откатываем изменения при ошибке
             this.creatures[index] = originalCreature;
             console.error('Failed to update creature, rolling back:', error);
             throw error;
@@ -96,7 +93,6 @@ export class BestiaryService {
             await this.saveCreatures();
             return true;
         } catch (error) {
-            // Восстанавливаем при ошибке
             this.creatures.splice(index, 0, deletedCreature);
             console.error('Failed to delete creature, rolling back:', error);
             throw error;

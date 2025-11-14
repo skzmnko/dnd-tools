@@ -1,5 +1,6 @@
 import { Setting, Notice } from 'obsidian';
 import { CreatureAction } from 'src/models/Bestiary';
+import { i18n } from 'src/services/LocalizationService';
 
 export class ActionsComponent {
     private actions: CreatureAction[] = [];
@@ -9,7 +10,7 @@ export class ActionsComponent {
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
         section.createEl('h3', { 
-            text: 'Действия',
+            text: i18n.t('ACTIONS.TITLE'),
             cls: 'section-title'
         });
 
@@ -21,17 +22,17 @@ export class ActionsComponent {
         const addActionContainer = container.createDiv({ cls: 'add-action-container' });
         
         new Setting(addActionContainer)
-            .setName('Название действия')
-            .setDesc('Название боевого действия или способности')
+            .setName(i18n.t('ACTIONS.ACTION_NAME'))
+            .setDesc(i18n.t('ACTIONS.ACTION_NAME_DESC'))
             .addText(text => text
-                .setPlaceholder('Укус')
+                .setPlaceholder(i18n.t('ACTIONS.ACTION_NAME_PLACEHOLDER'))
                 .onChange(value => this.newActionName = value));
 
         new Setting(addActionContainer)
-            .setName('Описание действия')
-            .setDesc('Подробное описание действия и его эффектов')
+            .setName(i18n.t('ACTIONS.ACTION_DESC'))
+            .setDesc(i18n.t('ACTIONS.ACTION_DESC_DESC'))
             .addTextArea(text => {
-                text.setPlaceholder('Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 10 (2d6 + 3) piercing damage.')
+                text.setPlaceholder(i18n.t('ACTIONS.ACTION_DESC_PLACEHOLDER'))
                 .onChange(value => this.newActionDesc = value);
                 text.inputEl.addClass('action-desc-textarea');
                 text.inputEl.addClass('wide-textarea');
@@ -39,16 +40,16 @@ export class ActionsComponent {
 
         new Setting(addActionContainer)
             .addButton(btn => btn
-                .setButtonText('Добавить действие')
+                .setButtonText(i18n.t('ACTIONS.ADD_ACTION'))
                 .setCta()
                 .onClick(() => {
                     if (!this.newActionName.trim()) {
-                        new Notice('Пожалуйста, введите название действия');
+                        new Notice(i18n.t('ACTIONS.VALIDATION'));
                         return;
                     }
 
                     if (this.actions.length >= 10) {
-                        new Notice('Достигнуто максимальное количество действий (10)');
+                        new Notice(i18n.t('ACTIONS.MAX_REACHED'));
                         return;
                     }
 
@@ -62,20 +63,20 @@ export class ActionsComponent {
                     this.newActionName = '';
                     this.newActionDesc = '';
                     
-                    const nameInput = addActionContainer.querySelector('input[placeholder="Укус"]') as HTMLInputElement;
+                    const nameInput = addActionContainer.querySelector(`input[placeholder="${i18n.t('ACTIONS.ACTION_NAME_PLACEHOLDER')}"]`) as HTMLInputElement;
                     const descInput = addActionContainer.querySelector('textarea') as HTMLTextAreaElement;
                     if (nameInput) nameInput.value = '';
                     if (descInput) descInput.value = '';
 
                     this.updateActionsList(container);
-                    new Notice(`Действие "${newAction.name}" добавлено`);
+                    new Notice(i18n.t('ACTIONS.SUCCESS', { name: newAction.name }));
                 }));
     }
 
     private renderActionsList(container: HTMLElement) {
         const actionsListContainer = container.createDiv({ cls: 'actions-list-container' });
         actionsListContainer.createEl('div', { 
-            text: 'Добавленные действия:',
+            text: i18n.t('ACTIONS.ADDED_ACTIONS'),
             cls: 'actions-list-title'
         });
         
@@ -95,7 +96,7 @@ export class ActionsComponent {
         
         if (this.actions.length === 0) {
             actionsListEl.createEl('div', { 
-                text: 'Действия не добавлены',
+                text: i18n.t('ACTIONS.NO_ACTIONS'),
                 cls: 'actions-empty'
             });
             return;
@@ -111,18 +112,17 @@ export class ActionsComponent {
             actionDesc.setText(action.desc);
             
             const removeBtn = actionItem.createEl('button', {
-                text: 'Удалить',
+                text: i18n.t('COMMON.DELETE'),
                 cls: 'action-remove mod-warning'
             });
             
             removeBtn.addEventListener('click', () => {
                 this.actions.splice(index, 1);
                 this.updateActionsList(container);
-                new Notice(`Действие "${action.name}" удалено`);
+                new Notice(i18n.t('ACTIONS.SUCCESS', { name: action.name }).replace('added', 'deleted'));
             });
         });
     }
 
-    // Геттеры
     getActions(): CreatureAction[] { return this.actions; }
 }

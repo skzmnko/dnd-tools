@@ -1,5 +1,6 @@
 import { Setting, Notice } from 'obsidian';
 import { CreatureAction } from 'src/models/Bestiary';
+import { i18n } from 'src/services/LocalizationService';
 
 export class ReactionsComponent {
     private reactions: CreatureAction[] = [];
@@ -9,7 +10,7 @@ export class ReactionsComponent {
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
         section.createEl('h3', { 
-            text: 'Реакции',
+            text: i18n.t('ACTIONS.REACTIONS'),
             cls: 'section-title'
         });
 
@@ -21,17 +22,17 @@ export class ReactionsComponent {
         const addReactionContainer = container.createDiv({ cls: 'add-action-container' });
         
         new Setting(addReactionContainer)
-            .setName('Название реакции')
-            .setDesc('Название реакции')
+            .setName(i18n.t('ACTIONS.REACTION_NAME'))
+            .setDesc(i18n.t('ACTIONS.REACTION_NAME_DESC'))
             .addText(text => text
-                .setPlaceholder('Ответный удар')
+                .setPlaceholder(i18n.t('ACTIONS.REACTION_NAME_PLACEHOLDER'))
                 .onChange(value => this.newReactionName = value));
 
         new Setting(addReactionContainer)
-            .setName('Описание реакции')
-            .setDesc('Подробное описание реакции и её условий срабатывания')
+            .setName(i18n.t('ACTIONS.REACTION_DESC'))
+            .setDesc(i18n.t('ACTIONS.REACTION_DESC_DESC'))
             .addTextArea(text => {
-                text.setPlaceholder('Когда существо получает удар в ближнем бою...')
+                text.setPlaceholder(i18n.t('ACTIONS.REACTION_DESC_PLACEHOLDER'))
                 .onChange(value => this.newReactionDesc = value);
                 text.inputEl.addClass('reaction-desc-textarea');
                 text.inputEl.addClass('wide-textarea');
@@ -39,16 +40,16 @@ export class ReactionsComponent {
 
         new Setting(addReactionContainer)
             .addButton(btn => btn
-                .setButtonText('Добавить реакцию')
+                .setButtonText(i18n.t('ACTIONS.ADD_REACTION'))
                 .setCta()
                 .onClick(() => {
                     if (!this.newReactionName.trim()) {
-                        new Notice('Пожалуйста, введите название реакции');
+                        new Notice(i18n.t('ACTIONS.REACTION_VALIDATION'));
                         return;
                     }
 
                     if (this.reactions.length >= 10) {
-                        new Notice('Достигнуто максимальное количество реакций (10)');
+                        new Notice(i18n.t('ACTIONS.REACTION_MAX_REACHED'));
                         return;
                     }
 
@@ -62,20 +63,20 @@ export class ReactionsComponent {
                     this.newReactionName = '';
                     this.newReactionDesc = '';
                     
-                    const nameInput = addReactionContainer.querySelector('input[placeholder="Ответный удар"]') as HTMLInputElement;
+                    const nameInput = addReactionContainer.querySelector(`input[placeholder="${i18n.t('REACTIONS.ADD_FORM.NAME_PLACEHOLDER')}"]`) as HTMLInputElement;
                     const descInput = addReactionContainer.querySelector('textarea') as HTMLTextAreaElement;
                     if (nameInput) nameInput.value = '';
                     if (descInput) descInput.value = '';
 
                     this.updateReactionsList(container);
-                    new Notice(`Реакция "${newReaction.name}" добавлена`);
+                    new Notice(i18n.t('ACTIONS.REACTION_SUCCESS', { name: newReaction.name }));
                 }));
     }
 
     private renderReactionsList(container: HTMLElement) {
         const reactionsListContainer = container.createDiv({ cls: 'actions-list-container' });
         reactionsListContainer.createEl('div', { 
-            text: 'Добавленные реакции:',
+            text: i18n.t('ACTIONS.ADDED_REACTIONS'),
             cls: 'actions-list-title'
         });
         
@@ -95,7 +96,7 @@ export class ReactionsComponent {
         
         if (this.reactions.length === 0) {
             reactionsListEl.createEl('div', { 
-                text: 'Реакции не добавлены',
+                text: i18n.t('ACTIONS.NO_REACTIONS'),
                 cls: 'actions-empty'
             });
             return;
@@ -111,18 +112,17 @@ export class ReactionsComponent {
             reactionDesc.setText(reaction.desc);
             
             const removeBtn = reactionItem.createEl('button', {
-                text: 'Удалить',
+                text: i18n.t('COMMON.DELETE'),
                 cls: 'action-remove mod-warning'
             });
             
             removeBtn.addEventListener('click', () => {
                 this.reactions.splice(index, 1);
                 this.updateReactionsList(container);
-                new Notice(`Реакция "${reaction.name}" удалена`);
+                new Notice(i18n.t('ACTIONS.REACTION_DELETE_SUCCESS', { name: reaction.name }));
             });
         });
     }
 
-    // Геттеры
     getReactions(): CreatureAction[] { return this.reactions; }
 }
