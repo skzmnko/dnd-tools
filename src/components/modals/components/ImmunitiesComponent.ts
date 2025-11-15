@@ -1,12 +1,12 @@
 import { Setting, Notice } from 'obsidian';
-import { DAMAGE_TYPES, CONDITION_NAMES, DamageType } from 'src/constants/Constants';
+import { DAMAGE_TYPES, CONDITIONS, DamageTypeKey, ConditionKey } from 'src/constants/Constants';
 import { i18n } from 'src/services/LocalizationService';
 
 export class ImmunitiesComponent {
-    private damage_resistances: string[] = [];
-    private damage_vulnerabilities: string[] = [];
-    private damage_immunities: string[] = [];
-    private condition_immunities: string[] = [];
+    private damage_resistances: DamageTypeKey[] = [];
+    private damage_vulnerabilities: DamageTypeKey[] = [];
+    private damage_immunities: DamageTypeKey[] = [];
+    private condition_immunities: ConditionKey[] = [];
 
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
@@ -29,20 +29,21 @@ export class ImmunitiesComponent {
                 dropdown.setDisabled(false);
                 dropdown.addOption('', i18n.t('IMMUNITIES.SELECT_DAMAGE'));
                 
-                DAMAGE_TYPES.forEach((damageType: DamageType) => {
-                    dropdown.addOption(damageType, damageType);
+                const damageTypes = i18n.getGameDataCategory('DAMAGE_TYPES');
+                DAMAGE_TYPES.forEach((damageType: DamageTypeKey) => {
+                    dropdown.addOption(damageType, damageTypes[damageType] || damageType);
                 });
                 
                 dropdown.onChange((value: string) => {
-                    if (value && !this.damage_resistances.includes(value)) {
-                        this.damage_resistances.push(value);
-                        this.updateSelectedValues(container, 'damage-resistances-list', this.damage_resistances);
+                    if (value && !this.damage_resistances.includes(value as DamageTypeKey)) {
+                        this.damage_resistances.push(value as DamageTypeKey);
+                        this.updateSelectedValues(container, 'damage-resistances-list', this.damage_resistances, 'damage');
                     }
                     dropdown.setValue('');
                 });
             });
 
-        this.renderSelectedValuesList(container, 'damage-resistances-list', i18n.t('IMMUNITIES.SELECTED_RESISTANCES'), this.damage_resistances);
+        this.renderSelectedValuesList(container, 'damage-resistances-list', i18n.t('IMMUNITIES.SELECTED_RESISTANCES'), this.damage_resistances, 'damage');
     }
 
     private renderDamageVulnerabilities(container: HTMLElement) {
@@ -53,20 +54,21 @@ export class ImmunitiesComponent {
                 dropdown.setDisabled(false);
                 dropdown.addOption('', i18n.t('IMMUNITIES.SELECT_DAMAGE'));
                 
-                DAMAGE_TYPES.forEach((damageType: DamageType) => {
-                    dropdown.addOption(damageType, damageType);
+                const damageTypes = i18n.getGameDataCategory('DAMAGE_TYPES');
+                DAMAGE_TYPES.forEach((damageType: DamageTypeKey) => {
+                    dropdown.addOption(damageType, damageTypes[damageType] || damageType);
                 });
                 
                 dropdown.onChange((value: string) => {
-                    if (value && !this.damage_vulnerabilities.includes(value)) {
-                        this.damage_vulnerabilities.push(value);
-                        this.updateSelectedValues(container, 'damage-vulnerabilities-list', this.damage_vulnerabilities);
+                    if (value && !this.damage_vulnerabilities.includes(value as DamageTypeKey)) {
+                        this.damage_vulnerabilities.push(value as DamageTypeKey);
+                        this.updateSelectedValues(container, 'damage-vulnerabilities-list', this.damage_vulnerabilities, 'damage');
                     }
                     dropdown.setValue('');
                 });
             });
 
-        this.renderSelectedValuesList(container, 'damage-vulnerabilities-list', i18n.t('IMMUNITIES.SELECTED_VULNERABILITIES'), this.damage_vulnerabilities);
+        this.renderSelectedValuesList(container, 'damage-vulnerabilities-list', i18n.t('IMMUNITIES.SELECTED_VULNERABILITIES'), this.damage_vulnerabilities, 'damage');
     }
 
     private renderDamageImmunities(container: HTMLElement) {
@@ -77,20 +79,21 @@ export class ImmunitiesComponent {
                 dropdown.setDisabled(false);
                 dropdown.addOption('', i18n.t('IMMUNITIES.SELECT_DAMAGE'));
                 
-                DAMAGE_TYPES.forEach((damageType: DamageType) => {
-                    dropdown.addOption(damageType, damageType);
+                const damageTypes = i18n.getGameDataCategory('DAMAGE_TYPES');
+                DAMAGE_TYPES.forEach((damageType: DamageTypeKey) => {
+                    dropdown.addOption(damageType, damageTypes[damageType] || damageType);
                 });
                 
                 dropdown.onChange((value: string) => {
-                    if (value && !this.damage_immunities.includes(value)) {
-                        this.damage_immunities.push(value);
-                        this.updateSelectedValues(container, 'damage-immunities-list', this.damage_immunities);
+                    if (value && !this.damage_immunities.includes(value as DamageTypeKey)) {
+                        this.damage_immunities.push(value as DamageTypeKey);
+                        this.updateSelectedValues(container, 'damage-immunities-list', this.damage_immunities, 'damage');
                     }
                     dropdown.setValue('');
                 });
             });
 
-        this.renderSelectedValuesList(container, 'damage-immunities-list', i18n.t('IMMUNITIES.SELECTED_DAMAGE_IMMUNITIES'), this.damage_immunities);
+        this.renderSelectedValuesList(container, 'damage-immunities-list', i18n.t('IMMUNITIES.SELECTED_DAMAGE_IMMUNITIES'), this.damage_immunities, 'damage');
     }
 
     private renderConditionImmunities(container: HTMLElement) {
@@ -101,23 +104,24 @@ export class ImmunitiesComponent {
                 dropdown.setDisabled(false);
                 dropdown.addOption('', i18n.t('IMMUNITIES.SELECT_CONDITION'));
                 
-                CONDITION_NAMES.forEach((condition: string) => {
-                    dropdown.addOption(condition, condition);
+                const conditions = i18n.getGameDataCategory('CONDITIONS');
+                CONDITIONS.forEach((condition: ConditionKey) => {
+                    dropdown.addOption(condition, conditions[condition] || condition);
                 });
                 
                 dropdown.onChange((value: string) => {
-                    if (value && !this.condition_immunities.includes(value)) {
-                        this.condition_immunities.push(value);
-                        this.updateSelectedValues(container, 'condition-immunities-list', this.condition_immunities);
+                    if (value && !this.condition_immunities.includes(value as ConditionKey)) {
+                        this.condition_immunities.push(value as ConditionKey);
+                        this.updateSelectedValues(container, 'condition-immunities-list', this.condition_immunities, 'condition');
                     }
                     dropdown.setValue('');
                 });
             });
 
-        this.renderSelectedValuesList(container, 'condition-immunities-list', i18n.t('IMMUNITIES.SELECTED_CONDITION_IMMUNITIES'), this.condition_immunities);
+        this.renderSelectedValuesList(container, 'condition-immunities-list', i18n.t('IMMUNITIES.SELECTED_CONDITION_IMMUNITIES'), this.condition_immunities, 'condition');
     }
 
-    private renderSelectedValuesList(container: HTMLElement, listId: string, title: string, values: string[]) {
+    private renderSelectedValuesList(container: HTMLElement, listId: string, title: string, values: (DamageTypeKey | ConditionKey)[], type: 'damage' | 'condition') {
         const listContainer = container.createDiv({ cls: 'selected-values-container' });
         listContainer.createEl('div', { 
             text: title,
@@ -129,10 +133,10 @@ export class ImmunitiesComponent {
             attr: { id: listId }
         });
         
-        this.updateSelectedValues(container, listId, values);
+        this.updateSelectedValues(container, listId, values, type);
     }
 
-    private updateSelectedValues(container: HTMLElement, listId: string, values: string[]) {
+    private updateSelectedValues(container: HTMLElement, listId: string, values: (DamageTypeKey | ConditionKey)[], type: 'damage' | 'condition') {
         const listEl = container.querySelector(`#${listId}`);
         if (!listEl) return;
         
@@ -148,7 +152,12 @@ export class ImmunitiesComponent {
         
         values.forEach((value, index) => {
             const valueItem = listEl.createDiv({ cls: 'selected-value-item' });
-            valueItem.createEl('span', { text: value });
+            
+            const displayName = type === 'damage' 
+                ? i18n.getDamageType(value as DamageTypeKey)
+                : i18n.getCondition(value as ConditionKey);
+                
+            valueItem.createEl('span', { text: displayName });
             
             const removeBtn = valueItem.createEl('button', {
                 text: i18n.t('COMMON.DELETE'),
@@ -157,13 +166,13 @@ export class ImmunitiesComponent {
             
             removeBtn.addEventListener('click', () => {
                 values.splice(index, 1);
-                this.updateSelectedValues(container, listId, values);
+                this.updateSelectedValues(container, listId, values, type);
             });
         });
     }
 
-    getDamageResistances(): string[] { return this.damage_resistances; }
-    getDamageVulnerabilities(): string[] { return this.damage_vulnerabilities; }
-    getDamageImmunities(): string[] { return this.damage_immunities; }
-    getConditionImmunities(): string[] { return this.condition_immunities; }
+    getDamageResistances(): DamageTypeKey[] { return this.damage_resistances; }
+    getDamageVulnerabilities(): DamageTypeKey[] { return this.damage_vulnerabilities; }
+    getDamageImmunities(): DamageTypeKey[] { return this.damage_immunities; }
+    getConditionImmunities(): ConditionKey[] { return this.condition_immunities; }
 }

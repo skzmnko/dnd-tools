@@ -1,114 +1,90 @@
-export const DAMAGE_TYPES = [
-    'дробящий',
-    'колющий',
-    'рубящий',
-    'огненный',
-    'ядовитый',
-    'холодный',
-    'некротический',
-    'лучистый',
-    'кислотный',
-    'силовой',
-    'молниеносный',
-    'психический',
-    'громовой'
+import { 
+    GAME_DATA_EN, 
+    SizeKey, 
+    AlignmentKey, 
+    DamageTypeKey, 
+    ConditionKey,
+    ConditionDescriptionKey
+} from './game_data_i18n';
+
+export const CREATURE_SIZES: readonly SizeKey[] = [
+    'TINY', 'SMALL', 'MEDIUM', 'LARGE', 'HUGE', 'GARGANTUAN'
 ] as const;
 
-export type DamageType = typeof DAMAGE_TYPES[number];
-
-export const CREATURE_SIZES = [
-    { value: 'Tiny', label: 'Крошечный' },
-    { value: 'Small', label: 'Малый' },
-    { value: 'Medium', label: 'Средний' },
-    { value: 'Large', label: 'Большой' },
-    { value: 'Huge', label: 'Огромный' },
-    { value: 'Gargantuan', label: 'Громадный' }
+export const ALIGNMENTS: readonly AlignmentKey[] = [
+    'NO_ALIGNMENT',
+    'LAWFUL_GOOD',
+    'NEUTRAL_GOOD', 
+    'CHAOTIC_GOOD',
+    'LAWFUL_NEUTRAL',
+    'NEUTRAL',
+    'CHAOTIC_NEUTRAL',
+    'LAWFUL_EVIL',
+    'NEUTRAL_EVIL',
+    'CHAOTIC_EVIL'
 ] as const;
 
-export type CreatureSize = typeof CREATURE_SIZES[number]['value'];
-
-export const ALIGNMENTS = [
-    { value: 'No Alignment', label: 'Без мировоззрения' },
-    { value: 'Lawful Good', label: 'Законно-Доброе' },
-    { value: 'Neutral Good', label: 'Нейтрально-Доброе' },
-    { value: 'Chaotic Good', label: 'Хаотично-Доброе' },
-    { value: 'Lawful Neutral', label: 'Законно-Нейтральное' },
-    { value: 'Neutral', label: 'Истинно-Нейтральное' },
-    { value: 'Chaotic Neutral', label: 'Хаотично-Нейтральное' },
-    { value: 'Lawful Evil', label: 'Законно-Злое' },
-    { value: 'Neutral Evil', label: 'Нейтрально-Злое' },
-    { value: 'Chaotic Evil', label: 'Хаотично-Злое' }
+export const DAMAGE_TYPES: readonly DamageTypeKey[] = [
+    'BLUDGEONING',
+    'PIERCING',
+    'SLASHING',
+    'FIRE',
+    'POISON',
+    'COLD',
+    'NECROTIC',
+    'RADIANT',
+    'ACID',
+    'FORCE',
+    'LIGHTNING',
+    'PSYCHIC',
+    'THUNDER',
+    'SILVERED_WEAPONS',
+    'ADAMANTINE_WEAPONS',
+    'MAGIC_WEAPONS'
 ] as const;
 
-export type Alignment = typeof ALIGNMENTS[number]['value'];
-
-export const CONDITIONS = [
-    {
-        name: 'без сознания',
-        description: 'Находящееся без сознания существо недееспособно, не способно перемещаться и говорить, а также не осознаёт своё окружение. Существо роняет всё, что держит, и падает ничком. Существо автоматически проваливает спасброски Силы и Ловкости. Броски атаки по существу совершаются с преимуществом. Любая атака, попавшая по такому существу, считается критическим попаданием, если нападающий находится в пределах 5 футов от него.'
-    },
-    {
-        name: 'захват',
-        description: 'Скорость схваченного существа равна 0, и оно не получает выгоды ни от каких бонусов к скорости. Состояние оканчивается, если схвативший становится недееспособным. Это состояние также оканчивается, если какой-либо эффект выводит схваченное существо из зоны досягаемости того, кто его удерживает, или из зоны удерживающего эффекта.'
-    },
-    {
-        name: 'испуг',
-        description: 'Испуганное существо совершает с помехой проверки характеристик и броски атаки, пока источник его страха находится в пределах его линии обзора. Существо не способно добровольно приблизиться к источнику своего страха.'
-    },
-    {
-        name: 'истощение',
-        description: 'Состояние истощения делится на шесть степеней. 1: Помеха при проверках характеристик; 2: Скорость уменьшается вдвое; 3: Помеха при бросках атаки и спасбросках; 4: Максимум хитов уменьшается вдвое; 5: Скорость снижается до 0; 6: Смерть.'
-    },
-    {
-        name: 'невидимость',
-        description: 'Невидимое существо невозможно увидеть без помощи магии или особого чувства. Броски атаки по невидимому существу совершаются с помехой, а его броски атаки — с преимуществом.'
-    },
-    {
-        name: 'немота',
-        description: 'Немое существо не может разговаривать и сотворять заклинания, требующие вербального компонента.'
-    },
-    {
-        name: 'недееспособность',
-        description: 'Недееспособное существо не может совершать действия и реакции. Недееспособные существа автоматически проваливают проверки для сопротивления захвату или толчку. Существо теряет концентрацию на заклинании, если становится недееспособным.'
-    },
-    {
-        name: 'оглушение',
-        description: 'Оглохшее существо ничего не слышит и автоматически проваливает все проверки характеристик, связанные со слухом.'
-    },
-    {
-        name: 'окаменение',
-        description: 'Окаменевшее существо трансформируется в твёрдое инертное вещество. Существо недееспособно, не способно двигаться и говорить. Броски атаки по существу совершаются с преимуществом. Существо автоматически проваливает спасброски Силы и Ловкости. Существо получает сопротивление ко всем видам урона и иммунитет к ядам и болезням.'
-    },
-    {
-        name: 'опутывание',
-        description: 'Скорость опутанного существа равна 0, и оно не получает выгоды ни от каких бонусов к скорости. Броски атаки по такому существу совершаются с преимуществом, а его броски атаки — с помехой. Существо совершает с помехой спасброски Ловкости.'
-    },
-    {
-        name: 'слепота',
-        description: 'Ослеплённое существо ничего не видит и автоматически проваливает все проверки характеристик, связанные со зрением. Броски атаки по такому существу совершаются с преимуществом, а его броски атаки совершаются с помехой.'
-    },
-    {
-        name: 'отравление',
-        description: 'Отравленное существо совершает с помехой броски атаки и проверки характеристик.'
-    },
-    {
-        name: 'очарование',
-        description: 'Очарованное существо не может атаковать того, кто его очаровал, а также делать его целью умения или магического эффекта, причиняющего вред. Искуситель совершает с преимуществом все проверки характеристик при социальном взаимодействии с очарованным существом.'
-    },
-    {
-        name: 'ошеломление',
-        description: 'Ошеломлённое существо недееспособно, не способно перемещаться и говорит, запинаясь. Существо автоматически проваливает спасброски Силы и Ловкости. Броски атаки по существу совершаются с преимуществом.'
-    },
-    {
-        name: 'паралич',
-        description: 'Парализованное существо недееспособно и не способно перемещаться и говорить. Существо автоматически проваливает спасброски Силы и Ловкости. Броски атаки по парализованному существу совершаются с преимуществом. Любая атака, попавшая по такому существу, считается критическим попаданием, если нападающий находится в пределах 5 футов от существа.'
-    },
-    {
-        name: 'сбитый с ног / лежащий ничком',
-        description: 'Сбитое с ног существо способно перемещаться только ползком, пока не встанет, прервав тем самым это состояние. Существо совершает с помехой броски атаки. Броски атаки по существу совершаются с преимуществом, если нападающий находится в пределах 5 футов от него. В противном случае броски атаки совершаются с помехой.'
-    }
+export const CONDITIONS: readonly ConditionKey[] = [
+    'BLINDED',
+    'CHARMED',
+    'DEAFENED',
+    'EXHAUSTED',
+    'FRIGHTENED',
+    'GRAPPLED',
+    'INCAPACITATED',
+    'INVISIBLE',
+    'MUTE',
+    'PARALYZED',
+    'PETRIFIED',
+    'POISONED',
+    'PRONE',
+    'RESTRAINED',
+    'STUNNED',
+    'UNCONSCIOUS'
 ] as const;
 
-export type Condition = typeof CONDITIONS[number];
+export const CONDITION_DESCRIPTIONS: readonly ConditionDescriptionKey[] = [
+    'BLINDED',
+    'CHARMED',
+    'DEAFENED',
+    'EXHAUSTED',
+    'FRIGHTENED',
+    'GRAPPLED',
+    'INCAPACITATED',
+    'INVISIBLE',
+    'MUTE',
+    'PARALYZED',
+    'PETRIFIED',
+    'POISONED',
+    'PRONE',
+    'RESTRAINED',
+    'STUNNED',
+    'UNCONSCIOUS'
+] as const;
 
-export const CONDITION_NAMES = CONDITIONS.map(condition => condition.name);
+export type CreatureSize = SizeKey;
+export type Alignment = AlignmentKey;
+export type DamageType = DamageTypeKey;
+export type Condition = ConditionKey;
+export type ConditionDescription = ConditionDescriptionKey;
+
+export type { SizeKey, AlignmentKey, DamageTypeKey, ConditionKey };

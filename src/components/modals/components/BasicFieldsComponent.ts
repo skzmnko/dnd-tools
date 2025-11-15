@@ -1,12 +1,12 @@
 import { Setting } from 'obsidian';
-import { CREATURE_SIZES, ALIGNMENTS } from 'src/constants/Constants';
+import { CREATURE_SIZES, ALIGNMENTS, SizeKey, AlignmentKey } from 'src/constants/Constants';
 import { i18n } from 'src/services/LocalizationService';
 
 export class BasicFieldsComponent {
     private name: string = '';
     private type: string = '';
-    private size: string = 'Medium';
-    private alignment: string = 'No Alignment';
+    private size: SizeKey = 'MEDIUM';
+    private alignment: AlignmentKey = 'NO_ALIGNMENT';
     private habitat: string = '';
     private languages: string = '';
 
@@ -35,22 +35,24 @@ export class BasicFieldsComponent {
             .setName(i18n.t('BASIC_FIELDS.SIZE'))
             .setDesc(i18n.t('BASIC_FIELDS.SIZE_DESC'))
             .addDropdown(dropdown => {
-                CREATURE_SIZES.forEach(size => {
-                    dropdown.addOption(size.value, size.label);
+                const sizes = i18n.getGameDataCategory('SIZES');
+                CREATURE_SIZES.forEach(sizeKey => {
+                    dropdown.addOption(sizeKey, sizes[sizeKey] || sizeKey);
                 });
                 dropdown.setValue(this.size)
-                    .onChange(value => this.size = value);
+                    .onChange(value => this.size = value as SizeKey);
             });
 
         new Setting(section)
             .setName(i18n.t('BASIC_FIELDS.ALIGNMENT'))
             .setDesc(i18n.t('BASIC_FIELDS.ALIGNMENT_DESC'))
             .addDropdown(dropdown => {
-                ALIGNMENTS.forEach(alignment => {
-                    dropdown.addOption(alignment.value, alignment.label);
+                const alignments = i18n.getGameDataCategory('ALIGNMENTS');
+                ALIGNMENTS.forEach(alignmentKey => {
+                    dropdown.addOption(alignmentKey, alignments[alignmentKey] || alignmentKey);
                 });
                 dropdown.setValue(this.alignment)
-                    .onChange(value => this.alignment = value);
+                    .onChange(value => this.alignment = value as AlignmentKey);
             });
 
         new Setting(section)
@@ -75,8 +77,8 @@ export class BasicFieldsComponent {
 
     getName(): string { return this.name; }
     getType(): string { return this.type; }
-    getSize(): string { return this.size; }
-    getAlignment(): string { return this.alignment; }
+    getSize(): SizeKey { return this.size; }
+    getAlignment(): AlignmentKey { return this.alignment; }
     getHabitat(): string { return this.habitat; }
     getLanguages(): string { return this.languages; }
 }

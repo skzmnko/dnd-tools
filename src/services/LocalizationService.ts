@@ -1,10 +1,32 @@
-import { LOCALE_EN, LOCALE_RU, LocaleKey } from 'src/constants/bestiary_i18n';
+import { LOCALE_EN, LOCALE_RU } from 'src/constants/bestiary_i18n';
+import { 
+    GAME_DATA_EN, 
+    GAME_DATA_RU, 
+    GameDataKey, 
+    SizeKey, 
+    AlignmentKey, 
+    DamageTypeKey, 
+    ConditionKey,
+    ConditionDescriptionKey
+} from 'src/constants/game_data_i18n';
+
+type GameDataCategory = 
+    | { [key in SizeKey]: string }
+    | { [key in AlignmentKey]: string }
+    | { [key in DamageTypeKey]: string }
+    | { [key in ConditionKey]: string }
+    | { [key in ConditionKey]: string }
+    | { [key in ConditionDescriptionKey]: string };
 
 export class LocalizationService {
     private currentLocale: 'en' | 'ru' = 'en';
-    private dictionaries = {
+    private uiDictionaries = {
         en: LOCALE_EN,
         ru: LOCALE_RU
+    };
+    private gameDataDictionaries = {
+        en: GAME_DATA_EN,
+        ru: GAME_DATA_RU
     };
 
     setLocale(locale: 'en' | 'ru') {
@@ -17,14 +39,14 @@ export class LocalizationService {
 
     t(key: string, params?: { [key: string]: string }): string {
         const keys = key.split('.');
-        let value: any = this.dictionaries[this.currentLocale];
+        let value: any = this.uiDictionaries[this.currentLocale];
         
         for (const k of keys) {
             if (value && value[k] !== undefined) {
                 value = value[k];
             } else {
                 console.warn(`Localization key not found: ${key}`);
-                return this.getFallback(key);
+                return this.getUIFallback(key);
             }
         }
 
@@ -35,7 +57,50 @@ export class LocalizationService {
         return value;
     }
 
-    // Get all available locales
+    getGameData(category: GameDataKey, key: string): string {
+        const dict = this.gameDataDictionaries[this.currentLocale];
+        const categoryData = dict[category] as any;
+        return categoryData?.[key] || key;
+    }
+
+    getGameDataCategory(category: GameDataKey): { [key: string]: string } {
+        const dict = this.gameDataDictionaries[this.currentLocale];
+        const categoryData = dict[category] as any;
+        
+        if (!categoryData) return {};
+        
+        const result: { [key: string]: string } = {};
+        Object.keys(categoryData).forEach(key => {
+            result[key] = categoryData[key];
+        });
+        
+        return result;
+    }
+
+    getSize(key: SizeKey): string {
+        return this.getGameData('SIZES', key);
+    }
+
+    getAlignment(key: AlignmentKey): string {
+        return this.getGameData('ALIGNMENTS', key);
+    }
+
+    getDamageType(key: DamageTypeKey): string {
+        return this.getGameData('DAMAGE_TYPES', key);
+    }
+
+    getCondition(key: ConditionKey): string {
+        return this.getGameData('CONDITIONS', key);
+    }
+
+    getConditionDescription(key: ConditionKey): string {
+        return this.getGameData('CONDITION_DESCRIPTIONS', key);
+    }
+
+    getAllConditionDescriptions(): { [key: string]: string } {
+        return this.getGameDataCategory('CONDITION_DESCRIPTIONS');
+    }
+
     getAvailableLocales(): Array<{ code: 'en' | 'ru'; name: string }> {
         return [
             { code: 'en', name: 'English' },
@@ -47,8 +112,7 @@ export class LocalizationService {
         return text.replace(/\{(\w+)\}/g, (match, key) => params[key] || match);
     }
 
-    private getFallback(key: string): string {
-        // Try English as fallback
+    private getUIFallback(key: string): string {
         const keys = key.split('.');
         let value: any = LOCALE_EN;
         
@@ -56,7 +120,7 @@ export class LocalizationService {
             if (value && value[k] !== undefined) {
                 value = value[k];
             } else {
-                return key; // Return key name as last resort
+                return key;
             }
         }
         
@@ -64,5 +128,4 @@ export class LocalizationService {
     }
 }
 
-// Singleton instance
 export const i18n = new LocalizationService();
