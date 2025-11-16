@@ -1,4 +1,5 @@
 import { App, PluginSettingTab, Setting } from 'obsidian';
+import { i18n } from 'src/services/LocalizationService';
 
 export class DnDToolsSettingTab extends PluginSettingTab {
     plugin: any;
@@ -13,6 +14,20 @@ export class DnDToolsSettingTab extends PluginSettingTab {
 
         containerEl.empty();
         containerEl.createEl('h2', { text: 'D&D Tools Settings' });
+
+        new Setting(containerEl)
+            .setName('Language')
+            .setDesc('Interface language')
+            .addDropdown(dropdown => dropdown
+                .addOption('en', 'English')
+                .addOption('ru', 'Русский')
+                .setValue(this.plugin.settings.language)
+                .onChange(async (value: 'en' | 'ru') => {
+                    this.plugin.settings.language = value;
+                    await this.plugin.saveSettings();
+                    i18n.setLocale(value);
+                    this.display();
+                }));
 
         new Setting(containerEl)
             .setName('Default HP')

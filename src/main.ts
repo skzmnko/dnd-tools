@@ -1,3 +1,4 @@
+// main.ts
 import { Plugin } from 'obsidian';
 import { EncounterManagerSettings, DEFAULT_SETTINGS } from 'src/models/Settings';
 import { BestiaryService } from 'src/services/BestiaryService';
@@ -28,7 +29,7 @@ export default class DnDToolsPlugin extends Plugin {
 
             this.addCommand({
                 id: 'create-encounter',
-                name: 'Create new encounter',
+                name: this.getLocalizedCommandName('Create new encounter', 'Создать новую встречу'),
                 callback: () => {
                     new EncounterTypeModal(this.app, this).open();
                 }
@@ -36,17 +37,17 @@ export default class DnDToolsPlugin extends Plugin {
 
             this.addCommand({
                 id: 'open-bestiary',
-                name: 'Open Bestiary',
+                name: this.getLocalizedCommandName('Open Bestiary', 'Открыть Бестиарий'),
                 callback: () => {
                     this.activateBestiaryView();
                 }
             });
 
-            this.addRibbonIcon('swords', 'Encounter Manager', () => {
+            this.addRibbonIcon('swords', this.getLocalizedCommandName('Encounter Manager', 'Менеджер встреч'), () => {
                 new EncounterTypeModal(this.app, this).open();
             });
 
-            this.addRibbonIcon('feather', 'Open Bestiary', () => {
+            this.addRibbonIcon('feather', this.getLocalizedCommandName('Open Bestiary', 'Открыть Бестиарий'), () => {
                 this.activateBestiaryView();
             });
 
@@ -69,10 +70,14 @@ export default class DnDToolsPlugin extends Plugin {
     }
 
     private setupLocalization() {
-        i18n.setLocale('en');
+        i18n.setLocale(this.settings.language);
     }
 
-     async activateBestiaryView() {
+    private getLocalizedCommandName(enName: string, ruName: string): string {
+        return this.settings.language === 'ru' ? ruName : enName;
+    }
+
+    async activateBestiaryView() {
         const { workspace } = this.app;
 
         let leaf = workspace.getLeavesOfType(BESTIARY_VIEW_TYPE)[0];

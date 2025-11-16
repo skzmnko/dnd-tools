@@ -30,9 +30,13 @@ export class LocalizationService {
         en: GAME_DATA_EN,
         ru: GAME_DATA_RU
     };
+    private onChangeCallbacks: Array<(locale: 'en' | 'ru') => void> = [];
 
     setLocale(locale: 'en' | 'ru') {
-        this.currentLocale = locale;
+        if (this.currentLocale !== locale) {
+            this.currentLocale = locale;
+            this.notifyLocaleChange(locale);
+        }
     }
 
     getCurrentLocale(): 'en' | 'ru' {
@@ -112,6 +116,21 @@ export class LocalizationService {
             { code: 'en', name: 'English' },
             { code: 'ru', name: 'Русский' }
         ];
+    }
+
+    onLocaleChange(callback: (locale: 'en' | 'ru') => void): void {
+        this.onChangeCallbacks.push(callback);
+    }
+
+    offLocaleChange(callback: (locale: 'en' | 'ru') => void): void {
+        const index = this.onChangeCallbacks.indexOf(callback);
+        if (index > -1) {
+            this.onChangeCallbacks.splice(index, 1);
+        }
+    }
+
+    private notifyLocaleChange(locale: 'en' | 'ru'): void {
+        this.onChangeCallbacks.forEach(callback => callback(locale));
     }
 
     private replaceParams(text: string, params: { [key: string]: string }): string {

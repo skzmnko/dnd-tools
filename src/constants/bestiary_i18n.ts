@@ -278,8 +278,8 @@ export const LOCALE_RU = {
         GENDER_DESC: 'Пол гуманоида',
         GENDER_PLACEHOLDER: 'Мужской или Женский',
         NOTABLE_ITEMS: 'Примечательные предметы',
-        NOTABLE_ITEMS_DESC: 'Примечательные предметы, расходники, предметы',
-        NOTABLE_ITEMS_PLACEHOLDER: 'Волшебный меч, семейная реликвия, секретные документы...'
+        NOTABLE_ITEMS_DESC: 'Примечательные предметы, расходники',
+        NOTABLE_ITEMS_PLACEHOLDER: 'Волшебный меч, секретные документы...'
     },
     CORE_PARAMETERS: {
         TITLE: 'Основные параметры',
@@ -312,8 +312,8 @@ export const LOCALE_RU = {
         CRAFT_INGREDIENTS_DESC: 'Ингредиенты для ремесла',
         CRAFT_INGREDIENTS_PLACEHOLDER: 'Кости, когти, зубы...',
         STATEMENTS: 'Высказывания',
-        STATEMENTS_DESC: 'Высказывания персонажа, черты личности, предыстория',
-        STATEMENTS_PLACEHOLDER: 'Черты личности, предыстория, отношения...',
+        STATEMENTS_DESC: 'Высказывания персонажа, примечательные фразы',
+        STATEMENTS_PLACEHOLDER: 'Высказывания персонажа, примечательные фразы',
         TACTICS: 'Тактика',
         TACTICS_DESC: 'Боевая тактика и особое поведение',
         TACTICS_PLACEHOLDER: 'Особое поведение, тактика боя и т.д.'
