@@ -50,9 +50,9 @@ export class CreatureCreationModal extends Modal {
         contentEl.createEl('h2', { text: i18n.t('CREATURE_MODAL.TITLE') });
 
         this.applyStyles(contentEl);
+        this.setupComponentConnections();
         this.renderComponents(contentEl);
         this.renderSaveButtons(contentEl);
-        this.setupComponentConnections();
     }
 
     private applyStyles(contentEl: HTMLElement) {
@@ -68,10 +68,14 @@ export class CreatureCreationModal extends Modal {
         this.abilityScores.onAbilityChange(() => {
             this.coreParameters.updateInitiative(this.abilityScores.getInitiative());
         });
+
+        this.basicFields.onTypeChange((type: CreatureTypeKey) => {
+            const isHumanoid = type === 'HUMANOID';
+            this.additionalFields.toggleIngredientsVisibility(isHumanoid);
+        });
     }
 
     private renderComponents(contentEl: HTMLElement) {
-
         this.basicFields.render(contentEl);
         this.coreParameters.render(contentEl);
         this.abilityScores.render(contentEl);
@@ -104,8 +108,12 @@ export class CreatureCreationModal extends Modal {
         const creatureData = {
             name: this.basicFields.getName(),
             type: i18n.getCreatureType(this.basicFields.getType() as CreatureTypeKey),
+            typeKey: this.basicFields.getType(),
+            subtype: this.basicFields.getSubtype(),
             size: i18n.getSize(this.basicFields.getSize() as SizeKey),
+            sizeKey: this.basicFields.getSize(),
             alignment: i18n.getAlignment(this.basicFields.getAlignment() as AlignmentKey),
+            alignmentKey: this.basicFields.getAlignment(),
             habitat: this.basicFields.getHabitat(),
             languages: this.basicFields.getLanguages(),
             ac: this.coreParameters.getAC(),
@@ -117,6 +125,8 @@ export class CreatureCreationModal extends Modal {
             saving_throws: this.abilityScores.calculateSavingThrows(),
             skills: this.additionalFields.getSkills(),
             senses: this.additionalFields.getSenses(),
+            alchemy_ingredients: this.additionalFields.getAlchemyIngredients(),
+            craft_ingredients: this.additionalFields.getCraftIngredients(),
             damage_resistances: this.immunities.getDamageResistances().map(res => i18n.getDamageType(res as any)),
             damage_vulnerabilities: this.immunities.getDamageVulnerabilities().map(vul => i18n.getDamageType(vul as any)),
             damage_immunities: this.immunities.getDamageImmunities().map(imm => i18n.getDamageType(imm as any)),

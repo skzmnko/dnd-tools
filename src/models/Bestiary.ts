@@ -11,8 +11,9 @@ export interface Creature {
     name: string;
     type: string;
     typeKey: string;
+    subtype: string;
     size: string;
-    sizeKey:string;
+    sizeKey: string;
     alignment: string;
     alignmentKey: string;
     ac: number;
@@ -23,11 +24,13 @@ export interface Creature {
     characteristics: number[];
     saving_throws: number[];
     skills: string;
+    senses: string;
+    alchemy_ingredients: string;
+    craft_ingredients: string;
     damage_resistances: string[];
     damage_vulnerabilities: string[];
     damage_immunities: string[];
     condition_immunities: string[];
-    senses: string;
     languages: string;
     habitat: string;
     traits: CreatureTrait[];
@@ -39,7 +42,6 @@ export interface Creature {
     created: number;
     updated: number;
 }
-
 export interface BestiaryData {
     creatures: Creature[];
     lastUpdated: number;

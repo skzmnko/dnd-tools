@@ -5,10 +5,13 @@ import { i18n } from 'src/services/LocalizationService';
 export class BasicFieldsComponent {
     private name: string = '';
     private type: CreatureTypeKey = 'HUMANOID';
+    private subtype: string = '';
     private size: SizeKey = 'MEDIUM';
     private alignment: AlignmentKey = 'NO_ALIGNMENT';
     private habitat: string = '';
     private languages: string = '';
+    private subtypeSetting: Setting | null = null;
+    private onTypeChangeCallback: ((type: CreatureTypeKey) => void) | null = null;
 
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
@@ -33,8 +36,24 @@ export class BasicFieldsComponent {
                     dropdown.addOption(typeKey, creatureTypes[typeKey] || typeKey);
                 });
                 dropdown.setValue(this.type)
-                    .onChange(value => this.type = value as CreatureTypeKey);
+                    .onChange(value => {
+                        this.type = value as CreatureTypeKey;
+                        this.toggleSubtypeVisibility();
+                        if (this.onTypeChangeCallback) {
+                            this.onTypeChangeCallback(this.type);
+                        }
+                    });
             });
+
+        this.subtypeSetting = new Setting(section)
+            .setName(i18n.t('BASIC_FIELDS.SUBTYPE'))
+            .setDesc(i18n.t('BASIC_FIELDS.SUBTYPE_DESC'))
+            .addText(text => text
+                .setPlaceholder(i18n.t('BASIC_FIELDS.SUBTYPE_PLACEHOLDER'))
+                .setValue(this.subtype)
+                .onChange(value => this.subtype = value));
+
+        this.toggleSubtypeVisibility();
 
         new Setting(section)
             .setName(i18n.t('BASIC_FIELDS.SIZE'))
@@ -78,10 +97,27 @@ export class BasicFieldsComponent {
                 text.inputEl.addClass('languages-textarea');
                 text.inputEl.addClass('fixed-textarea');
             });
+    }
+
+    private toggleSubtypeVisibility(): void {
+        if (!this.subtypeSetting) return;
+
+        const isHumanoid = this.type === 'HUMANOID';
+        
+        if (isHumanoid) {
+            this.subtypeSetting.settingEl.hide();
+        } else {
+            this.subtypeSetting.settingEl.show();
         }
+    }
+
+    onTypeChange(callback: (type: CreatureTypeKey) => void): void {
+        this.onTypeChangeCallback = callback;
+    }
 
     getName(): string { return this.name; }
-    getType(): string { return this.type; }
+    getType(): CreatureTypeKey { return this.type; }
+    getSubtype(): string { return this.subtype; }
     getSize(): SizeKey { return this.size; }
     getAlignment(): AlignmentKey { return this.alignment; }
     getHabitat(): string { return this.habitat; }
