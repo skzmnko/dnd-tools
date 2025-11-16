@@ -15,7 +15,11 @@ export const LOCALE_EN = {
         DELETE_SUCCESS: 'Creature "{name}" deleted',
         EDIT: 'Edit',
         DELETE: 'Delete',
-        EDIT_IN_PROGRESS: 'Editing in development'
+        EDIT_IN_PROGRESS: 'Editing in development',
+        VIEW_IN_PROGRESS: 'Viewing in development',
+        SEARCH_PLACEHOLDER: 'Search by name...',
+        CREATURE_DETAILS: '{type}, {size}, Proficiency Bonus: +{bonus}',
+        ALPHABETICAL_SECTIONS: 'Alphabetical Sections'
     },
     ABILITY_SCORES: {
         TITLE: 'Ability Scores',
@@ -233,7 +237,11 @@ export const LOCALE_RU = {
         DELETE_SUCCESS: 'Существо "{name}" удалено',
         EDIT: 'Редактировать',
         DELETE: 'Удалить',
-        EDIT_IN_PROGRESS: 'Редактирование в разработке'
+        EDIT_IN_PROGRESS: 'Редактирование в разработке',
+        VIEW_IN_PROGRESS: 'Просмотр в разработке',
+        SEARCH_PLACEHOLDER: 'Поиск по имени...',
+        CREATURE_DETAILS: '{type}, {size}, Бонус мастерства: +{bonus}',
+        ALPHABETICAL_SECTIONS: 'Алфавитные разделы'
     },
     ABILITY_SCORES: {
         TITLE: 'Характеристики',

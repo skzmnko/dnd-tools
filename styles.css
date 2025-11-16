@@ -317,4 +317,113 @@ button.mod-warning:hover {
     .creature-actions button {
         flex: 1;
     }
+
+    /* Bestiary Panel Styles */
+  .bestiary-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--background-modifier-border);
+  }
+
+  .bestiary-list {
+      margin-top: 10px;
+  }
+
+  .bestiary-letter-section {
+      margin-bottom: 25px;
+  }
+
+  .bestiary-letter-header {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: var(--text-accent);
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 2px solid var(--text-accent);
+  }
+
+  .bestiary-creatures-container {
+      margin-left: 10px;
+  }
+
+  .creature-list-item {
+      border: 1px solid var(--background-modifier-border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+      background-color: var(--background-secondary);
+      transition: background-color 0.2s ease;
+  }
+
+  .creature-list-item:hover {
+      background-color: var(--background-modifier-hover);
+  }
+
+  .creature-name-row {
+      margin-bottom: 8px;
+  }
+
+  .creature-name-link {
+      font-size: 1.1em;
+      font-weight: bold;
+      color: var(--text-accent);
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+  }
+
+  .creature-name-link:hover {
+      color: var(--text-accent-hover);
+      text-decoration: underline;
+  }
+
+  .creature-details-row {
+      margin-bottom: 10px;
+  }
+
+  .creature-details {
+      font-size: 0.9em;
+      color: var(--text-muted);
+      font-style: italic;
+  }
+
+  .creature-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+  }
+
+  .creature-actions button {
+      font-size: 0.8em;
+      padding: 4px 8px;
+  }
+
+  .bestiary-empty {
+      text-align: center;
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 40px 20px;
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+      .bestiary-header {
+          flex-direction: column;
+          gap: 10px;
+          align-items: stretch;
+      }
+    
+    .creature-actions {
+        flex-direction: column;
+    }
+    
+    .creature-actions button {
+        width: 100%;
+    }
+}
 }

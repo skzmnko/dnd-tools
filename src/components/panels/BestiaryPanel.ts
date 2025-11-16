@@ -1,6 +1,7 @@
 import { ItemView, WorkspaceLeaf, Notice } from 'obsidian';
 import { Creature } from 'src/models/Bestiary';
 import { CreatureCreationModal } from 'src/components/modals/CreatureCreationModal';
+import { i18n } from 'src/services/LocalizationService';
 
 export const BESTIARY_VIEW_TYPE = 'bestiary-view';
 
@@ -18,7 +19,7 @@ export class BestiaryPanel extends ItemView {
     }
 
     getDisplayText(): string {
-        return 'Бестиарий';
+        return i18n.t('BESTIARY.TITLE');
     }
 
     getIcon(): string {
@@ -41,10 +42,10 @@ export class BestiaryPanel extends ItemView {
         const container = this.containerEl.children[1];
         container.empty();
         const header = container.createDiv({ cls: 'bestiary-header' });
-        header.createEl('h2', { text: 'Бестиарий' });
+        header.createEl('h2', { text: i18n.t('BESTIARY.TITLE') });
 
         const addButton = header.createEl('button', { 
-            text: 'Добавить существо',
+            text: i18n.t('BESTIARY.ADD_CREATURE'),
             cls: 'mod-cta'
         });
         addButton.addEventListener('click', () => {
@@ -55,51 +56,95 @@ export class BestiaryPanel extends ItemView {
 
         if (this.creatures.length === 0) {
             creaturesList.createEl('p', { 
-                text: 'Существа еще не добавлены. Нажмите "Добавить существо" чтобы создать первое.',
+                text: i18n.t('BESTIARY.NO_CREATURES'),
                 cls: 'bestiary-empty'
             });
             return;
         }
 
-        this.creatures.forEach(creature => {
-            this.renderCreatureItem(creaturesList, creature);
+        const sortedCreatures = [...this.creatures].sort((a, b) => 
+            a.name.localeCompare(b.name)
+        );
+
+        const groupedCreatures = this.groupCreaturesByFirstLetter(sortedCreatures);
+        
+        this.renderGroupedCreaturesList(creaturesList, groupedCreatures);
+    }
+
+    private groupCreaturesByFirstLetter(creatures: Creature[]): Map<string, Creature[]> {
+        const groups = new Map<string, Creature[]>();
+        
+        creatures.forEach(creature => {
+            const firstLetter = creature.name.charAt(0).toUpperCase();
+            if (!groups.has(firstLetter)) {
+                groups.set(firstLetter, []);
+            }
+            groups.get(firstLetter)!.push(creature);
+        });
+        
+        return groups;
+    }
+
+    private renderGroupedCreaturesList(container: HTMLElement, groupedCreatures: Map<string, Creature[]>) {
+        const sortedLetters = Array.from(groupedCreatures.keys()).sort();
+
+        sortedLetters.forEach(letter => {
+            const creatures = groupedCreatures.get(letter)!;
+            const letterSection = container.createDiv({ cls: 'bestiary-letter-section' });
+            letterSection.createEl('h3', { 
+                text: letter,
+                cls: 'bestiary-letter-header'
+            });
+
+            const creaturesContainer = letterSection.createDiv({ cls: 'bestiary-creatures-container' });
+            
+            creatures.forEach(creature => {
+                this.renderCreatureListItem(creaturesContainer, creature);
+            });
         });
     }
 
-    renderCreatureItem(container: HTMLElement, creature: Creature) {
-        const creatureEl = container.createDiv({ cls: 'creature-item' });
+    renderCreatureListItem(container: HTMLElement, creature: Creature) {
+        const creatureEl = container.createDiv({ cls: 'creature-list-item' });
         
-        const header = creatureEl.createDiv({ cls: 'creature-header' });
-        header.createEl('h3', { text: creature.name });
+        const nameRow = creatureEl.createDiv({ cls: 'creature-name-row' });
+        const nameLink = nameRow.createEl('a', { 
+            text: creature.name,
+            cls: 'creature-name-link'
+        });
         
-        const meta = creatureEl.createDiv({ cls: 'creature-meta' });
-        meta.createEl('span', { text: `${creature.type}, ${creature.size}` });
-        meta.createEl('span', { text: `Обитает: ${creature.habitat}` });
-        
-        const stats = creatureEl.createDiv({ cls: 'creature-stats' });
-        stats.createEl('span', { text: `AC: ${creature.ac}` });
-        stats.createEl('span', { text: `HP: ${creature.hit_dice}` });
-        stats.createEl('span', { text: `Бонус мастерства: +${creature.proficiency_bonus}` });
+        nameLink.addEventListener('click', () => {
+            new Notice(i18n.t('BESTIARY.VIEW_IN_PROGRESS'));
+        });
+
+        const detailsRow = creatureEl.createDiv({ cls: 'creature-details-row' });
+        const detailsText = i18n.t('BESTIARY.CREATURE_DETAILS', {
+            type: creature.type,
+            size: creature.size,
+            bonus: creature.proficiency_bonus.toString()
+        });
+        detailsRow.createEl('span', { 
+            text: detailsText,
+            cls: 'creature-details'
+        });
         
         const actions = creatureEl.createDiv({ cls: 'creature-actions' });
         const editBtn = actions.createEl('button', { 
-            text: 'Редактировать',
+            text: i18n.t('BESTIARY.EDIT'),
             cls: 'mod-secondary'
         });
         editBtn.addEventListener('click', () => {
-            // TODO: implement edit logic
-            new Notice('Редактирование в разработке');
+            new Notice(i18n.t('BESTIARY.EDIT_IN_PROGRESS'));
         });
 
         const deleteBtn = actions.createEl('button', { 
-            text: 'Удалить',
+            text: i18n.t('BESTIARY.DELETE'),
             cls: 'mod-warning'
         });
         deleteBtn.addEventListener('click', async () => {
-            // TODO: implement delete logic
             const success = await this.bestiaryService.deleteCreature(creature.id);
             if (success) {
-                new Notice(`Существо "${creature.name}" удалено`);
+                new Notice(i18n.t('BESTIARY.DELETE_SUCCESS', { name: creature.name }));
                 await this.loadCreatures();
                 this.render();
             }
