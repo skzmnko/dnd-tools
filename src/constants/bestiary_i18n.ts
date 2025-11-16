@@ -52,7 +52,16 @@ export const LOCALE_EN = {
         HABITAT_PLACEHOLDER: 'Mountains, forests, dungeons...',
         LANGUAGES: 'Languages',
         LANGUAGES_DESC: 'Known languages',
-        LANGUAGES_PLACEHOLDER: 'Common, Draconic'
+        LANGUAGES_PLACEHOLDER: 'Common, Draconic',
+        RACE: 'Race',
+        RACE_DESC: 'Creature race or species',
+        RACE_PLACEHOLDER: 'Human, Elf, Dwarf...',
+        GENDER: 'Gender',
+        GENDER_DESC: 'Creature gender',
+        GENDER_PLACEHOLDER: 'Male or Female',
+        NOTABLE_ITEMS: 'Notable Items',
+        NOTABLE_ITEMS_DESC: 'Notable items, equipment or possessions',
+        NOTABLE_ITEMS_PLACEHOLDER: 'Magic sword, family heirloom, secret documents...'
     },
     CORE_PARAMETERS: {
         TITLE: 'Core Parameters',
@@ -87,6 +96,9 @@ export const LOCALE_EN = {
         NOTES: 'Notes',
         NOTES_DESC: 'Additional notes',
         NOTES_PLACEHOLDER: 'Special behavior, combat tactics, etc.',
+        COMMENTS: 'Comments',
+        COMMENTS_DESC: 'Additional comments or observations',
+        COMMENTS_PLACEHOLDER: 'Personality traits, background story, relationships...'
     },
     IMMUNITIES: {
         TITLE: 'Immunities and Resistances',
@@ -258,7 +270,16 @@ export const LOCALE_RU = {
         HABITAT_PLACEHOLDER: 'Горы, леса, подземелья...',
         LANGUAGES: 'Языки',
         LANGUAGES_DESC: 'Известные языки',
-        LANGUAGES_PLACEHOLDER: 'Общий, Драконий'
+        LANGUAGES_PLACEHOLDER: 'Общий, Драконий',
+        RACE: 'Раса',
+        RACE_DESC: 'Раса или подвид',
+        RACE_PLACEHOLDER: 'Человек, эльф, дварф...',
+        GENDER: 'Пол',
+        GENDER_DESC: 'Пол гуманоида',
+        GENDER_PLACEHOLDER: 'Мужской или Женский',
+        NOTABLE_ITEMS: 'Примечательные предметы',
+        NOTABLE_ITEMS_DESC: 'Примечательные предметы, расходники, предметы',
+        NOTABLE_ITEMS_PLACEHOLDER: 'Волшебный меч, семейная реликвия, секретные документы...'
     },
     CORE_PARAMETERS: {
         TITLE: 'Основные параметры',
@@ -292,7 +313,10 @@ export const LOCALE_RU = {
         CRAFT_INGREDIENTS_PLACEHOLDER: 'Кости, когти, зубы...',
         NOTES: 'Заметки',
         NOTES_DESC: 'Дополнительные заметки',
-        NOTES_PLACEHOLDER: 'Особое поведение, тактика боя и т.д.'
+        NOTES_PLACEHOLDER: 'Особое поведение, тактика боя и т.д.',
+        COMMENTS: 'Комментарии',
+        COMMENTS_DESC: 'Комментарии по реакциям персонажа',
+        COMMENTS_PLACEHOLDER: 'Комментарии по реакциям персонажа...'
     },
     IMMUNITIES: {
         TITLE: 'Иммунитеты и сопротивления',

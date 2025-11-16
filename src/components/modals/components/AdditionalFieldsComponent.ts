@@ -1,3 +1,4 @@
+// AdditionalFieldsComponent.ts
 import { Setting } from 'obsidian';
 import { i18n } from 'src/services/LocalizationService';
 
@@ -6,9 +7,11 @@ export class AdditionalFieldsComponent {
     private senses: string = '';
     private alchemy_ingredients: string = '';
     private craft_ingredients: string = '';
+    private comments: string = '';
     private notes: string = '';
     private alchemySetting: Setting | null = null;
     private craftSetting: Setting | null = null;
+    private commentsSetting: Setting | null = null;
 
     render(container: HTMLElement) {
         const section = container.createDiv({ cls: 'creature-section' });
@@ -61,7 +64,16 @@ export class AdditionalFieldsComponent {
                 text.inputEl.addClass('fixed-textarea');
             });
 
-        this.toggleIngredientsVisibility(true);
+        this.commentsSetting = new Setting(section)
+            .setName(i18n.t('ADDITIONAL_FIELDS.COMMENTS'))
+            .setDesc(i18n.t('ADDITIONAL_FIELDS.COMMENTS_DESC'))
+            .addTextArea(text => {
+                text.setPlaceholder(i18n.t('ADDITIONAL_FIELDS.COMMENTS_PLACEHOLDER'))
+                .setValue(this.comments)
+                .onChange(value => this.comments = value);
+                text.inputEl.addClass('comments-textarea');
+                text.inputEl.addClass('fixed-textarea');
+            });
 
         new Setting(section)
             .setName(i18n.t('ADDITIONAL_FIELDS.NOTES'))
@@ -73,17 +85,21 @@ export class AdditionalFieldsComponent {
                 text.inputEl.addClass('notes-textarea');
                 text.inputEl.addClass('fixed-textarea');
             });
+
+        this.toggleIngredientsVisibility(true);
     }
 
     toggleIngredientsVisibility(isHumanoid: boolean): void {
-        if (!this.alchemySetting || !this.craftSetting) return;
+        if (!this.alchemySetting || !this.craftSetting || !this.commentsSetting) return;
         
         if (isHumanoid) {
             this.alchemySetting.settingEl.hide();
             this.craftSetting.settingEl.hide();
+            this.commentsSetting.settingEl.show();
         } else {
             this.alchemySetting.settingEl.show();
             this.craftSetting.settingEl.show();
+            this.commentsSetting.settingEl.hide();
         }
     }
 
@@ -91,5 +107,6 @@ export class AdditionalFieldsComponent {
     getSenses(): string { return this.senses; }
     getAlchemyIngredients(): string { return this.alchemy_ingredients; }
     getCraftIngredients(): string { return this.craft_ingredients; }
+    getComments(): string { return this.comments; }
     getNotes(): string { return this.notes; }
 }

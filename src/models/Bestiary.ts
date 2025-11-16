@@ -27,11 +27,15 @@ export interface Creature {
     senses: string;
     alchemy_ingredients: string;
     craft_ingredients: string;
+    comments: string;
     damage_resistances: string[];
     damage_vulnerabilities: string[];
     damage_immunities: string[];
     condition_immunities: string[];
     languages: string;
+    race: string;
+    gender: string;
+    notable_items: string;
     habitat: string;
     traits: CreatureTrait[];
     actions: CreatureAction[];

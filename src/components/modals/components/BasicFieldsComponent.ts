@@ -1,3 +1,4 @@
+// BasicFieldsComponent.ts
 import { Setting } from 'obsidian';
 import { CREATURE_TYPES, CREATURE_SIZES, ALIGNMENTS, CreatureTypeKey, SizeKey, AlignmentKey } from 'src/constants/Constants';
 import { i18n } from 'src/services/LocalizationService';
@@ -10,7 +11,13 @@ export class BasicFieldsComponent {
     private alignment: AlignmentKey = 'NO_ALIGNMENT';
     private habitat: string = '';
     private languages: string = '';
+    private race: string = '';
+    private gender: string = '';
+    private notable_items: string = '';
     private subtypeSetting: Setting | null = null;
+    private raceSetting: Setting | null = null;
+    private genderSetting: Setting | null = null;
+    private notableItemsSetting: Setting | null = null;
     private onTypeChangeCallback: ((type: CreatureTypeKey) => void) | null = null;
 
     render(container: HTMLElement) {
@@ -38,7 +45,7 @@ export class BasicFieldsComponent {
                 dropdown.setValue(this.type)
                     .onChange(value => {
                         this.type = value as CreatureTypeKey;
-                        this.toggleSubtypeVisibility();
+                        this.toggleHumanoidFieldsVisibility();
                         if (this.onTypeChangeCallback) {
                             this.onTypeChangeCallback(this.type);
                         }
@@ -53,7 +60,23 @@ export class BasicFieldsComponent {
                 .setValue(this.subtype)
                 .onChange(value => this.subtype = value));
 
-        this.toggleSubtypeVisibility();
+        this.raceSetting = new Setting(section)
+            .setName(i18n.t('BASIC_FIELDS.RACE'))
+            .setDesc(i18n.t('BASIC_FIELDS.RACE_DESC'))
+            .addText(text => text
+                .setPlaceholder(i18n.t('BASIC_FIELDS.RACE_PLACEHOLDER'))
+                .setValue(this.race)
+                .onChange(value => this.race = value));
+
+        this.genderSetting = new Setting(section)
+            .setName(i18n.t('BASIC_FIELDS.GENDER'))
+            .setDesc(i18n.t('BASIC_FIELDS.GENDER_DESC'))
+            .addText(text => text
+                .setPlaceholder(i18n.t('BASIC_FIELDS.GENDER_PLACEHOLDER'))
+                .setValue(this.gender)
+                .onChange(value => this.gender = value));
+
+        this.toggleHumanoidFieldsVisibility();
 
         new Setting(section)
             .setName(i18n.t('BASIC_FIELDS.SIZE'))
@@ -97,17 +120,36 @@ export class BasicFieldsComponent {
                 text.inputEl.addClass('languages-textarea');
                 text.inputEl.addClass('fixed-textarea');
             });
+
+        this.notableItemsSetting = new Setting(section)
+            .setName(i18n.t('BASIC_FIELDS.NOTABLE_ITEMS'))
+            .setDesc(i18n.t('BASIC_FIELDS.NOTABLE_ITEMS_DESC'))
+            .addTextArea(text => {
+                text.setPlaceholder(i18n.t('BASIC_FIELDS.NOTABLE_ITEMS_PLACEHOLDER'))
+                .setValue(this.notable_items)
+                .onChange(value => this.notable_items = value);
+                text.inputEl.addClass('notable-items-textarea');
+                text.inputEl.addClass('fixed-textarea');
+            });
+
+        this.toggleHumanoidFieldsVisibility();
     }
 
-    private toggleSubtypeVisibility(): void {
-        if (!this.subtypeSetting) return;
+    private toggleHumanoidFieldsVisibility(): void {
+        if (!this.subtypeSetting || !this.raceSetting || !this.genderSetting || !this.notableItemsSetting) return;
 
         const isHumanoid = this.type === 'HUMANOID';
         
         if (isHumanoid) {
             this.subtypeSetting.settingEl.hide();
+            this.raceSetting.settingEl.show();
+            this.genderSetting.settingEl.show();
+            this.notableItemsSetting.settingEl.show();
         } else {
             this.subtypeSetting.settingEl.show();
+            this.raceSetting.settingEl.hide();
+            this.genderSetting.settingEl.hide();
+            this.notableItemsSetting.settingEl.hide();
         }
     }
 
@@ -122,4 +164,7 @@ export class BasicFieldsComponent {
     getAlignment(): AlignmentKey { return this.alignment; }
     getHabitat(): string { return this.habitat; }
     getLanguages(): string { return this.languages; }
+    getRace(): string { return this.race; }
+    getGender(): string { return this.gender; }
+    getNotableItems(): string { return this.notable_items; }
 }

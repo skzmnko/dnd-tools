@@ -231,7 +231,9 @@ export const CreatureModalStyles = `
 .senses-textarea,
 .alchemy-textarea,
 .craft-textarea,
-.notes-textarea {
+.comments-textarea,
+.notes-textarea,
+.notable-items-textarea {
     resize: none !important;
     min-height: 60px !important;
     width: 100% !important;
