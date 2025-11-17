@@ -4,11 +4,14 @@ import { CreatureCreationModal } from 'src/components/modals/CreatureCreationMod
 import { i18n } from 'src/services/LocalizationService';
 
 export const BESTIARY_VIEW_TYPE = 'bestiary-view';
+
 export class BestiaryPanel extends ItemView {
     bestiaryService: any;
     creatures: Creature[] = [];
-    private searchQuery: string = '';
-    private searchInput: HTMLInputElement | null = null;
+    selectedCreatures: Set<string> = new Set();
+    searchInput: HTMLInputElement | null = null;
+    editButton: HTMLButtonElement | null = null;
+    deleteButton: HTMLButtonElement | null = null;
 
     constructor(leaf: WorkspaceLeaf, bestiaryService: any) {
         super(leaf);
@@ -40,12 +43,31 @@ export class BestiaryPanel extends ItemView {
     }
 
     render() {
-        const container = this.containerEl.children[1] as HTMLElement;
+        const container = this.containerEl.children[1];
         container.empty();
+        
         const header = container.createDiv({ cls: 'bestiary-header' });
         header.createEl('h2', { text: i18n.t('BESTIARY.TITLE') });
 
-        const addButton = header.createEl('button', { 
+        // Controls section with search and buttons
+        const controlsSection = header.createDiv({ cls: 'bestiary-controls' });
+        
+        // Search input
+        const searchContainer = controlsSection.createDiv({ cls: 'search-container' });
+        this.searchInput = searchContainer.createEl('input', {
+            type: 'text',
+            placeholder: i18n.t('BESTIARY.SEARCH_PLACEHOLDER'),
+            cls: 'search-input'
+        });
+        this.searchInput.addEventListener('input', () => {
+            this.filterCreatures();
+        });
+
+        // Action buttons container
+        const buttonsContainer = controlsSection.createDiv({ cls: 'action-buttons-container' });
+        
+        // Add creature button
+        const addButton = buttonsContainer.createEl('button', { 
             text: i18n.t('BESTIARY.ADD_CREATURE'),
             cls: 'mod-cta'
         });
@@ -53,40 +75,39 @@ export class BestiaryPanel extends ItemView {
             this.openCreatureCreationModal();
         });
 
-        const currentSearchValue = this.searchInput?.value || '';
-        const selectionStart = this.searchInput?.selectionStart || 0;
-        const selectionEnd = this.searchInput?.selectionEnd || 0;
+        // Edit button (initially disabled)
+        this.editButton = buttonsContainer.createEl('button', { 
+            text: i18n.t('BESTIARY.EDIT'),
+            cls: 'mod-secondary'
+        });
+        this.editButton.disabled = true;
+        this.editButton.addEventListener('click', () => {
+            this.handleEditClick();
+        });
 
-        this.renderSearchBox(container);
+        // Delete button (initially disabled)
+        this.deleteButton = buttonsContainer.createEl('button', { 
+            text: i18n.t('BESTIARY.DELETE'),
+            cls: 'mod-warning'
+        });
+        this.deleteButton.disabled = true;
+        this.deleteButton.addEventListener('click', () => {
+            this.handleDeleteClick();
+        });
 
-        if (this.searchInput) {
-            this.searchInput.value = currentSearchValue;
-            this.searchInput.setSelectionRange(selectionStart, selectionEnd);
-            
-            setTimeout(() => {
-                this.searchInput?.focus();
-            }, 0);
-        }
+        this.updateButtonsState();
 
         const creaturesList = container.createDiv({ cls: 'bestiary-list' });
-        const filteredCreatures = this.filterCreaturesByName(this.creatures, this.searchQuery);
 
-        if (filteredCreatures.length === 0) {
-            if (this.searchQuery) {
-                creaturesList.createEl('p', { 
-                    text: i18n.t('BESTIARY.SEARCH_NO_RESULTS', { query: this.searchQuery }),
-                    cls: 'bestiary-empty'
-                });
-            } else {
-                creaturesList.createEl('p', { 
-                    text: i18n.t('BESTIARY.NO_CREATURES'),
-                    cls: 'bestiary-empty'
-                });
-            }
+        if (this.creatures.length === 0) {
+            creaturesList.createEl('p', { 
+                text: i18n.t('BESTIARY.NO_CREATURES'),
+                cls: 'bestiary-empty'
+            });
             return;
         }
 
-        const sortedCreatures = [...filteredCreatures].sort((a, b) => 
+        const sortedCreatures = [...this.creatures].sort((a, b) => 
             a.name.localeCompare(b.name)
         );
 
@@ -95,54 +116,34 @@ export class BestiaryPanel extends ItemView {
         this.renderGroupedCreaturesList(creaturesList, groupedCreatures);
     }
 
-    private renderSearchBox(container: HTMLElement) {
-        const searchContainer = container.createDiv({ cls: 'bestiary-search-container' });
+    private filterCreatures() {
+        if (!this.searchInput) return;
         
-        this.searchInput = searchContainer.createEl('input', {
-            type: 'text',
-            placeholder: i18n.t('BESTIARY.SEARCH_PLACEHOLDER'),
-            cls: 'bestiary-search-input'
-        });
-
-        this.searchInput.value = this.searchQuery;
-
-        let searchTimeout: NodeJS.Timeout;
-        this.searchInput.addEventListener('input', (e) => {
-            const value = (e.target as HTMLInputElement).value.toLowerCase().trim();
-            
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                this.searchQuery = value;
-                this.render();
-            }, 300);
-        });
-
-        this.searchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                this.searchQuery = '';
-                if (this.searchInput) {
-                    this.searchInput.value = '';
-                }
-                this.render();
-                e.preventDefault();
-            }
-        });
-
-        this.searchInput.addEventListener('blur', () => {
-            if (this.searchInput) {
-                this.searchQuery = this.searchInput.value.toLowerCase().trim();
-            }
-        });
-    }
-
-    private filterCreaturesByName(creatures: Creature[], searchQuery: string): Creature[] {
-        if (!searchQuery) {
-            return creatures;
-        }
-
-        return creatures.filter(creature => 
-            creature.name.toLowerCase().includes(searchQuery.toLowerCase())
+        const searchTerm = this.searchInput.value.toLowerCase();
+        const filteredCreatures = this.creatures.filter(creature => 
+            creature.name.toLowerCase().includes(searchTerm)
         );
+
+        const container = this.containerEl.children[1];
+        const creaturesList = container.querySelector('.bestiary-list');
+        if (creaturesList) {
+            creaturesList.empty();
+            
+            if (filteredCreatures.length === 0) {
+                creaturesList.createEl('p', { 
+                    text: i18n.t('BESTIARY.NO_CREATURES_FOUND'),
+                    cls: 'bestiary-empty'
+                });
+                return;
+            }
+
+            const sortedFilteredCreatures = [...filteredCreatures].sort((a, b) => 
+                a.name.localeCompare(b.name)
+            );
+
+            const groupedCreatures = this.groupCreaturesByFirstLetter(sortedFilteredCreatures);
+            this.renderGroupedCreaturesList(creaturesList as HTMLElement, groupedCreatures);
+        }
     }
 
     private groupCreaturesByFirstLetter(creatures: Creature[]): Map<string, Creature[]> {
@@ -181,7 +182,25 @@ export class BestiaryPanel extends ItemView {
     private renderCreatureListItem(container: HTMLElement, creature: Creature) {
         const creatureEl = container.createDiv({ cls: 'creature-list-item' });
         
-        const nameRow = creatureEl.createDiv({ cls: 'creature-name-row' });
+        // Checkbox for selection
+        const checkboxContainer = creatureEl.createDiv({ cls: 'creature-checkbox-container' });
+        const checkbox = checkboxContainer.createEl('input', {
+            type: 'checkbox',
+            cls: 'creature-checkbox'
+        }) as HTMLInputElement;
+        
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+                this.selectedCreatures.add(creature.id);
+            } else {
+                this.selectedCreatures.delete(creature.id);
+            }
+            this.updateButtonsState();
+        });
+
+        const creatureContent = creatureEl.createDiv({ cls: 'creature-content' });
+        
+        const nameRow = creatureContent.createDiv({ cls: 'creature-name-row' });
         const nameLink = nameRow.createEl('a', { 
             text: creature.name,
             cls: 'creature-name-link'
@@ -191,7 +210,7 @@ export class BestiaryPanel extends ItemView {
             new Notice(i18n.t('BESTIARY.VIEW_IN_PROGRESS'));
         });
 
-        const detailsRow = creatureEl.createDiv({ cls: 'creature-details-row' });
+        const detailsRow = creatureContent.createDiv({ cls: 'creature-details-row' });
         const detailsText = i18n.t('BESTIARY.CREATURE_DETAILS', {
             type: creature.type,
             size: creature.size,
@@ -201,28 +220,84 @@ export class BestiaryPanel extends ItemView {
             text: detailsText,
             cls: 'creature-details'
         });
-        
-        const actions = creatureEl.createDiv({ cls: 'creature-actions' });
-        const editBtn = actions.createEl('button', { 
-            text: i18n.t('BESTIARY.EDIT'),
-            cls: 'mod-secondary'
-        });
-        editBtn.addEventListener('click', () => {
-            new Notice(i18n.t('BESTIARY.EDIT_IN_PROGRESS'));
-        });
+    }
 
-        const deleteBtn = actions.createEl('button', { 
-            text: i18n.t('BESTIARY.DELETE'),
-            cls: 'mod-warning'
-        });
-        deleteBtn.addEventListener('click', async () => {
-            const success = await this.bestiaryService.deleteCreature(creature.id);
-            if (success) {
-                new Notice(i18n.t('BESTIARY.DELETE_SUCCESS', { name: creature.name }));
-                await this.loadCreatures();
-                this.render();
+    private updateButtonsState() {
+        if (this.editButton && this.deleteButton) {
+            const hasSelection = this.selectedCreatures.size > 0;
+            this.editButton.disabled = !hasSelection;
+            this.deleteButton.disabled = !hasSelection;
+        }
+    }
+
+    private handleEditClick() {
+        if (this.selectedCreatures.size === 0) {
+            return;
+        }
+
+        if (this.selectedCreatures.size > 1) {
+            new Notice(i18n.t('BESTIARY.EDIT_SINGLE_ONLY'));
+            return;
+        }
+
+        const creatureId = Array.from(this.selectedCreatures)[0];
+        const creature = this.creatures.find(c => c.id === creatureId);
+        
+        if (creature) {
+            new Notice(i18n.t('BESTIARY.EDIT_IN_PROGRESS', { name: creature.name }));
+            // TODO: Implement edit functionality
+            // this.openCreatureEditModal(creature);
+        }
+    }
+
+    private async handleDeleteClick() {
+        if (this.selectedCreatures.size === 0) {
+            return;
+        }
+
+        const selectedNames: string[] = [];
+        const creaturesToDelete: Creature[] = [];
+
+        this.selectedCreatures.forEach(id => {
+            const creature = this.creatures.find(c => c.id === id);
+            if (creature) {
+                selectedNames.push(creature.name);
+                creaturesToDelete.push(creature);
             }
         });
+
+        if (selectedNames.length === 0) {
+            return;
+        }
+
+        // Confirm deletion
+        const confirmMessage = this.selectedCreatures.size === 1 
+            ? i18n.t('BESTIARY.DELETE_CONFIRM_SINGLE', { name: selectedNames[0] })
+            : i18n.t('BESTIARY.DELETE_CONFIRM_MULTIPLE', { count: selectedNames.length.toString() });
+
+        if (!confirm(confirmMessage)) {
+            return;
+        }
+
+        // Delete selected creatures
+        let successCount = 0;
+        for (const creature of creaturesToDelete) {
+            const success = await this.bestiaryService.deleteCreature(creature.id);
+            if (success) {
+                successCount++;
+            }
+        }
+
+        if (successCount > 0) {
+            const successMessage = successCount === 1 
+                ? i18n.t('BESTIARY.DELETE_SUCCESS', { name: selectedNames[0] })
+                : i18n.t('BESTIARY.DELETE_SUCCESS_MULTIPLE', { count: successCount.toString() });
+            
+            new Notice(successMessage);
+            this.selectedCreatures.clear();
+            await this.loadCreatures();
+            this.render();
+        }
     }
 
     openCreatureCreationModal() {

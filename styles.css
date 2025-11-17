@@ -1,335 +1,53 @@
-/* Стили для плагина Encounter Manager */
-
-.encounter-block {
-  border: 1px solid var(--background-modifier-border);
-  border-radius: 8px;
-  padding: 15px;
-  margin: 15px 0;
-  background-color: var(--background-secondary);
-}
-
-.encounter-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.encounter-type {
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.8em;
-  font-weight: bold;
-  text-transform: capitalize;
-}
-
-.encounter-type-combat {
-  background-color: var(--color-red);
-  color: white;
-}
-
-.encounter-type-hazard {
-  background-color: var(--color-orange);
-  color: white;
-}
-
-.encounter-type-chase {
-  background-color: var(--color-blue);
-  color: white;
-}
-
-.encounter-type-random {
-  background-color: var(--color-purple);
-  color: white;
-}
-
-.encounter-description {
-  margin: 10px 0;
-  color: var(--text-muted);
-  font-style: italic;
-}
-
-.encounter-participants {
-  margin-top: 15px;
-}
-
-.participant-list {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.participant-item {
-  padding: 5px 8px;
-  background-color: var(--background-primary-alt);
-  border-radius: 4px;
-  font-size: 0.9em;
-}
-
-.combat-tracker {
-  padding: 15px;
-  border: 1px solid var(--background-modifier-border);
-  border-radius: 8px;
-  margin: 15px 0;
-}
-
-.participants {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.combatant-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px;
-  border-bottom: 1px solid var(--background-modifier-border);
-  gap: 15px;
-}
-
-.combatant-info {
-  flex: 1;
-}
-
-.combatant-name {
-  font-weight: bold;
-}
-
-.combatant-stats {
-  font-size: 0.8em;
-  color: var(--text-muted);
-}
-
-.combatant-hp {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 120px;
-}
-
-.hp-bar {
-  width: 60px;
-  height: 8px;
-  background-color: var(--background-modifier-border);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.hp-fill {
-  height: 100%;
-  background-color: var(--color-green);
-  transition: width 0.3s ease;
-}
-
-.hp-text {
-  font-size: 0.8em;
-  min-width: 50px;
-  text-align: right;
-}
-
-.status-effects {
-  display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
-}
-
-.status-effect {
-  padding: 2px 6px;
-  border-radius: 12px;
-  font-size: 0.7em;
-  background-color: var(--color-yellow);
-  color: var(--text-normal);
-}
-
-.encounter-item {
-  border: 1px solid var(--background-modifier-border);
-  border-radius: 6px;
-  padding: 10px;
-  margin: 10px 0;
-  background-color: var(--background-primary-alt);
-}
-
-.participants-list {
-  margin: 10px 0;
-  border: 1px solid var(--background-modifier-border);
-  border-radius: 6px;
-  padding: 10px;
-  background-color: var(--background-primary-alt);
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.participants-list .participant-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 5px 0;
-  padding: 8px;
-  background-color: var(--background-secondary);
-  border-radius: 4px;
-}
-
-/* Кнопки */
-button.mod-warning {
-  background-color: var(--color-red);
-  color: white;
-  font-size: 0.8em;
-  padding: 4px 8px;
-}
-
-button.mod-warning:hover {
-  background-color: var(--color-red);
-  opacity: 0.8;
-}
-
-/* Стили для кнопок выбора типа энкаунтера */
-.encounter-type-button {
-  width: 100%;
-  padding: 15px;
-  margin: 10px 0;
-  text-align: left;
-  border: 1px solid var(--background-modifier-border);
-  border-radius: 8px;
-  background-color: var(--background-primary-alt);
-  cursor: pointer;
-  font-size: 1.1em;
-}
-
-.encounter-type-button:hover {
-  background-color: var(--background-secondary);
-  border-color: var(--color-accent);
-}
-
-.encounter-type-description {
-  margin: 0 0 20px 0;
-  color: var(--text-muted);
-  font-size: 0.9em;
-  padding-left: 10px;
-}
-
-/* Стили для информации энкаунтера */
-.encounter-info {
-  margin: 10px 0;
-  padding: 10px;
-  background-color: var(--background-primary-alt);
-  border-radius: 6px;
-  font-size: 0.9em;
-}
-
-.encounter-info p {
-  margin: 5px 0;
-}
-
-/* Стили для бестиария */
+/* Bestiary Panel Styles */
 .bestiary-header {
+    margin-bottom: 20px;
+}
+
+.bestiary-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid var(--background-modifier-border);
-}
-
-.bestiary-list {
-    display: flex;
-    flex-direction: column;
     gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
-.bestiary-empty {
-    text-align: center;
-    color: var(--text-muted);
-    font-style: italic;
-    padding: 40px 20px;
+.search-container {
+    flex: 1;
+    min-width: 200px;
 }
 
-.creature-item {
+.search-input {
+    width: 100%;
+    padding: 8px 12px;
     border: 1px solid var(--background-modifier-border);
-    border-radius: 8px;
-    padding: 15px;
-    background-color: var(--background-primary-alt);
+    border-radius: 4px;
+    background: var(--background-primary);
+    color: var(--text-normal);
 }
 
-.creature-header {
+.search-input:focus {
+    border-color: var(--interactive-accent);
+    outline: none;
+}
+
+.action-buttons-container {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 10px;
-}
-
-.creature-header h3 {
-    margin: 0;
-    color: var(--text-accent);
-}
-
-.creature-meta {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 8px;
-    font-size: 0.9em;
-    color: var(--text-muted);
-}
-
-.creature-stats {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 12px;
-    font-size: 0.9em;
-    font-weight: bold;
-}
-
-.creature-actions {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-}
-
-.creature-actions button {
-    font-size: 0.8em;
-    padding: 4px 8px;
-}
-
-/* Адаптивность для мобильных устройств */
-@media (max-width: 768px) {
-    .bestiary-header {
-        flex-direction: column;
-        gap: 10px;
-        align-items: stretch;
-    }
-    
-    .creature-header {
-        flex-direction: column;
-        gap: 5px;
-    }
-    
-    .creature-meta, .creature-stats {
-        flex-direction: column;
-        gap: 5px;
-    }
-    
-    .creature-actions {
-        justify-content: stretch;
-    }
-    
-    .creature-actions button {
-        flex: 1;
-    }
-
-    /* Bestiary Panel Styles */
-  .bestiary-header {
-    display: flex;
-    justify-content: space-between;
+    gap: 10px;
     align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.action-buttons-container button {
+    white-space: nowrap;
+}
+
+.action-buttons-container button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .bestiary-list {
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .bestiary-letter-section {
@@ -337,70 +55,74 @@ button.mod-warning:hover {
 }
 
 .bestiary-letter-header {
-    font-size: 1.2em;
-    font-weight: bold;
     color: var(--text-accent);
-    margin-bottom: 10px;
+    border-bottom: 2px solid var(--background-modifier-border);
     padding-bottom: 5px;
-    border-bottom: 2px solid var(--text-accent);
+    margin-bottom: 10px;
+    font-size: 1.2em;
 }
 
 .bestiary-creatures-container {
-    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .creature-list-item {
-    border: 1px solid var(--background-modifier-border);
-    border-radius: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
     padding: 12px;
-    margin-bottom: 10px;
-    background-color: var(--background-secondary);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 6px;
+    background: var(--background-primary);
     transition: background-color 0.2s ease;
 }
 
 .creature-list-item:hover {
-    background-color: var(--background-modifier-hover);
+    background: var(--background-secondary);
+}
+
+.creature-checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    padding-top: 2px;
+}
+
+.creature-checkbox {
+    margin: 0;
+    cursor: pointer;
+}
+
+.creature-content {
+    flex: 1;
+    min-width: 0;
 }
 
 .creature-name-row {
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
 .creature-name-link {
-    font-size: 1.1em;
     font-weight: bold;
     color: var(--text-accent);
     text-decoration: none;
     cursor: pointer;
-    border: none;
-    background: none;
-    padding: 0;
 }
 
 .creature-name-link:hover {
-    color: var(--text-accent-hover);
     text-decoration: underline;
 }
 
 .creature-details-row {
-    margin-bottom: 10px;
-}
-
-.creature-details {
     font-size: 0.9em;
     color: var(--text-muted);
-    font-style: italic;
 }
 
 .creature-actions {
     display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.creature-actions button {
-    font-size: 0.8em;
-    padding: 4px 8px;
+    gap: 5px;
+    align-items: center;
 }
 
 .bestiary-empty {
@@ -408,73 +130,31 @@ button.mod-warning:hover {
     color: var(--text-muted);
     font-style: italic;
     padding: 40px 20px;
-}
-
-/* Search box styles */
-.bestiary-search-container {
-    margin-bottom: 20px;
-    position: relative;
-}
-
-.bestiary-search-input {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid var(--background-modifier-border);
-    border-radius: 4px;
-    background-color: var(--background-primary);
-    color: var(--text-normal);
-    font-size: 14px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.bestiary-search-input:focus {
-    outline: none;
-    border-color: var(--interactive-accent);
-    box-shadow: 0 0 0 2px var(--interactive-accent-hover);
-}
-
-.bestiary-search-input::placeholder {
-    color: var(--text-muted);
-}
-
-/* Search results counter */
-.bestiary-search-info {
-    font-size: 0.9em;
-    color: var(--text-muted);
-    margin-top: 5px;
-    text-align: right;
-}
-
-/* Highlight matching text in search results */
-.creature-name-link .search-highlight {
-    background-color: var(--text-highlight-bg);
-    color: var(--text-normal);
-    padding: 1px 2px;
-    border-radius: 2px;
+    border: 2px dashed var(--background-modifier-border);
+    border-radius: 8px;
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
-    .bestiary-header {
+    .bestiary-controls {
         flex-direction: column;
-        gap: 10px;
         align-items: stretch;
     }
     
-    .creature-actions {
+    .action-buttons-container {
+        justify-content: stretch;
+    }
+    
+    .action-buttons-container button {
+        flex: 1;
+    }
+    
+    .creature-list-item {
         flex-direction: column;
+        gap: 8px;
     }
     
-    .creature-actions button {
-        width: 100%;
+    .creature-checkbox-container {
+        align-self: flex-start;
     }
-    
-    .bestiary-creatures-container {
-        margin-left: 5px;
-    }
-    
-    .bestiary-search-input {
-        font-size: 16px; /* Better for mobile */
-    }
-}
 }
