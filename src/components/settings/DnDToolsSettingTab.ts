@@ -1,5 +1,6 @@
 import { App, PluginSettingTab, Setting } from 'obsidian';
 import { i18n } from 'src/services/LocalizationService';
+import { BestiaryPanel, BESTIARY_VIEW_TYPE } from 'src/components/panels/BestiaryPanel';
 
 export class DnDToolsSettingTab extends PluginSettingTab {
     plugin: any;
@@ -26,7 +27,8 @@ export class DnDToolsSettingTab extends PluginSettingTab {
                     this.plugin.settings.language = value;
                     await this.plugin.saveSettings();
                     i18n.setLocale(value);
-                    this.display();
+
+                    this.refreshAllBestiaryViews();
                 }));
 
         new Setting(containerEl)
@@ -63,5 +65,14 @@ export class DnDToolsSettingTab extends PluginSettingTab {
                     this.plugin.settings.encountersFolder = value;
                     await this.plugin.saveSettings();
                 }));
+    }
+
+    private refreshAllBestiaryViews() {
+        this.app.workspace.getLeavesOfType(BESTIARY_VIEW_TYPE).forEach(leaf => {
+            const view = leaf.view as BestiaryPanel;
+            if (view && typeof (view as any).refreshLocalization === 'function') {
+                (view as any).refreshLocalization();
+            }
+        });
     }
 }

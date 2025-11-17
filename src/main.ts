@@ -71,6 +71,19 @@ export default class DnDToolsPlugin extends Plugin {
 
     private setupLocalization() {
         i18n.setLocale(this.settings.language);
+
+        i18n.onLocaleChange(() => {
+            this.refreshAllBestiaryViews();
+        });
+    }
+
+    private refreshAllBestiaryViews() {
+        this.app.workspace.getLeavesOfType(BESTIARY_VIEW_TYPE).forEach(leaf => {
+            const view = leaf.view as BestiaryPanel;
+            if (view && typeof (view as any).refreshLocalization === 'function') {
+                (view as any).refreshLocalization();
+            }
+        });
     }
 
     private getLocalizedCommandName(enName: string, ruName: string): string {
@@ -112,5 +125,9 @@ export default class DnDToolsPlugin extends Plugin {
 
     getEncountersFolderPath(): string {
         return `${this.manifest.dir}/encounters`;
+    }
+
+    onunload() {
+        i18n.offLocaleChange(this.refreshAllBestiaryViews);
     }
 }

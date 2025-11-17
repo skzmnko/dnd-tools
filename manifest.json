@@ -1,9 +1,9 @@
 {
   "id": "dnd-tools",
   "name": "D&D Tools",
-  "version": "0.50.0",
+  "version": "0.54.0",
   "minAppVersion": "0.15.0",
-  "description": "Comprehensive toolkit for D&D campaign management - bestiary, encounters, spells and more",
+  "description": "Comprehensive toolkit for D&D campaign management",
   "author": "skzmnko",
   "authorUrl": "https://github.com/skzmnko",
   "fundingUrl": "https://buymeacoffee.com/yourusername",

@@ -12,6 +12,8 @@ export class BestiaryPanel extends ItemView {
     searchInput: HTMLInputElement | null = null;
     editButton: HTMLButtonElement | null = null;
     deleteButton: HTMLButtonElement | null = null;
+    addButton: HTMLButtonElement | null = null;
+    titleElement: HTMLElement | null = null;
 
     constructor(leaf: WorkspaceLeaf, bestiaryService: any) {
         super(leaf);
@@ -31,11 +33,16 @@ export class BestiaryPanel extends ItemView {
     }
 
     async onOpen() {
+        // Подписываемся на изменение локали
+        i18n.onLocaleChange(this.refreshLocalization);
+        
         await this.loadCreatures();
         this.render();
     }
 
     async onClose() {
+        // Отписываемся от изменения локали при закрытии
+        i18n.offLocaleChange(this.refreshLocalization);
     }
 
     async loadCreatures() {
@@ -43,14 +50,21 @@ export class BestiaryPanel extends ItemView {
     }
 
     render() {
-        const container = this.containerEl.children[1];
+        const container = this.containerEl.children[1] as HTMLElement;
         container.empty();
         
         const header = container.createDiv({ cls: 'bestiary-header' });
-        header.createEl('h2', { text: i18n.t('BESTIARY.TITLE') });
+        this.titleElement = header.createEl('h2', { 
+            text: i18n.t('BESTIARY.TITLE'),
+            cls: 'bestiary-title'
+        });
 
-        // Controls section with search and buttons
-        const controlsSection = header.createDiv({ cls: 'bestiary-controls' });
+        this.renderControls(header);
+        this.renderCreaturesList(container);
+    }
+
+    private renderControls(container: HTMLElement) {
+        const controlsSection = container.createDiv({ cls: 'bestiary-controls' });
         
         // Search input
         const searchContainer = controlsSection.createDiv({ cls: 'search-container' });
@@ -67,11 +81,11 @@ export class BestiaryPanel extends ItemView {
         const buttonsContainer = controlsSection.createDiv({ cls: 'action-buttons-container' });
         
         // Add creature button
-        const addButton = buttonsContainer.createEl('button', { 
+        this.addButton = buttonsContainer.createEl('button', { 
             text: i18n.t('BESTIARY.ADD_CREATURE'),
             cls: 'mod-cta'
         });
-        addButton.addEventListener('click', () => {
+        this.addButton.addEventListener('click', () => {
             this.openCreatureCreationModal();
         });
 
@@ -96,7 +110,9 @@ export class BestiaryPanel extends ItemView {
         });
 
         this.updateButtonsState();
+    }
 
+    private renderCreaturesList(container: HTMLElement) {
         const creaturesList = container.createDiv({ cls: 'bestiary-list' });
 
         if (this.creatures.length === 0) {
@@ -116,6 +132,44 @@ export class BestiaryPanel extends ItemView {
         this.renderGroupedCreaturesList(creaturesList, groupedCreatures);
     }
 
+    refreshLocalization = () => {
+        // Обновляем заголовок
+        if (this.titleElement) {
+            this.titleElement.setText(i18n.t('BESTIARY.TITLE'));
+        }
+
+        // Обновляем placeholder поиска
+        if (this.searchInput) {
+            this.searchInput.setAttribute('placeholder', i18n.t('BESTIARY.SEARCH_PLACEHOLDER'));
+        }
+
+        // Обновляем текст кнопок
+        if (this.addButton) {
+            this.addButton.setText(i18n.t('BESTIARY.ADD_CREATURE'));
+        }
+        if (this.editButton) {
+            this.editButton.setText(i18n.t('BESTIARY.EDIT'));
+        }
+        if (this.deleteButton) {
+            this.deleteButton.setText(i18n.t('BESTIARY.DELETE'));
+        }
+
+        // Обновляем список существ (для сообщения "нет существ")
+        const creaturesList = this.containerEl.querySelector('.bestiary-list');
+        if (creaturesList && this.creatures.length === 0) {
+            creaturesList.empty();
+            const emptyMessage = creaturesList.createEl('p', { 
+                text: i18n.t('BESTIARY.NO_CREATURES'),
+                cls: 'bestiary-empty'
+            });
+        }
+
+        // Обновляем отфильтрованный список если есть поиск
+        if (this.searchInput && this.searchInput.value) {
+            this.filterCreatures();
+        }
+    };
+
     private filterCreatures() {
         if (!this.searchInput) return;
         
@@ -124,7 +178,7 @@ export class BestiaryPanel extends ItemView {
             creature.name.toLowerCase().includes(searchTerm)
         );
 
-        const container = this.containerEl.children[1];
+        const container = this.containerEl.children[1] as HTMLElement;
         const creaturesList = container.querySelector('.bestiary-list');
         if (creaturesList) {
             creaturesList.empty();
