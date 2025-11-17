@@ -33,7 +33,6 @@ export class BestiaryPanel extends ItemView {
     }
 
     async onOpen() {
-        // Подписываемся на изменение локали
         i18n.onLocaleChange(this.refreshLocalization);
         
         await this.loadCreatures();
@@ -41,7 +40,6 @@ export class BestiaryPanel extends ItemView {
     }
 
     async onClose() {
-        // Отписываемся от изменения локали при закрытии
         i18n.offLocaleChange(this.refreshLocalization);
     }
 
@@ -66,7 +64,6 @@ export class BestiaryPanel extends ItemView {
     private renderControls(container: HTMLElement) {
         const controlsSection = container.createDiv({ cls: 'bestiary-controls' });
         
-        // Search input
         const searchContainer = controlsSection.createDiv({ cls: 'search-container' });
         this.searchInput = searchContainer.createEl('input', {
             type: 'text',
@@ -77,10 +74,8 @@ export class BestiaryPanel extends ItemView {
             this.filterCreatures();
         });
 
-        // Action buttons container
         const buttonsContainer = controlsSection.createDiv({ cls: 'action-buttons-container' });
         
-        // Add creature button
         this.addButton = buttonsContainer.createEl('button', { 
             text: i18n.t('BESTIARY.ADD_CREATURE'),
             cls: 'mod-cta'
@@ -89,7 +84,6 @@ export class BestiaryPanel extends ItemView {
             this.openCreatureCreationModal();
         });
 
-        // Edit button (initially disabled)
         this.editButton = buttonsContainer.createEl('button', { 
             text: i18n.t('BESTIARY.EDIT'),
             cls: 'mod-secondary'
@@ -99,7 +93,6 @@ export class BestiaryPanel extends ItemView {
             this.handleEditClick();
         });
 
-        // Delete button (initially disabled)
         this.deleteButton = buttonsContainer.createEl('button', { 
             text: i18n.t('BESTIARY.DELETE'),
             cls: 'mod-warning'
@@ -133,17 +126,14 @@ export class BestiaryPanel extends ItemView {
     }
 
     refreshLocalization = () => {
-        // Обновляем заголовок
         if (this.titleElement) {
             this.titleElement.setText(i18n.t('BESTIARY.TITLE'));
         }
 
-        // Обновляем placeholder поиска
         if (this.searchInput) {
             this.searchInput.setAttribute('placeholder', i18n.t('BESTIARY.SEARCH_PLACEHOLDER'));
         }
 
-        // Обновляем текст кнопок
         if (this.addButton) {
             this.addButton.setText(i18n.t('BESTIARY.ADD_CREATURE'));
         }
@@ -154,7 +144,6 @@ export class BestiaryPanel extends ItemView {
             this.deleteButton.setText(i18n.t('BESTIARY.DELETE'));
         }
 
-        // Обновляем список существ (для сообщения "нет существ")
         const creaturesList = this.containerEl.querySelector('.bestiary-list');
         if (creaturesList && this.creatures.length === 0) {
             creaturesList.empty();
@@ -164,7 +153,6 @@ export class BestiaryPanel extends ItemView {
             });
         }
 
-        // Обновляем отфильтрованный список если есть поиск
         if (this.searchInput && this.searchInput.value) {
             this.filterCreatures();
         }
@@ -236,7 +224,6 @@ export class BestiaryPanel extends ItemView {
     private renderCreatureListItem(container: HTMLElement, creature: Creature) {
         const creatureEl = container.createDiv({ cls: 'creature-list-item' });
         
-        // Checkbox for selection
         const checkboxContainer = creatureEl.createDiv({ cls: 'creature-checkbox-container' });
         const checkbox = checkboxContainer.createEl('input', {
             type: 'checkbox',
@@ -324,7 +311,6 @@ export class BestiaryPanel extends ItemView {
             return;
         }
 
-        // Confirm deletion
         const confirmMessage = this.selectedCreatures.size === 1 
             ? i18n.t('BESTIARY.DELETE_CONFIRM_SINGLE', { name: selectedNames[0] })
             : i18n.t('BESTIARY.DELETE_CONFIRM_MULTIPLE', { count: selectedNames.length.toString() });
@@ -333,7 +319,6 @@ export class BestiaryPanel extends ItemView {
             return;
         }
 
-        // Delete selected creatures
         let successCount = 0;
         for (const creature of creaturesToDelete) {
             const success = await this.bestiaryService.deleteCreature(creature.id);

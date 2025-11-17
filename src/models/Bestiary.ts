@@ -10,12 +10,9 @@ export interface Creature {
     id: string;
     name: string;
     type: string;
-    typeKey: string;
     subtype: string;
     size: string;
-    sizeKey: string;
     alignment: string;
-    alignmentKey: string;
     ac: number;
     hit_dice: string;
     speed: string;

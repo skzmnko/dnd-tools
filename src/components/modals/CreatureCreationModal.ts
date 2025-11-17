@@ -108,12 +108,9 @@ export class CreatureCreationModal extends Modal {
         const creatureData = {
             name: this.basicFields.getName(),
             type: i18n.getCreatureType(this.basicFields.getType() as CreatureTypeKey),
-            typeKey: this.basicFields.getType(),
             subtype: this.basicFields.getSubtype(),
             size: i18n.getSize(this.basicFields.getSize() as SizeKey),
-            sizeKey: this.basicFields.getSize(),
             alignment: i18n.getAlignment(this.basicFields.getAlignment() as AlignmentKey),
-            alignmentKey: this.basicFields.getAlignment(),
             habitat: this.basicFields.getHabitat(),
             languages: this.basicFields.getLanguages(),
             ac: this.coreParameters.getAC(),
