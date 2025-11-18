@@ -2,6 +2,7 @@ import { ItemView, WorkspaceLeaf, Notice } from 'obsidian';
 import { Spell } from 'src/models/Spells';
 import { i18n } from 'src/services/LocalizationService';
 import { SpellCreationModal } from 'src/components/modals/SpellCreationModal';
+import { SPELL_SCHOOLS } from 'src/constants/Constants';
 
 export const SPELLS_VIEW_TYPE = 'spells-view';
 
@@ -48,6 +49,7 @@ export class SpellsPanel extends ItemView {
         try {
             this.spells = this.spellService.getAllSpells();
             console.log(`Loaded ${this.spells.length} spells`);
+            console.log('Sample spell:', this.spells[0]); // Для отладки
         } catch (error) {
             console.error('Error loading spells:', error);
             this.spells = [];
@@ -136,7 +138,7 @@ export class SpellsPanel extends ItemView {
             a.name.localeCompare(b.name)
         );
 
-        const groupedSpells = this.groupSpellsByFirstLetter(sortedSpells);
+        const groupedSpells = this.groupSpellsBySchool(sortedSpells);
         this.renderGroupedSpellsList(spellsList, groupedSpells);
     }
 
@@ -196,36 +198,51 @@ export class SpellsPanel extends ItemView {
         );
     }
 
-    private groupSpellsByFirstLetter(spells: Spell[]): Map<string, Spell[]> {
+    private groupSpellsBySchool(spells: Spell[]): Map<string, Spell[]> {
         const groups = new Map<string, Spell[]>();
         
-        spells.forEach(spell => {
-            const firstLetter = spell.name.charAt(0).toUpperCase();
-            if (!groups.has(firstLetter)) {
-                groups.set(firstLetter, []);
-            }
-            groups.get(firstLetter)!.push(spell);
+        SPELL_SCHOOLS.forEach(schoolKey => {
+            const localizedSchool = i18n.getSpellSchool(schoolKey);
+            const schoolSpells = spells.filter(spell => spell.school === localizedSchool);
+            groups.set(schoolKey, schoolSpells);
         });
         
         return groups;
     }
 
     private renderGroupedSpellsList(container: HTMLElement, groupedSpells: Map<string, Spell[]>) {
-        const sortedLetters = Array.from(groupedSpells.keys()).sort();
+        const sortedSchools = Array.from(groupedSpells.keys()).sort((a, b) => {
+            const indexA = SPELL_SCHOOLS.indexOf(a as any);
+            const indexB = SPELL_SCHOOLS.indexOf(b as any);
+            return indexA - indexB;
+        });
 
-        sortedLetters.forEach(letter => {
-            const spells = groupedSpells.get(letter)!;
-            const letterSection = container.createDiv({ cls: 'spells-letter-section' });
-            letterSection.createEl('h3', { 
-                text: letter,
-                cls: 'spells-letter-header'
-            });
+        const sectionsHeader = container.createEl('h3', {
+            text: i18n.t('SPELLS.SCHOOL_SECTIONS'),
+            cls: 'spells-sections-header'
+        });
 
-            const spellsContainer = letterSection.createDiv({ cls: 'spells-container' });
+        sortedSchools.forEach(schoolKey => {
+            const spells = groupedSpells.get(schoolKey)!;
+            const schoolSection = container.createDiv({ cls: 'spells-school-section' });
             
-            spells.forEach(spell => {
-                this.renderSpellListItem(spellsContainer, spell);
+            const schoolHeader = schoolSection.createEl('h4', { 
+                text: i18n.getSpellSchool(schoolKey as any),
+                cls: 'spells-school-header'
             });
+
+            const spellsContainer = schoolSection.createDiv({ cls: 'spells-container' });
+            
+            if (spells.length === 0) {
+                const noSpellsMessage = spellsContainer.createEl('p', {
+                    text: '—',
+                    cls: 'spells-school-empty'
+                });
+            } else {
+                spells.forEach(spell => {
+                    this.renderSpellListItem(spellsContainer, spell);
+                });
+            }
         });
     }
 
@@ -259,10 +276,44 @@ export class SpellsPanel extends ItemView {
             `${i18n.t('SPELL_FIELDS.SPELLEVEL')} ${spell.level}`;
         
         const basicInfo = detailsRow.createEl('span', { 
-            text: `${levelText}, ${spell.school}`,
+            text: `${levelText}`,
             cls: 'spell-basic-info'
         });
 
+        if (spell.classes && spell.classes.length > 0) {
+            const classesInfo = detailsRow.createEl('span', {
+                text: ` | ${spell.classes.map(className => i18n.getSpellClass(className as any)).join(', ')}`,
+                cls: 'spell-classes-info'
+            });
+        }
+
+        const castingInfo = detailsRow.createEl('span', {
+            text: ` | ${spell.castingTime}`,
+            cls: 'spell-casting-info'
+        });
+
+        const components = [];
+        if (spell.components.verbal) components.push('V');
+        if (spell.components.somatic) components.push('S');
+        if (spell.components.material) components.push('M');
+        
+        if (components.length > 0) {
+            const componentsInfo = detailsRow.createEl('span', {
+                text: ` | ${components.join(', ')}`,
+                cls: 'spell-components-info'
+            });
+        }
+
+        const flags = [];
+        if (spell.concentration) flags.push(i18n.t('SPELL_FIELDS.CONCENTRATION'));
+        if (spell.ritual) flags.push(i18n.t('SPELL_FIELDS.RITUAL'));
+        
+        if (flags.length > 0) {
+            const flagsInfo = detailsRow.createEl('span', {
+                text: ` | ${flags.join(', ')}`,
+                cls: 'spell-flags-info'
+            });
+        }
     }
 
     private toggleSpellSelection(spellId: string, selected: boolean) {
@@ -295,13 +346,11 @@ export class SpellsPanel extends ItemView {
             return;
         }
 
-        if (selectedCount === 1) {
-            const spellId = Array.from(this.selectedSpellIds)[0];
-            const spell = this.spells.find(s => s.id === spellId);
-            if (spell) {
-                new Notice(i18n.t('SPELLS.EDIT_IN_PROGRESS', { name: spell.name }));
-                // TODO: Implement single spell editing
-            }
+        const spellId = Array.from(this.selectedSpellIds)[0];
+        const spell = this.spells.find(s => s.id === spellId);
+        if (spell) {
+            new Notice(i18n.t('SPELLS.EDIT_IN_PROGRESS', { name: spell.name }));
+            // TODO: Implement single spell editing
         }
     }
 
