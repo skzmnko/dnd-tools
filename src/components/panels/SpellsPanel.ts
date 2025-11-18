@@ -290,6 +290,11 @@ export class SpellsPanel extends ItemView {
         const selectedCount = this.selectedSpellIds.size;
         if (selectedCount === 0) return;
 
+        if (selectedCount > 1) {
+            new Notice(i18n.t('SPELLS.EDIT_SINGLE_ONLY'));
+            return;
+        }
+
         if (selectedCount === 1) {
             const spellId = Array.from(this.selectedSpellIds)[0];
             const spell = this.spells.find(s => s.id === spellId);
@@ -297,9 +302,6 @@ export class SpellsPanel extends ItemView {
                 new Notice(i18n.t('SPELLS.EDIT_IN_PROGRESS', { name: spell.name }));
                 // TODO: Implement single spell editing
             }
-        } else {
-            new Notice(i18n.t('SPELLS.EDIT_MULTIPLE_IN_PROGRESS', { count: selectedCount.toString() }));
-            // TODO: Implement multiple spell editing
         }
     }
 
