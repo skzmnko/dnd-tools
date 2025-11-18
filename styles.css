@@ -272,6 +272,28 @@
     border-radius: 8px;
 }
 
+.spell-checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    padding-top: 2px;
+}
+
+.spell-checkbox {
+    margin: 0;
+    cursor: pointer;
+}
+
+.modal.mod-creature-creation,
+.modal.mod-spell-creation {
+    width: 62.5%;
+    max-width: 800px;
+}
+
+.modal.mod-creature-creation .modal-content,
+.modal.mod-spell-creation .modal-content {
+    margin: 0 auto;
+}
+
 /* Unified responsive design */
 @media (max-width: 768px) {
     .bestiary-controls,
@@ -372,6 +394,17 @@
 .theme-dark .creature-list-item,
 .theme-dark .spell-list-item {
     border-color: var(--background-modifier-border-hover);
+}
+
+@media (max-width: 768px) {
+    .spell-list-item {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .spell-checkbox-container {
+        align-self: flex-start;
+    }
 }
 
 /* Print styles */

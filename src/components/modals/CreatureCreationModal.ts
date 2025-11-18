@@ -49,6 +49,7 @@ export class CreatureCreationModal extends Modal {
         const { contentEl } = this;
         contentEl.createEl('h2', { text: i18n.t('CREATURE_MODAL.TITLE') });
 
+        this.modalEl.addClass('mod-creature-creation');
         this.applyStyles(contentEl);
         this.setupComponentConnections();
         this.renderComponents(contentEl);

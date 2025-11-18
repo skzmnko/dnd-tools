@@ -41,7 +41,7 @@ export class SpellCreationModal extends Modal {
         const { contentEl } = this;
         contentEl.addClass('spell-modal-container');
         
-        // Apply styles
+        this.modalEl.addClass('mod-spell-creation');
         this.applyStyles(contentEl);
         
         contentEl.createEl('h2', { text: i18n.t('SPELL_MODAL.TITLE') });
@@ -63,7 +63,6 @@ export class SpellCreationModal extends Modal {
             cls: 'spell-section-title'
         });
 
-        // Name
         new Setting(contentEl)
             .setName(i18n.t('SPELL_FIELDS.NAME'))
             .setDesc(i18n.t('SPELL_FIELDS.NAME_DESC'))
@@ -72,7 +71,6 @@ export class SpellCreationModal extends Modal {
                 .setValue(this.spellData.name || '')
                 .onChange(value => this.spellData.name = value));
 
-        // Level
         new Setting(contentEl)
             .setName(i18n.t('SPELL_FIELDS.LEVEL'))
             .setDesc(i18n.t('SPELL_FIELDS.LEVEL_DESC'))
@@ -85,7 +83,6 @@ export class SpellCreationModal extends Modal {
                     .onChange(value => this.spellData.level = parseInt(value));
             });
 
-        // School
         new Setting(contentEl)
             .setName(i18n.t('SPELL_FIELDS.SCHOOL'))
             .setDesc(i18n.t('SPELL_FIELDS.SCHOOL_DESC'))
@@ -99,7 +96,6 @@ export class SpellCreationModal extends Modal {
                     .onChange(value => this.spellData.school = value);
             });
 
-        // Classes (multi-select)
         const classesSetting = new Setting(contentEl)
             .setName(i18n.t('SPELL_FIELDS.CLASSES'))
             .setDesc(i18n.t('SPELL_FIELDS.CLASSES_DESC'))
@@ -115,15 +111,13 @@ export class SpellCreationModal extends Modal {
                             this.spellData.classes = [...(this.spellData.classes || []), value];
                             this.updateSelectedClassesDisplay();
                         }
-                        dropdown.setValue(''); // Reset dropdown after selection
+                        dropdown.setValue('');
                     });
             });
 
-        // Container for selected classes
         this.selectedClassesContainer = contentEl.createDiv('selected-classes-container');
         this.updateSelectedClassesDisplay();
 
-        // Action Type
         new Setting(contentEl)
             .setName(i18n.t('SPELL_FIELDS.ACTION_TYPE'))
             .setDesc(i18n.t('SPELL_FIELDS.ACTION_TYPE_DESC'))
@@ -136,7 +130,6 @@ export class SpellCreationModal extends Modal {
                     .onChange(value => this.spellData.actionType = value as ActionTypeKey);
             });
 
-        // Concentration and Ritual
         new Setting(contentEl)
             .setName(i18n.t('SPELL_FIELDS.CONCENTRATION'))
             .setDesc(i18n.t('SPELL_FIELDS.CONCENTRATION_DESC'))
@@ -151,7 +144,6 @@ export class SpellCreationModal extends Modal {
                 .setValue(this.spellData.ritual || false)
                 .onChange(value => this.spellData.ritual = value));
 
-        // Casting Time
         new Setting(contentEl)
             .setName(i18n.t('SPELL_FIELDS.CASTING_TIME'))
             .setDesc(i18n.t('SPELL_FIELDS.CASTING_TIME_DESC'))
@@ -160,7 +152,6 @@ export class SpellCreationModal extends Modal {
                 .setValue(this.spellData.castingTime || '')
                 .onChange(value => this.spellData.castingTime = value));
 
-        // Range
         new Setting(contentEl)
             .setName(i18n.t('SPELL_FIELDS.RANGE'))
             .setDesc(i18n.t('SPELL_FIELDS.RANGE_DESC'))
@@ -169,7 +160,6 @@ export class SpellCreationModal extends Modal {
                 .setValue(this.spellData.range || '')
                 .onChange(value => this.spellData.range = value));
 
-        // Duration
         new Setting(contentEl)
             .setName(i18n.t('SPELL_FIELDS.DURATION'))
             .setDesc(i18n.t('SPELL_FIELDS.DURATION_DESC'))
@@ -219,7 +209,6 @@ export class SpellCreationModal extends Modal {
 
         const componentsContainer = contentEl.createDiv('components-section');
 
-        // Verbal
         new Setting(componentsContainer)
             .setName(i18n.t('SPELL_FIELDS.VERBAL'))
             .setDesc(i18n.t('SPELL_FIELDS.VERBAL_DESC'))
@@ -230,7 +219,6 @@ export class SpellCreationModal extends Modal {
                     this.spellData.components.verbal = value;
                 }));
 
-        // Somatic
         new Setting(componentsContainer)
             .setName(i18n.t('SPELL_FIELDS.SOMATIC'))
             .setDesc(i18n.t('SPELL_FIELDS.SOMATIC_DESC'))
@@ -241,7 +229,6 @@ export class SpellCreationModal extends Modal {
                     this.spellData.components.somatic = value;
                 }));
 
-        // Material
         new Setting(componentsContainer)
             .setName(i18n.t('SPELL_FIELDS.MATERIAL'))
             .setDesc(i18n.t('SPELL_FIELDS.MATERIAL_DESC'))
@@ -250,7 +237,6 @@ export class SpellCreationModal extends Modal {
                 .onChange(value => {
                     if (!this.spellData.components) this.spellData.components = { verbal: false, somatic: false, material: false };
                     this.spellData.components.material = value;
-                    // Re-render to show/hide material description
                     this.renderMaterialDescription(componentsContainer);
                 }));
 
@@ -258,13 +244,11 @@ export class SpellCreationModal extends Modal {
     }
 
     private renderMaterialDescription(container: HTMLElement) {
-        // Remove existing material description if any
         const existingDesc = container.querySelector('.material-description-container');
         if (existingDesc) {
             existingDesc.remove();
         }
 
-        // Add material description if material component is enabled
         if (this.spellData.components?.material) {
             const materialDescContainer = container.createDiv('material-description-container');
             new Setting(materialDescContainer)
@@ -292,7 +276,6 @@ export class SpellCreationModal extends Modal {
 
         const descriptionContainer = contentEl.createDiv('description-section');
 
-        // Mana Cost
         new Setting(descriptionContainer)
             .setName(i18n.t('SPELL_FIELDS.MANA_COST'))
             .setDesc(i18n.t('SPELL_FIELDS.MANA_COST_DESC'))
@@ -300,7 +283,6 @@ export class SpellCreationModal extends Modal {
                 .setValue(this.spellData.manaCost || false)
                 .onChange(value => this.spellData.manaCost = value));
 
-        // Description
         const descSetting = new Setting(descriptionContainer)
             .setName(i18n.t('SPELL_FIELDS.DESCRIPTION'))
             .setDesc(i18n.t('SPELL_FIELDS.DESCRIPTION_DESC'));
@@ -313,7 +295,6 @@ export class SpellCreationModal extends Modal {
         textArea.inputEl.rows = 6;
         textArea.inputEl.addClass('spell-textarea');
 
-        // Cantrip Upgrade
         const upgradeSetting = new Setting(descriptionContainer)
             .setName(i18n.t('SPELL_FIELDS.CANTRIP_UPGRADE'))
             .setDesc(i18n.t('SPELL_FIELDS.CANTRIP_UPGRADE_DESC'));
