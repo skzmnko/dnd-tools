@@ -58,10 +58,7 @@ export class SpellBasicFieldsComponent {
       .setDesc(i18n.t("SPELL_FIELDS.SCHOOL_DESC"))
       .addDropdown((dropdown) => {
         const schools = i18n.getGameDataCategory("SPELL_SCHOOLS");
-        dropdown.addOption(
-          "",
-          i18n.t("SPELL_FIELDS.SELECT_DAMAGE") || "Select school...",
-        );
+        dropdown.addOption("", i18n.t("SPELL_FIELDS.SELECT_SCHOOL"));
         Object.entries(schools).forEach(([key, value]) => {
           dropdown.addOption(key, value);
         });
@@ -75,7 +72,7 @@ export class SpellBasicFieldsComponent {
       .setDesc(i18n.t("SPELL_FIELDS.CLASSES_DESC"))
       .addDropdown((dropdown) => {
         const classes = i18n.getGameDataCategory("SPELL_CLASSES");
-        dropdown.addOption("", "Select class...");
+        dropdown.addOption("", i18n.t("SPELL_FIELDS.SELECT_CLASS"));
         Object.entries(classes).forEach(([key, value]) => {
           dropdown.addOption(key, value);
         });
