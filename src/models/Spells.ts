@@ -13,6 +13,7 @@ export interface Spell {
         verbal: boolean;
         somatic: boolean;
         material: boolean;
+        verbalDescription?: string;
         materialDescription?: string;
     };
     duration: string;

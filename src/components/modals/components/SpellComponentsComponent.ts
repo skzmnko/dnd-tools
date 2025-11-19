@@ -5,6 +5,9 @@ import { i18n } from "src/services/LocalizationService";
 export class SpellComponentsComponent {
   private spellData: Partial<Spell>;
   private container: HTMLElement | null = null;
+  private componentsContainer: HTMLElement | null = null;
+  private verbalDescriptionContainer: HTMLElement | null = null;
+  private materialDescriptionContainer: HTMLElement | null = null;
 
   constructor(spellData: Partial<Spell>) {
     this.spellData = spellData;
@@ -20,9 +23,10 @@ export class SpellComponentsComponent {
       cls: "section-title",
     });
 
-    const componentsContainer = section.createDiv("components-section");
+    this.componentsContainer = section.createDiv("components-section");
 
-    new Setting(componentsContainer)
+    // Вербальный компонент
+    new Setting(this.componentsContainer)
       .setName(i18n.t("SPELL_FIELDS.VERBAL"))
       .setDesc(i18n.t("SPELL_FIELDS.VERBAL_DESC"))
       .addToggle((toggle) =>
@@ -36,10 +40,16 @@ export class SpellComponentsComponent {
                 material: false,
               };
             this.spellData.components.verbal = value;
+            this.updateVerbalDescription();
           }),
       );
 
-    new Setting(componentsContainer)
+    // Создаем контейнер для описания вербального компонента
+    this.verbalDescriptionContainer = this.componentsContainer.createDiv("verbal-description-container");
+    this.updateVerbalDescription();
+
+    // Соматический компонент
+    new Setting(this.componentsContainer)
       .setName(i18n.t("SPELL_FIELDS.SOMATIC"))
       .setDesc(i18n.t("SPELL_FIELDS.SOMATIC_DESC"))
       .addToggle((toggle) =>
@@ -56,7 +66,8 @@ export class SpellComponentsComponent {
           }),
       );
 
-    new Setting(componentsContainer)
+    // Материальный компонент
+    new Setting(this.componentsContainer)
       .setName(i18n.t("SPELL_FIELDS.MATERIAL"))
       .setDesc(i18n.t("SPELL_FIELDS.MATERIAL_DESC"))
       .addToggle((toggle) =>
@@ -70,26 +81,53 @@ export class SpellComponentsComponent {
                 material: false,
               };
             this.spellData.components.material = value;
-            this.renderMaterialDescription(componentsContainer);
+            this.updateMaterialDescription();
           }),
       );
 
-    this.renderMaterialDescription(componentsContainer);
+    // Создаем контейнер для описания материального компонента
+    this.materialDescriptionContainer = this.componentsContainer.createDiv("material-description-container");
+    this.updateMaterialDescription();
   }
 
-  private renderMaterialDescription(container: HTMLElement) {
-    const existingDesc = container.querySelector(
-      ".material-description-container",
-    );
-    if (existingDesc) {
-      existingDesc.remove();
-    }
+  private updateVerbalDescription() {
+    if (!this.verbalDescriptionContainer) return;
 
+    this.verbalDescriptionContainer.empty();
+    
+    if (this.spellData.components?.verbal) {
+      this.verbalDescriptionContainer.style.display = "block";
+      new Setting(this.verbalDescriptionContainer)
+        .setName(i18n.t("SPELL_FIELDS.VERBAL_DESCRIPTION"))
+        .setDesc(i18n.t("SPELL_FIELDS.VERBAL_DESCRIPTION_DESC"))
+        .addTextArea((textarea) => {
+          textarea
+            .setPlaceholder(
+              i18n.t("SPELL_FIELDS.VERBAL_DESCRIPTION_PLACEHOLDER"),
+            )
+            .setValue(this.spellData.components?.verbalDescription || "")
+            .onChange((value) => {
+              if (this.spellData.components) {
+                this.spellData.components.verbalDescription = value;
+              }
+            });
+          textarea.inputEl.rows = 3;
+          textarea.inputEl.addClass("spell-textarea");
+          textarea.inputEl.addClass("verbal-textarea");
+        });
+    } else {
+      this.verbalDescriptionContainer.style.display = "none";
+    }
+  }
+
+  private updateMaterialDescription() {
+    if (!this.materialDescriptionContainer) return;
+
+    this.materialDescriptionContainer.empty();
+    
     if (this.spellData.components?.material) {
-      const materialDescContainer = container.createDiv(
-        "material-description-container",
-      );
-      new Setting(materialDescContainer)
+      this.materialDescriptionContainer.style.display = "block";
+      new Setting(this.materialDescriptionContainer)
         .setName(i18n.t("SPELL_FIELDS.MATERIAL_DESCRIPTION"))
         .setDesc(i18n.t("SPELL_FIELDS.MATERIAL_DESCRIPTION_DESC"))
         .addTextArea((textarea) => {
@@ -105,7 +143,10 @@ export class SpellComponentsComponent {
             });
           textarea.inputEl.rows = 3;
           textarea.inputEl.addClass("spell-textarea");
+          textarea.inputEl.addClass("material-textarea");
         });
+    } else {
+      this.materialDescriptionContainer.style.display = "none";
     }
   }
 }

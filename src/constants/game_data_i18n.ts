@@ -115,8 +115,8 @@ export const GAME_DATA_EN = {
         ACTION: 'Action',
         BONUS_ACTION: 'Bonus action',
         REACTION: 'Reaction',
-        MINUTE: 'Minute',
-        HOUR: 'Hour'
+        MINUTE: 'Minutes',
+        HOUR: 'Hours'
     },
     SPELL_LEVELS: {
         CANTRIP: 'Cantrip',
@@ -249,8 +249,8 @@ export const GAME_DATA_RU = {
         ACTION: 'Действие',
         BONUS_ACTION: 'Бонусное действие',
         REACTION: 'Реакция',
-        MINUTE: '1 минута',
-        HOUR: '1 час'
+        MINUTE: 'Минуты',
+        HOUR: 'Часы'
     },
     SPELL_LEVELS: {
         CANTRIP: 'Заговор',
