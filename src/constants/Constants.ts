@@ -1,151 +1,156 @@
-import { 
-    GAME_DATA_EN,
-    CreatureTypeKey,
-    SizeKey, 
-    AlignmentKey, 
-    DamageTypeKey, 
-    ConditionKey,
-    ConditionDescriptionKey,
-    SpellSchoolKey,
-    SpellClassKey,
-    ActionTypeKey,
-    LevelKey
-} from './game_data_i18n';
+import {
+  GAME_DATA_EN,
+  CreatureTypeKey,
+  SizeKey,
+  AlignmentKey,
+  DamageTypeKey,
+  ConditionKey,
+  ConditionDescriptionKey,
+  SpellSchoolKey,
+  SpellClassKey,
+  ActionTypeKey,
+  LevelKey,
+} from "./game_data_i18n";
 
 export const CREATURE_TYPES: readonly CreatureTypeKey[] = [
-    'ABERRATION',
-    'BEAST',
-    'CELESTIAL',
-    'CONSTRUCT',
-    'DRAGON',
-    'ELEMENTAL',
-    'FEY',
-    'FIEND',
-    'GIANT',
-    'HUMANOID',
-    'MONSTROSITY',
-    'OOZE',
-    'PLANT',
-    'UNDEAD'
+  "ABERRATION",
+  "BEAST",
+  "CELESTIAL",
+  "CONSTRUCT",
+  "DRAGON",
+  "ELEMENTAL",
+  "FEY",
+  "FIEND",
+  "GIANT",
+  "HUMANOID",
+  "MONSTROSITY",
+  "OOZE",
+  "PLANT",
+  "UNDEAD",
 ] as const;
 
 export const CREATURE_SIZES: readonly SizeKey[] = [
-    'TINY', 'SMALL', 'MEDIUM', 'LARGE', 'HUGE', 'GARGANTUAN'
+  "TINY",
+  "SMALL",
+  "MEDIUM",
+  "LARGE",
+  "HUGE",
+  "GARGANTUAN",
 ] as const;
 
 export const ALIGNMENTS: readonly AlignmentKey[] = [
-    'NO_ALIGNMENT',
-    'LAWFUL_GOOD',
-    'NEUTRAL_GOOD', 
-    'CHAOTIC_GOOD',
-    'LAWFUL_NEUTRAL',
-    'NEUTRAL',
-    'CHAOTIC_NEUTRAL',
-    'LAWFUL_EVIL',
-    'NEUTRAL_EVIL',
-    'CHAOTIC_EVIL'
+  "NO_ALIGNMENT",
+  "LAWFUL_GOOD",
+  "NEUTRAL_GOOD",
+  "CHAOTIC_GOOD",
+  "LAWFUL_NEUTRAL",
+  "NEUTRAL",
+  "CHAOTIC_NEUTRAL",
+  "LAWFUL_EVIL",
+  "NEUTRAL_EVIL",
+  "CHAOTIC_EVIL",
 ] as const;
 
 export const DAMAGE_TYPES: readonly DamageTypeKey[] = [
-    'BLUDGEONING',
-    'PIERCING',
-    'SLASHING',
-    'FIRE',
-    'POISON',
-    'COLD',
-    'NECROTIC',
-    'RADIANT',
-    'ACID',
-    'FORCE',
-    'LIGHTNING',
-    'PSYCHIC',
-    'THUNDER',
-    'SILVERED_WEAPONS',
-    'ADAMANTINE_WEAPONS',
-    'MAGIC_WEAPONS'
+  "BLUDGEONING",
+  "PIERCING",
+  "SLASHING",
+  "FIRE",
+  "POISON",
+  "COLD",
+  "NECROTIC",
+  "RADIANT",
+  "ACID",
+  "FORCE",
+  "LIGHTNING",
+  "PSYCHIC",
+  "THUNDER",
+  "SILVERED_WEAPONS",
+  "ADAMANTINE_WEAPONS",
+  "MAGIC_WEAPONS",
 ] as const;
 
 export const CONDITIONS: readonly ConditionKey[] = [
-    'BLINDED',
-    'CHARMED',
-    'DEAFENED',
-    'EXHAUSTED',
-    'FRIGHTENED',
-    'GRAPPLED',
-    'INCAPACITATED',
-    'INVISIBLE',
-    'MUTE',
-    'PARALYZED',
-    'PETRIFIED',
-    'POISONED',
-    'PRONE',
-    'RESTRAINED',
-    'STUNNED',
-    'UNCONSCIOUS'
+  "BLINDED",
+  "CHARMED",
+  "DEAFENED",
+  "EXHAUSTED",
+  "FRIGHTENED",
+  "GRAPPLED",
+  "INCAPACITATED",
+  "INVISIBLE",
+  "MUTE",
+  "PARALYZED",
+  "PETRIFIED",
+  "POISONED",
+  "PRONE",
+  "RESTRAINED",
+  "STUNNED",
+  "UNCONSCIOUS",
 ] as const;
 
 export const CONDITION_DESCRIPTIONS: readonly ConditionDescriptionKey[] = [
-    'BLINDED',
-    'CHARMED',
-    'DEAFENED',
-    'EXHAUSTED',
-    'FRIGHTENED',
-    'GRAPPLED',
-    'INCAPACITATED',
-    'INVISIBLE',
-    'MUTE',
-    'PARALYZED',
-    'PETRIFIED',
-    'POISONED',
-    'PRONE',
-    'RESTRAINED',
-    'STUNNED',
-    'UNCONSCIOUS'
+  "BLINDED",
+  "CHARMED",
+  "DEAFENED",
+  "EXHAUSTED",
+  "FRIGHTENED",
+  "GRAPPLED",
+  "INCAPACITATED",
+  "INVISIBLE",
+  "MUTE",
+  "PARALYZED",
+  "PETRIFIED",
+  "POISONED",
+  "PRONE",
+  "RESTRAINED",
+  "STUNNED",
+  "UNCONSCIOUS",
 ] as const;
 
 export const SPELL_SCHOOLS: readonly SpellSchoolKey[] = [
-        'ABJURATION',
-        'CONJURATION',
-        'DIVINATION',
-        'ENCHANTMENT',
-        'EVOCATION',
-        'ILLUSION',
-        'NECROMANCY',
-        'TRANSMUTATION'
+  "ABJURATION",
+  "CONJURATION",
+  "DIVINATION",
+  "ENCHANTMENT",
+  "EVOCATION",
+  "ILLUSION",
+  "NECROMANCY",
+  "TRANSMUTATION",
 ] as const;
 
 export const SPELL_CLASSES: readonly SpellClassKey[] = [
-    'ARTIFICER',
-    'BARD',
-    'CLERIC',
-    'DRUID',
-    'PALADIN',
-    'RANGER',
-    'SORCERER',
-    'WARLOCK',
-    'WIZARD'
+  "ARTIFICER",
+  "BARD",
+  "CLERIC",
+  "DRUID",
+  "PALADIN",
+  "RANGER",
+  "SORCERER",
+  "WARLOCK",
+  "WIZARD",
 ] as const;
 
 export const ACTION_TYPES: readonly ActionTypeKey[] = [
-    'ACTION',
-    'BONUS_ACTION',
-    'REACTION',
-    'MINUTE',
-    'HOUR'
-]
+  "ACTION",
+  "BONUS_ACTION",
+  "REACTION",
+  "MINUTE",
+  "HOUR",
+];
 
 export const SPELL_LEVELS: readonly LevelKey[] = [
-    'CANTRIP',
-    'LEVEL_1',
-    'LEVEL_2',
-    'LEVEL_3',
-    'LEVEL_4',
-    'LEVEL_5',
-    'LEVEL_6',
-    'LEVEL_7',
-    'LEVEL_8',
-    'LEVEL_9'
-]
+  "CANTRIP",
+  "LEVEL_1",
+  "LEVEL_2",
+  "LEVEL_3",
+  "LEVEL_4",
+  "LEVEL_5",
+  "LEVEL_6",
+  "LEVEL_7",
+  "LEVEL_8",
+  "LEVEL_9",
+];
 
 export type CreatureType = CreatureTypeKey;
 export type CreatureSize = SizeKey;
@@ -158,4 +163,13 @@ export type SpellClass = SpellClassKey;
 export type ActionType = ActionTypeKey;
 export type Level = LevelKey;
 
-export type { CreatureTypeKey, SizeKey, AlignmentKey, DamageTypeKey, ConditionKey, SpellSchoolKey, SpellClassKey, ActionTypeKey };
+export type {
+  CreatureTypeKey,
+  SizeKey,
+  AlignmentKey,
+  DamageTypeKey,
+  ConditionKey,
+  SpellSchoolKey,
+  SpellClassKey,
+  ActionTypeKey,
+};

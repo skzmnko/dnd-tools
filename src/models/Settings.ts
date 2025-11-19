@@ -1,7 +1,7 @@
 export interface EncounterManagerSettings {
-  language: 'en' | 'ru';
+  language: "en" | "ru";
 }
 
 export const DEFAULT_SETTINGS: EncounterManagerSettings = {
-  language: 'en'
-}
+  language: "en",
+};

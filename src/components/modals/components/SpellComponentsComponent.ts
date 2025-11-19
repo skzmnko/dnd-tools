@@ -25,7 +25,6 @@ export class SpellComponentsComponent {
 
     this.componentsContainer = section.createDiv("components-section");
 
-    // Вербальный компонент
     new Setting(this.componentsContainer)
       .setName(i18n.t("SPELL_FIELDS.VERBAL"))
       .setDesc(i18n.t("SPELL_FIELDS.VERBAL_DESC"))
@@ -44,11 +43,11 @@ export class SpellComponentsComponent {
           }),
       );
 
-    // Создаем контейнер для описания вербального компонента
-    this.verbalDescriptionContainer = this.componentsContainer.createDiv("verbal-description-container");
+    this.verbalDescriptionContainer = this.componentsContainer.createDiv(
+      "verbal-description-container",
+    );
     this.updateVerbalDescription();
 
-    // Соматический компонент
     new Setting(this.componentsContainer)
       .setName(i18n.t("SPELL_FIELDS.SOMATIC"))
       .setDesc(i18n.t("SPELL_FIELDS.SOMATIC_DESC"))
@@ -66,7 +65,6 @@ export class SpellComponentsComponent {
           }),
       );
 
-    // Материальный компонент
     new Setting(this.componentsContainer)
       .setName(i18n.t("SPELL_FIELDS.MATERIAL"))
       .setDesc(i18n.t("SPELL_FIELDS.MATERIAL_DESC"))
@@ -85,8 +83,9 @@ export class SpellComponentsComponent {
           }),
       );
 
-    // Создаем контейнер для описания материального компонента
-    this.materialDescriptionContainer = this.componentsContainer.createDiv("material-description-container");
+    this.materialDescriptionContainer = this.componentsContainer.createDiv(
+      "material-description-container",
+    );
     this.updateMaterialDescription();
   }
 
@@ -94,7 +93,7 @@ export class SpellComponentsComponent {
     if (!this.verbalDescriptionContainer) return;
 
     this.verbalDescriptionContainer.empty();
-    
+
     if (this.spellData.components?.verbal) {
       this.verbalDescriptionContainer.style.display = "block";
       new Setting(this.verbalDescriptionContainer)
@@ -124,7 +123,7 @@ export class SpellComponentsComponent {
     if (!this.materialDescriptionContainer) return;
 
     this.materialDescriptionContainer.empty();
-    
+
     if (this.spellData.components?.material) {
       this.materialDescriptionContainer.style.display = "block";
       new Setting(this.materialDescriptionContainer)
