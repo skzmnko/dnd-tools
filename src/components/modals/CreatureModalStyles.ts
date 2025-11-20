@@ -5,6 +5,9 @@ export const CreatureModalStyles = `
     gap: 10px;
     margin-bottom: 20px;
     flex-wrap: wrap;
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
+    font-size: var(--font-ui-small);
 }
 
 .ability-column {
@@ -20,6 +23,8 @@ export const CreatureModalStyles = `
     font-size: 14px;
     margin-bottom: 5px;
     color: var(--text-normal);
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
 }
 
 .ability-input {
@@ -31,6 +36,9 @@ export const CreatureModalStyles = `
     background: var(--background-primary);
     color: var(--text-normal);
     margin-bottom: 3px;
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
+    font-size: var(--font-ui-small);
 }
 
 .ability-input:focus {
@@ -48,6 +56,9 @@ export const CreatureModalStyles = `
     color: var(--text-muted);
     font-style: italic;
     cursor: not-allowed;
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
+    font-size: var(--font-ui-small);
 }
 
 .saving-throws-container {
@@ -71,6 +82,8 @@ export const CreatureModalStyles = `
     font-size: 14px;
     margin-bottom: 5px;
     color: var(--text-normal);
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
 }
 
 .saving-throw-input {
@@ -83,6 +96,9 @@ export const CreatureModalStyles = `
     color: var(--text-normal);
     cursor: pointer;
     transition: all 0.2s ease;
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
+    font-size: var(--font-ui-small);
 }
 
 .saving-throw-input:hover {
@@ -101,6 +117,8 @@ export const CreatureModalStyles = `
     color: var(--text-muted);
     margin-top: 2px;
     font-style: italic;
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
 }
 
 .selected-values-container {
@@ -116,6 +134,8 @@ export const CreatureModalStyles = `
     margin-bottom: 8px;
     color: var(--text-normal);
     font-size: 14px;
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
 }
 
 .selected-values-list {
@@ -132,6 +152,9 @@ export const CreatureModalStyles = `
     background: var(--background-primary);
     border-radius: 3px;
     border: 1px solid var(--background-modifier-border);
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
+    font-size: var(--font-ui-small);
 }
 
 .selected-value-remove {
@@ -146,6 +169,8 @@ export const CreatureModalStyles = `
     display: flex;
     align-items: center;
     justify-content: center;
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
 }
 
 .selected-value-remove:hover {
@@ -157,6 +182,8 @@ export const CreatureModalStyles = `
     font-style: italic;
     text-align: center;
     padding: 10px;
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
 }
 
 .add-trait-container, .add-action-container {
@@ -176,6 +203,8 @@ export const CreatureModalStyles = `
     margin-bottom: 10px;
     color: var(--text-normal);
     font-size: 14px;
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
 }
 
 .traits-list, .actions-list {
@@ -204,10 +233,14 @@ export const CreatureModalStyles = `
     font-size: 14px;
     line-height: 1.4;
     margin-bottom: 8px;
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
 }
 
 .trait-remove, .action-remove {
     margin-top: 5px;
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
 }
 
 .traits-empty, .actions-empty {
@@ -217,6 +250,8 @@ export const CreatureModalStyles = `
     padding: 20px;
     border: 1px dashed var(--background-modifier-border);
     border-radius: 4px;
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
 }
 
 .creature-section {
@@ -233,10 +268,18 @@ export const CreatureModalStyles = `
 .craft-textarea,
 .statements-textarea,
 .tactics-textarea,
-.notable-items-textarea {
+.notable-items-textarea,
+.trait-desc-textarea,
+.action-desc-textarea,
+.bonus-action-desc-textarea,
+.reaction-desc-textarea,
+.legendary-action-desc-textarea {
     resize: none !important;
     min-height: 60px !important;
     width: 100% !important;
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт для всех текстовых областей */
+    font-family: var(--font-interface) !important;
+    font-size: var(--font-ui-small) !important;
 }
 
 .trait-desc-textarea,
@@ -256,5 +299,27 @@ export const CreatureModalStyles = `
     margin: 20px 0 15px 0 !important;
     border-bottom: 1px solid var(--background-modifier-border) !important;
     padding-bottom: 8px !important;
+    /* ИСКЛЮЧЕНИЕ: Заголовки остаются без изменений */
+}
+
+/* ИЗМЕНЕНИЕ: Унифицированные стили для всех Setting элементов в Creature модальном окне */
+.mod-creature-creation .setting-item-name,
+.mod-creature-creation .setting-item-description {
+    font-family: var(--font-interface) !important;
+    font-size: var(--font-ui-small) !important;
+}
+
+/* ИЗМЕНЕНИЕ: Унифицированные стили для кнопок в Creature модальном окне */
+.mod-creature-creation .button-container button {
+    font-family: var(--font-interface) !important;
+    font-size: var(--font-ui-small) !important;
+}
+
+/* ИЗМЕНЕНИЕ: Унифицированные стили для всех текстовых полей ввода в Creature модальном окне */
+.mod-creature-creation input[type="text"],
+.mod-creature-creation textarea,
+.mod-creature-creation select {
+    font-family: var(--font-interface) !important;
+    font-size: var(--font-ui-small) !important;
 }
 `;

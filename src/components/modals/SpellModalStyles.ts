@@ -3,6 +3,9 @@ export const SpellModalStyles = `
     max-height: 80vh;
     overflow-y: auto;
     padding-right: 10px;
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт для всего контента */
+    font-family: var(--font-interface);
+    font-size: var(--font-ui-small);
 }
 
 .spell-modal-container::-webkit-scrollbar {
@@ -36,6 +39,8 @@ export const SpellModalStyles = `
     margin-bottom: 5px;
     color: var(--text-normal);
     font-size: 14px;
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
 }
 
 .selected-values-list {
@@ -53,6 +58,8 @@ export const SpellModalStyles = `
     border-radius: 3px;
     border: 1px solid var(--background-modifier-border);
     font-size: 13px;
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
 }
 
 .selected-value-remove {
@@ -68,6 +75,8 @@ export const SpellModalStyles = `
     align-items: center;
     justify-content: center;
     line-height: 1;
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
 }
 
 .selected-value-remove:hover {
@@ -101,29 +110,24 @@ export const SpellModalStyles = `
     margin: 15px 0;
 }
 
-.spell-textarea {
-    resize: vertical !important;
-    min-height: 80px !important;
-    width: 100% !important;
-    font-family: var(--font-monospace);
-    font-size: 13px;
-}
-
+/* ИЗМЕНЕНИЕ: Добавлены стили для текстовых областей с фиксированным размером */
 .verbal-textarea,
-.material-textarea {
-    resize: vertical !important;
+.material-textarea,
+.spell-description-textarea,
+.cantrip-upgrade-textarea {
+    resize: none !important;
     min-height: 60px !important;
     width: 100% !important;
-    font-family: var(--font-monospace);
-    font-size: 13px;
+    font-family: var(--font-interface) !important;
+    font-size: var(--font-ui-small) !important;
 }
 
-.cantrip-upgrade-textarea {
-    resize: vertical !important;
-    min-height: 60px !important;
-    width: 100% !important;
-    font-family: var(--font-monospace);
-    font-size: 13px;
+/* ИЗМЕНЕНИЕ: Унифицированные стили для всех текстовых полей ввода */
+.spell-text-input,
+.spell-dropdown,
+.spell-textarea {
+    font-family: var(--font-interface) !important;
+    font-size: var(--font-ui-small) !important;
 }
 
 .spell-section-divider {
@@ -143,6 +147,8 @@ export const SpellModalStyles = `
 .spell-toggle-label {
     font-size: 14px;
     color: var(--text-normal);
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    font-family: var(--font-interface);
 }
 
 /* Стили для выпадающих списков */
@@ -183,6 +189,20 @@ export const SpellModalStyles = `
     margin: 20px 0 15px 0;
     font-size: 16px;
     font-weight: 600;
+    /* ИСКЛЮЧЕНИЕ: Заголовки остаются без изменений */
+}
+
+/* ИЗМЕНЕНИЕ: Унифицированные стили для всех Setting элементов */
+.setting-item-name,
+.setting-item-description {
+    font-family: var(--font-interface) !important;
+    font-size: var(--font-ui-small) !important;
+}
+
+/* ИЗМЕНЕНИЕ: Унифицированные стили для кнопок */
+.mod-spell-creation .button-container button {
+    font-family: var(--font-interface) !important;
+    font-size: var(--font-ui-small) !important;
 }
 
 /* Анимации */
