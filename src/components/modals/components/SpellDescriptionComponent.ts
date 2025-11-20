@@ -11,8 +11,7 @@ export class SpellDescriptionComponent {
   constructor(spellData: Partial<Spell>, bestiaryService?: any) {
     this.spellData = spellData;
     this.bestiaryService = bestiaryService;
-    
-    // Initialize arrays if they don't exist
+
     if (!this.spellData.summonedCreatures) {
       this.spellData.summonedCreatures = [];
     }
@@ -55,20 +54,19 @@ export class SpellDescriptionComponent {
     textArea.inputEl.addClass("fixed-textarea");
 
     const upgradeSetting = new Setting(descriptionContainer)
-      .setName(i18n.t("SPELL_FIELDS.CANTRIP_UPGRADE"))
-      .setDesc(i18n.t("SPELL_FIELDS.CANTRIP_UPGRADE_DESC"));
+      .setName(i18n.t("SPELL_FIELDS.SPELL_UPGRADE"))
+      .setDesc(i18n.t("SPELL_FIELDS.SPELL_UPGRADE_DESC"));
 
     const upgradeTextArea = new TextAreaComponent(upgradeSetting.controlEl);
     upgradeTextArea
-      .setPlaceholder(i18n.t("SPELL_FIELDS.CANTRIP_UPGRADE_PLACEHOLDER"))
-      .setValue(this.spellData.cantripUpgrade || "")
-      .onChange((value) => (this.spellData.cantripUpgrade = value));
+      .setPlaceholder(i18n.t("SPELL_FIELDS.SPELL_UPGRADE_PLACEHOLDER"))
+      .setValue(this.spellData.spellUpgrade || "")
+      .onChange((value) => (this.spellData.spellUpgrade = value));
     upgradeTextArea.inputEl.style.width = "100%";
     upgradeTextArea.inputEl.rows = 3;
     upgradeTextArea.inputEl.addClass("cantrip-upgrade-textarea");
     upgradeTextArea.inputEl.addClass("fixed-textarea");
 
-    // NEW: Summon creature toggle - moved under cantripUpgrade
     const summonSetting = new Setting(descriptionContainer)
       .setName(i18n.t("SPELL_FIELDS.SUMMON_CREATURE"))
       .setDesc(i18n.t("SPELL_FIELDS.SUMMON_CREATURE_DESC"))
@@ -81,34 +79,40 @@ export class SpellDescriptionComponent {
           }),
       );
 
-    // NEW: Summon creature dropdown container - moved under cantripUpgrade
-    const summonContainer = descriptionContainer.createDiv("summon-creature-container");
-    summonContainer.style.display = this.spellData.summonCreature ? "block" : "none";
-    
-    // Load creatures from bestiary
+    const summonContainer = descriptionContainer.createDiv(
+      "summon-creature-container",
+    );
+    summonContainer.style.display = this.spellData.summonCreature
+      ? "block"
+      : "none";
+
     await this.loadCreatures();
-    
+
     new Setting(summonContainer)
       .setName(i18n.t("SPELL_FIELDS.SELECT_SUMMON_CREATURE"))
       .setDesc("")
       .addDropdown((dropdown) => {
         dropdown.addOption("", i18n.t("SPELL_FIELDS.SELECT_SUMMON_CREATURE"));
-        
+
         this.creatures.forEach((creature) => {
           dropdown.addOption(creature.id, creature.name);
         });
 
         dropdown.onChange((value: string) => {
           if (value && !this.spellData.summonedCreatures?.includes(value)) {
-            this.spellData.summonedCreatures = [...(this.spellData.summonedCreatures || []), value];
+            this.spellData.summonedCreatures = [
+              ...(this.spellData.summonedCreatures || []),
+              value,
+            ];
             this.updateSelectedCreaturesDisplay();
           }
           dropdown.setValue("");
         });
       });
 
-    // NEW: Selected creatures display - moved under cantripUpgrade
-    this.selectedCreaturesContainer = summonContainer.createDiv("selected-creatures-container");
+    this.selectedCreaturesContainer = summonContainer.createDiv(
+      "selected-creatures-container",
+    );
     this.updateSelectedCreaturesDisplay();
   }
 
@@ -128,9 +132,10 @@ export class SpellDescriptionComponent {
   private updateSummonCreatureVisibility() {
     const summonContainer = this.selectedCreaturesContainer?.parentElement;
     if (summonContainer) {
-      summonContainer.style.display = this.spellData.summonCreature ? "block" : "none";
-      
-      // Clear selected creatures when summon creature is disabled
+      summonContainer.style.display = this.spellData.summonCreature
+        ? "block"
+        : "none";
+
       if (!this.spellData.summonCreature) {
         this.spellData.summonedCreatures = [];
         this.updateSelectedCreaturesDisplay();
@@ -143,8 +148,13 @@ export class SpellDescriptionComponent {
 
     this.selectedCreaturesContainer.empty();
 
-    if (!this.spellData.summonedCreatures || this.spellData.summonedCreatures.length === 0) {
-      const emptyText = this.selectedCreaturesContainer.createDiv("selected-values-empty");
+    if (
+      !this.spellData.summonedCreatures ||
+      this.spellData.summonedCreatures.length === 0
+    ) {
+      const emptyText = this.selectedCreaturesContainer.createDiv(
+        "selected-values-empty",
+      );
       emptyText.setText(i18n.t("SPELL_FIELDS.NO_CREATURE_SELECTED"));
       return;
     }
@@ -154,10 +164,12 @@ export class SpellDescriptionComponent {
       cls: "selected-values-title",
     });
 
-    const creaturesList = this.selectedCreaturesContainer.createDiv("selected-values-list");
-    
+    const creaturesList = this.selectedCreaturesContainer.createDiv(
+      "selected-values-list",
+    );
+
     this.spellData.summonedCreatures.forEach((creatureId, index) => {
-      const creature = this.creatures.find(c => c.id === creatureId);
+      const creature = this.creatures.find((c) => c.id === creatureId);
       if (creature) {
         const creatureItem = creaturesList.createDiv("selected-value-item");
         creatureItem.setText(creature.name);
@@ -167,9 +179,8 @@ export class SpellDescriptionComponent {
           cls: "selected-value-remove",
         });
         removeBtn.addEventListener("click", () => {
-          this.spellData.summonedCreatures = this.spellData.summonedCreatures?.filter(
-            (id) => id !== creatureId,
-          );
+          this.spellData.summonedCreatures =
+            this.spellData.summonedCreatures?.filter((id) => id !== creatureId);
           this.updateSelectedCreaturesDisplay();
         });
       }

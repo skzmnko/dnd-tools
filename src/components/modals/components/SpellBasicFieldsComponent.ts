@@ -91,7 +91,6 @@ export class SpellBasicFieldsComponent {
     );
     this.updateSelectedClassesDisplay();
 
-    // NEW: Action type dropdown with conditional casting trigger
     const actionTypeSetting = new Setting(section)
       .setName(i18n.t("SPELL_FIELDS.ACTION_TYPE"))
       .setDesc(i18n.t("SPELL_FIELDS.ACTION_TYPE_DESC"))
@@ -108,17 +107,18 @@ export class SpellBasicFieldsComponent {
           });
       });
 
-    // NEW: Casting trigger field (initially hidden)
-    this.castingTriggerContainer = section.createDiv("casting-trigger-container");
+    this.castingTriggerContainer = section.createDiv(
+      "casting-trigger-container",
+    );
     this.castingTriggerContainer.style.display = "none";
-    
-    // NEW: Casting trigger setting with textarea instead of text input
+
     const castingTriggerSetting = new Setting(this.castingTriggerContainer)
       .setName(i18n.t("SPELL_FIELDS.CASTING_TRIGGER"))
       .setDesc(i18n.t("SPELL_FIELDS.CASTING_TRIGGER_DESC"));
 
-    // NEW: Use TextAreaComponent instead of TextComponent for casting trigger
-    const castingTriggerTextArea = new TextAreaComponent(castingTriggerSetting.controlEl);
+    const castingTriggerTextArea = new TextAreaComponent(
+      castingTriggerSetting.controlEl,
+    );
     castingTriggerTextArea
       .setPlaceholder(i18n.t("SPELL_FIELDS.CASTING_TRIGGER_PLACEHOLDER"))
       .setValue(this.spellData.castingTrigger || "")
@@ -128,7 +128,6 @@ export class SpellBasicFieldsComponent {
     castingTriggerTextArea.inputEl.addClass("casting-trigger-textarea");
     castingTriggerTextArea.inputEl.addClass("fixed-textarea");
 
-    // Initialize visibility
     this.updateCastingTriggerVisibility();
 
     new Setting(section)
@@ -222,7 +221,6 @@ export class SpellBasicFieldsComponent {
     });
   }
 
-  // NEW: Method to show/hide casting trigger based on action type
   private updateCastingTriggerVisibility() {
     if (!this.castingTriggerContainer) return;
 
@@ -230,7 +228,7 @@ export class SpellBasicFieldsComponent {
       this.castingTriggerContainer.style.display = "block";
     } else {
       this.castingTriggerContainer.style.display = "none";
-      // Clear casting trigger when not reaction
+
       this.spellData.castingTrigger = "";
     }
   }

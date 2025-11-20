@@ -83,10 +83,10 @@ export const SPELLS_LOCALE_EN = {
     DESCRIPTION: "Description",
     DESCRIPTION_DESC: "Spell description and effects",
     DESCRIPTION_PLACEHOLDER: "You create an explosive burst of flame...",
-    CANTRIP_UPGRADE: "At Higher Levels/Cantrip Upgrade",
-    CANTRIP_UPGRADE_DESC:
-      "How the spell improves at higher levels or for cantrips",
-    CANTRIP_UPGRADE_PLACEHOLDER:
+    SPELL_UPGRADE: "Spell Upgrade",
+    SPELL_UPGRADE_DESC:
+      "How the spell improves at higher levels",
+    SPELL_UPGRADE_PLACEHOLDER:
       "The damage increases by 1d6 when you reach levels 5, 11, and 17.",
     SUMMON_CREATURE: "Summon Creature",
     SUMMON_CREATURE_DESC: "This spell summons creatures",
@@ -185,10 +185,10 @@ export const SPELLS_LOCALE_RU = {
     DESCRIPTION: "Описание",
     DESCRIPTION_DESC: "Описание заклинания и эффектов",
     DESCRIPTION_PLACEHOLDER: "Вы создаете взрывное пламя...",
-    CANTRIP_UPGRADE: "На высоких уровнях/Улучшение заговора",
-    CANTRIP_UPGRADE_DESC:
-      "Как заклинание улучшается на высоких уровнях или для заговоров",
-    CANTRIP_UPGRADE_PLACEHOLDER:
+    SPELL_UPGRADE: "Улучшение заклинания",
+    SPELL_UPGRADE_DESC:
+      "Как заклинание улучшается на высоких уровнях",
+    SPELL_UPGRADE_PLACEHOLDER:
       "Урон увеличивается на 1d6 на уровнях 5, 11 и 17.",
     SUMMON_CREATURE: "Призыв существа",
     SUMMON_CREATURE_DESC: "Это заклинание призывает существ",
