@@ -88,6 +88,11 @@ export const SPELLS_LOCALE_EN = {
       "How the spell improves at higher levels or for cantrips",
     CANTRIP_UPGRADE_PLACEHOLDER:
       "The damage increases by 1d6 when you reach levels 5, 11, and 17.",
+    SUMMON_CREATURE: "Summon Creature",
+    SUMMON_CREATURE_DESC: "This spell summons creatures",
+    SELECT_SUMMON_CREATURE: "Select creature",
+    SELECTED_SUMMON_CREATURE: "Selected Creature",
+    NO_CREATURE_SELECTED: "No creature selected",
     MANA_COST: "Mana Cost",
     MANA_COST_DESC: "Uses mana system (for future implementation)",
     CANTRIP: "Cantrip",
@@ -185,6 +190,11 @@ export const SPELLS_LOCALE_RU = {
       "Как заклинание улучшается на высоких уровнях или для заговоров",
     CANTRIP_UPGRADE_PLACEHOLDER:
       "Урон увеличивается на 1d6 на уровнях 5, 11 и 17.",
+    SUMMON_CREATURE: "Призыв существа",
+    SUMMON_CREATURE_DESC: "Это заклинание призывает существ",
+    SELECT_SUMMON_CREATURE: "Выберите существо",
+    SELECTED_SUMMON_CREATURE: "Выбранное существо",
+    NO_CREATURE_SELECTED: "Выберите существо",
     MANA_COST: "Затраты маны",
     MANA_COST_DESC: "Использует ману (для будущей реализации)",
     CANTRIP: "Заговор",

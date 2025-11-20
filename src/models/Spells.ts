@@ -20,6 +20,8 @@ export interface Spell {
   duration: string;
   description: string;
   cantripUpgrade?: string;
+  summonCreature: boolean;
+  summonedCreatures: string[];
   manaCost?: boolean;
   created: number;
   updated: number;

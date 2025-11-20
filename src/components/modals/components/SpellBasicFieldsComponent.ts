@@ -1,4 +1,4 @@
-import { Setting } from "obsidian";
+import { Setting, TextAreaComponent } from "obsidian";
 import { Spell } from "src/models/Spells";
 import { i18n } from "src/services/LocalizationService";
 import {
@@ -91,6 +91,7 @@ export class SpellBasicFieldsComponent {
     );
     this.updateSelectedClassesDisplay();
 
+    // NEW: Action type dropdown with conditional casting trigger
     const actionTypeSetting = new Setting(section)
       .setName(i18n.t("SPELL_FIELDS.ACTION_TYPE"))
       .setDesc(i18n.t("SPELL_FIELDS.ACTION_TYPE_DESC"))
@@ -107,21 +108,27 @@ export class SpellBasicFieldsComponent {
           });
       });
 
-    this.castingTriggerContainer = section.createDiv(
-      "casting-trigger-container",
-    );
+    // NEW: Casting trigger field (initially hidden)
+    this.castingTriggerContainer = section.createDiv("casting-trigger-container");
     this.castingTriggerContainer.style.display = "none";
-
-    new Setting(this.castingTriggerContainer)
+    
+    // NEW: Casting trigger setting with textarea instead of text input
+    const castingTriggerSetting = new Setting(this.castingTriggerContainer)
       .setName(i18n.t("SPELL_FIELDS.CASTING_TRIGGER"))
-      .setDesc(i18n.t("SPELL_FIELDS.CASTING_TRIGGER_DESC"))
-      .addText((text) =>
-        text
-          .setPlaceholder(i18n.t("SPELL_FIELDS.CASTING_TRIGGER_PLACEHOLDER"))
-          .setValue(this.spellData.castingTrigger || "")
-          .onChange((value) => (this.spellData.castingTrigger = value)),
-      );
+      .setDesc(i18n.t("SPELL_FIELDS.CASTING_TRIGGER_DESC"));
 
+    // NEW: Use TextAreaComponent instead of TextComponent for casting trigger
+    const castingTriggerTextArea = new TextAreaComponent(castingTriggerSetting.controlEl);
+    castingTriggerTextArea
+      .setPlaceholder(i18n.t("SPELL_FIELDS.CASTING_TRIGGER_PLACEHOLDER"))
+      .setValue(this.spellData.castingTrigger || "")
+      .onChange((value) => (this.spellData.castingTrigger = value));
+    castingTriggerTextArea.inputEl.style.width = "100%";
+    castingTriggerTextArea.inputEl.rows = 3;
+    castingTriggerTextArea.inputEl.addClass("casting-trigger-textarea");
+    castingTriggerTextArea.inputEl.addClass("fixed-textarea");
+
+    // Initialize visibility
     this.updateCastingTriggerVisibility();
 
     new Setting(section)
@@ -215,6 +222,7 @@ export class SpellBasicFieldsComponent {
     });
   }
 
+  // NEW: Method to show/hide casting trigger based on action type
   private updateCastingTriggerVisibility() {
     if (!this.castingTriggerContainer) return;
 
@@ -222,6 +230,7 @@ export class SpellBasicFieldsComponent {
       this.castingTriggerContainer.style.display = "block";
     } else {
       this.castingTriggerContainer.style.display = "none";
+      // Clear casting trigger when not reaction
       this.spellData.castingTrigger = "";
     }
   }

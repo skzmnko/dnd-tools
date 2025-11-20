@@ -32,6 +32,8 @@ export class SpellCreationModal extends Modal {
     duration: "",
     description: "",
     cantripUpgrade: "",
+    summonCreature: false, // NEW: Initialize summon creature
+    summonedCreatures: [], // NEW: Initialize summoned creatures array
     manaCost: false,
   };
 
@@ -43,12 +45,14 @@ export class SpellCreationModal extends Modal {
     app: App,
     private spellService: any,
     private onSave: (spell: Spell) => void,
+    private bestiaryService?: any, // NEW: Add bestiary service parameter
   ) {
     super(app);
 
     this.basicFields = new SpellBasicFieldsComponent(this.spellData);
     this.components = new SpellComponentsComponent(this.spellData);
-    this.description = new SpellDescriptionComponent(this.spellData);
+    // NEW: Pass bestiary service to description component
+    this.description = new SpellDescriptionComponent(this.spellData, this.bestiaryService);
   }
 
   onOpen() {
@@ -76,10 +80,8 @@ export class SpellCreationModal extends Modal {
   }
 
   private renderSaveButtons(contentEl: HTMLElement) {
-    const buttonContainer = contentEl.createDiv({
-      cls: "spell-button-container",
-    });
-
+    const buttonContainer = contentEl.createDiv({ cls: "spell-button-container" });
+    
     new Setting(buttonContainer)
       .addButton((btn) =>
         btn
@@ -142,6 +144,8 @@ export class SpellCreationModal extends Modal {
       duration: this.spellData.duration || "",
       description: this.spellData.description || "",
       cantripUpgrade: this.spellData.cantripUpgrade || "",
+      summonCreature: this.spellData.summonCreature || false, // NEW: Include summon creature
+      summonedCreatures: this.spellData.summonedCreatures || [], // NEW: Include summoned creatures
       manaCost: this.spellData.manaCost || false,
     };
 

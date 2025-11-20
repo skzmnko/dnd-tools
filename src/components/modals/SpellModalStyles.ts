@@ -52,6 +52,34 @@ export const SpellModalStyles = `
     transition: all 0.3s ease;
 }
 
+/* NEW: Styles for casting trigger textarea - same as verbal description */
+.casting-trigger-textarea {
+    resize: none !important;
+    min-height: 60px !important;
+    width: 100% !important;
+    font-family: var(--font-interface) !important;
+    font-size: var(--font-ui-small) !important;
+}
+
+/* NEW: Styles for summon creature container - positioned after cantrip upgrade */
+.summon-creature-container {
+    margin-top: 15px;
+    padding: 15px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    background: var(--background-secondary);
+    transition: all 0.3s ease;
+}
+
+/* NEW: Styles for selected creatures container */
+.selected-creatures-container {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    background: var(--background-secondary);
+}
+
 /* CHANGE: Container for buttons with correct margins */
 .spell-button-container {
     margin-top: 20px;
@@ -153,6 +181,10 @@ export const SpellModalStyles = `
     width: 100% !important;
     font-family: var(--font-interface) !important;
     font-size: var(--font-ui-small) !important;
+}
+
+.cantrip-upgrade-textarea {
+    margin-bottom: 10px;
 }
 
 /* CHANGE: Unified styles for all text input fields */
@@ -269,5 +301,4 @@ export const SpellModalStyles = `
     .selected-value-remove {
         align-self: flex-end;
     }
-}
-`;
+}`

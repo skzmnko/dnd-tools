@@ -4,12 +4,24 @@ import { i18n } from "src/services/LocalizationService";
 
 export class SpellDescriptionComponent {
   private spellData: Partial<Spell>;
+  private bestiaryService: any;
+  private creatures: any[] = [];
+  private selectedCreaturesContainer: HTMLElement | null = null;
 
-  constructor(spellData: Partial<Spell>) {
+  constructor(spellData: Partial<Spell>, bestiaryService?: any) {
     this.spellData = spellData;
+    this.bestiaryService = bestiaryService;
+    
+    // Initialize arrays if they don't exist
+    if (!this.spellData.summonedCreatures) {
+      this.spellData.summonedCreatures = [];
+    }
+    if (this.spellData.summonCreature === undefined) {
+      this.spellData.summonCreature = false;
+    }
   }
 
-  render(container: HTMLElement) {
+  async render(container: HTMLElement) {
     const section = container.createDiv({ cls: "creature-section" });
 
     section.createEl("h3", {
@@ -55,5 +67,112 @@ export class SpellDescriptionComponent {
     upgradeTextArea.inputEl.rows = 3;
     upgradeTextArea.inputEl.addClass("cantrip-upgrade-textarea");
     upgradeTextArea.inputEl.addClass("fixed-textarea");
+
+    // NEW: Summon creature toggle - moved under cantripUpgrade
+    const summonSetting = new Setting(descriptionContainer)
+      .setName(i18n.t("SPELL_FIELDS.SUMMON_CREATURE"))
+      .setDesc(i18n.t("SPELL_FIELDS.SUMMON_CREATURE_DESC"))
+      .addToggle((toggle) =>
+        toggle
+          .setValue(this.spellData.summonCreature || false)
+          .onChange((value) => {
+            this.spellData.summonCreature = value;
+            this.updateSummonCreatureVisibility();
+          }),
+      );
+
+    // NEW: Summon creature dropdown container - moved under cantripUpgrade
+    const summonContainer = descriptionContainer.createDiv("summon-creature-container");
+    summonContainer.style.display = this.spellData.summonCreature ? "block" : "none";
+    
+    // Load creatures from bestiary
+    await this.loadCreatures();
+    
+    new Setting(summonContainer)
+      .setName(i18n.t("SPELL_FIELDS.SELECT_SUMMON_CREATURE"))
+      .setDesc("")
+      .addDropdown((dropdown) => {
+        dropdown.addOption("", i18n.t("SPELL_FIELDS.SELECT_SUMMON_CREATURE"));
+        
+        this.creatures.forEach((creature) => {
+          dropdown.addOption(creature.id, creature.name);
+        });
+
+        dropdown.onChange((value: string) => {
+          if (value && !this.spellData.summonedCreatures?.includes(value)) {
+            this.spellData.summonedCreatures = [...(this.spellData.summonedCreatures || []), value];
+            this.updateSelectedCreaturesDisplay();
+          }
+          dropdown.setValue("");
+        });
+      });
+
+    // NEW: Selected creatures display - moved under cantripUpgrade
+    this.selectedCreaturesContainer = summonContainer.createDiv("selected-creatures-container");
+    this.updateSelectedCreaturesDisplay();
+  }
+
+  private async loadCreatures() {
+    try {
+      if (this.bestiaryService) {
+        await this.bestiaryService.initialize();
+        this.creatures = this.bestiaryService.getAllCreatures();
+        console.log("Loaded creatures for summoning:", this.creatures.length);
+      }
+    } catch (error) {
+      console.error("Error loading creatures for summoning:", error);
+      this.creatures = [];
+    }
+  }
+
+  private updateSummonCreatureVisibility() {
+    const summonContainer = this.selectedCreaturesContainer?.parentElement;
+    if (summonContainer) {
+      summonContainer.style.display = this.spellData.summonCreature ? "block" : "none";
+      
+      // Clear selected creatures when summon creature is disabled
+      if (!this.spellData.summonCreature) {
+        this.spellData.summonedCreatures = [];
+        this.updateSelectedCreaturesDisplay();
+      }
+    }
+  }
+
+  private updateSelectedCreaturesDisplay() {
+    if (!this.selectedCreaturesContainer) return;
+
+    this.selectedCreaturesContainer.empty();
+
+    if (!this.spellData.summonedCreatures || this.spellData.summonedCreatures.length === 0) {
+      const emptyText = this.selectedCreaturesContainer.createDiv("selected-values-empty");
+      emptyText.setText(i18n.t("SPELL_FIELDS.NO_CREATURE_SELECTED"));
+      return;
+    }
+
+    this.selectedCreaturesContainer.createEl("div", {
+      text: i18n.t("SPELL_FIELDS.SELECTED_SUMMON_CREATURE") + ":",
+      cls: "selected-values-title",
+    });
+
+    const creaturesList = this.selectedCreaturesContainer.createDiv("selected-values-list");
+    
+    this.spellData.summonedCreatures.forEach((creatureId, index) => {
+      const creature = this.creatures.find(c => c.id === creatureId);
+      if (creature) {
+        const creatureItem = creaturesList.createDiv("selected-value-item");
+        creatureItem.setText(creature.name);
+
+        const removeBtn = creatureItem.createEl("button", {
+          text: "×",
+          cls: "selected-value-remove",
+        });
+        removeBtn.addEventListener("click", () => {
+          this.spellData.summonedCreatures = this.spellData.summonedCreatures?.filter(
+            (id) => id !== creatureId,
+          );
+          this.updateSelectedCreaturesDisplay();
+        });
+      }
+    });
   }
 }
