@@ -18,6 +18,7 @@ export class SpellCreationModal extends Modal {
     school: "",
     classes: [],
     actionType: "ACTION",
+    castingTrigger: "",
     concentration: false,
     ritual: false,
     castingTime: "",
@@ -75,8 +76,10 @@ export class SpellCreationModal extends Modal {
   }
 
   private renderSaveButtons(contentEl: HTMLElement) {
-    const buttonContainer = contentEl.createDiv({ cls: "spell-button-container" });
-    
+    const buttonContainer = contentEl.createDiv({
+      cls: "spell-button-container",
+    });
+
     new Setting(buttonContainer)
       .addButton((btn) =>
         btn
@@ -126,6 +129,7 @@ export class SpellCreationModal extends Modal {
         "ACTION_TYPES",
         this.spellData.actionType as ActionTypeKey,
       ),
+      castingTrigger: this.spellData.castingTrigger || "",
       concentration: this.spellData.concentration || false,
       ritual: this.spellData.ritual || false,
       castingTime: this.spellData.castingTime || "",

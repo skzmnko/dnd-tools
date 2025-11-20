@@ -11,6 +11,7 @@ import {
 export class SpellBasicFieldsComponent {
   private spellData: Partial<Spell>;
   private selectedClassesContainer: HTMLElement | null = null;
+  private castingTriggerContainer: HTMLElement | null = null;
 
   constructor(spellData: Partial<Spell>) {
     this.spellData = spellData;
@@ -90,7 +91,7 @@ export class SpellBasicFieldsComponent {
     );
     this.updateSelectedClassesDisplay();
 
-    new Setting(section)
+    const actionTypeSetting = new Setting(section)
       .setName(i18n.t("SPELL_FIELDS.ACTION_TYPE"))
       .setDesc(i18n.t("SPELL_FIELDS.ACTION_TYPE_DESC"))
       .addDropdown((dropdown) => {
@@ -100,10 +101,28 @@ export class SpellBasicFieldsComponent {
         });
         dropdown
           .setValue(this.spellData.actionType || "ACTION")
-          .onChange(
-            (value) => (this.spellData.actionType = value as ActionTypeKey),
-          );
+          .onChange((value) => {
+            this.spellData.actionType = value as ActionTypeKey;
+            this.updateCastingTriggerVisibility();
+          });
       });
+
+    this.castingTriggerContainer = section.createDiv(
+      "casting-trigger-container",
+    );
+    this.castingTriggerContainer.style.display = "none";
+
+    new Setting(this.castingTriggerContainer)
+      .setName(i18n.t("SPELL_FIELDS.CASTING_TRIGGER"))
+      .setDesc(i18n.t("SPELL_FIELDS.CASTING_TRIGGER_DESC"))
+      .addText((text) =>
+        text
+          .setPlaceholder(i18n.t("SPELL_FIELDS.CASTING_TRIGGER_PLACEHOLDER"))
+          .setValue(this.spellData.castingTrigger || "")
+          .onChange((value) => (this.spellData.castingTrigger = value)),
+      );
+
+    this.updateCastingTriggerVisibility();
 
     new Setting(section)
       .setName(i18n.t("SPELL_FIELDS.CONCENTRATION"))
@@ -194,5 +213,16 @@ export class SpellBasicFieldsComponent {
         this.updateSelectedClassesDisplay();
       });
     });
+  }
+
+  private updateCastingTriggerVisibility() {
+    if (!this.castingTriggerContainer) return;
+
+    if (this.spellData.actionType === "REACTION") {
+      this.castingTriggerContainer.style.display = "block";
+    } else {
+      this.castingTriggerContainer.style.display = "none";
+      this.spellData.castingTrigger = "";
+    }
   }
 }

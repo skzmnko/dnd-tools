@@ -42,6 +42,16 @@ export const SpellModalStyles = `
     border-bottom: 1px solid var(--background-modifier-border);
 }
 
+/* NEW: Styles for casting trigger container */
+.casting-trigger-container {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    background: var(--background-secondary);
+    transition: all 0.3s ease;
+}
+
 /* CHANGE: Container for buttons with correct margins */
 .spell-button-container {
     margin-top: 20px;

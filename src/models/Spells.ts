@@ -5,6 +5,7 @@ export interface Spell {
   school: string;
   classes: string[];
   actionType: string;
+  castingTrigger?: string;
   concentration: boolean;
   ritual: boolean;
   castingTime: string;
