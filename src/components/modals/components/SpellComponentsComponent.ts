@@ -110,7 +110,7 @@ export class SpellComponentsComponent {
                 this.spellData.components.verbalDescription = value;
               }
             });
-          // ИЗМЕНЕНИЕ: Применены фиксированные стили как для languages-textarea
+
           textarea.inputEl.rows = 3;
           textarea.inputEl.addClass("verbal-textarea");
           textarea.inputEl.addClass("fixed-textarea");
@@ -141,7 +141,6 @@ export class SpellComponentsComponent {
                 this.spellData.components.materialDescription = value;
               }
             });
-          // ИЗМЕНЕНИЕ: Применены фиксированные стили как для languages-textarea
           textarea.inputEl.rows = 3;
           textarea.inputEl.addClass("material-textarea");
           textarea.inputEl.addClass("fixed-textarea");

@@ -75,7 +75,9 @@ export class SpellCreationModal extends Modal {
   }
 
   private renderSaveButtons(contentEl: HTMLElement) {
-    new Setting(contentEl)
+    const buttonContainer = contentEl.createDiv({ cls: "spell-button-container" });
+    
+    new Setting(buttonContainer)
       .addButton((btn) =>
         btn
           .setButtonText(i18n.t("SPELL_MODAL.SAVE_BUTTON"))

@@ -3,7 +3,7 @@ export const SpellModalStyles = `
     max-height: 80vh;
     overflow-y: auto;
     padding-right: 10px;
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт для всего контента */
+    /* CHANGE: Unified font for all content */
     font-family: var(--font-interface);
     font-size: var(--font-ui-small);
 }
@@ -26,6 +26,29 @@ export const SpellModalStyles = `
     background: var(--interactive-accent);
 }
 
+/* CHANGE: Centering section headers like in Creature modal */
+.mod-spell-creation .section-title {
+    text-align: center !important;
+    width: 100% !important;
+    margin: 20px 0 15px 0 !important;
+    border-bottom: 1px solid var(--background-modifier-border) !important;
+    padding-bottom: 8px !important;
+}
+
+/* CHANGE: Styles for sections like in Creature modal */
+.mod-spell-creation .creature-section {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--background-modifier-border);
+}
+
+/* CHANGE: Container for buttons with correct margins */
+.spell-button-container {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--background-modifier-border);
+}
+
 .selected-classes-container {
     margin: 10px 0;
     padding: 10px;
@@ -39,7 +62,7 @@ export const SpellModalStyles = `
     margin-bottom: 5px;
     color: var(--text-normal);
     font-size: 14px;
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -58,7 +81,7 @@ export const SpellModalStyles = `
     border-radius: 3px;
     border: 1px solid var(--background-modifier-border);
     font-size: 13px;
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -75,7 +98,7 @@ export const SpellModalStyles = `
     align-items: center;
     justify-content: center;
     line-height: 1;
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -110,7 +133,7 @@ export const SpellModalStyles = `
     margin: 15px 0;
 }
 
-/* ИЗМЕНЕНИЕ: Добавлены стили для текстовых областей с фиксированным размером */
+/* CHANGE: Added styles for text areas with fixed size */
 .verbal-textarea,
 .material-textarea,
 .spell-description-textarea,
@@ -122,7 +145,7 @@ export const SpellModalStyles = `
     font-size: var(--font-ui-small) !important;
 }
 
-/* ИЗМЕНЕНИЕ: Унифицированные стили для всех текстовых полей ввода */
+/* CHANGE: Unified styles for all text input fields */
 .spell-text-input,
 .spell-dropdown,
 .spell-textarea {
@@ -136,7 +159,7 @@ export const SpellModalStyles = `
     margin: 20px 0;
 }
 
-/* Стили для чекбоксов и переключателей */
+/* Styles for checkboxes and toggles */
 .spell-toggle-container {
     display: flex;
     align-items: center;
@@ -147,11 +170,11 @@ export const SpellModalStyles = `
 .spell-toggle-label {
     font-size: 14px;
     color: var(--text-normal);
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
-/* Стили для выпадающих списков */
+/* Styles for dropdowns */
 .spell-dropdown {
     width: 100%;
     padding: 6px 8px;
@@ -166,7 +189,7 @@ export const SpellModalStyles = `
     outline: none;
 }
 
-/* Стили для текстовых полей */
+/* Styles for text fields */
 .spell-text-input {
     width: 100%;
     padding: 6px 8px;
@@ -181,7 +204,7 @@ export const SpellModalStyles = `
     outline: none;
 }
 
-/* Стили для заголовков секций */
+/* Styles for section headers */
 .spell-section-title {
     color: var(--text-accent);
     border-bottom: 2px solid var(--background-modifier-border);
@@ -189,23 +212,23 @@ export const SpellModalStyles = `
     margin: 20px 0 15px 0;
     font-size: 16px;
     font-weight: 600;
-    /* ИСКЛЮЧЕНИЕ: Заголовки остаются без изменений */
+    /* EXCEPTION: Headers remain unchanged */
 }
 
-/* ИЗМЕНЕНИЕ: Унифицированные стили для всех Setting элементов */
+/* CHANGE: Unified styles for all Setting elements */
 .setting-item-name,
 .setting-item-description {
     font-family: var(--font-interface) !important;
     font-size: var(--font-ui-small) !important;
 }
 
-/* ИЗМЕНЕНИЕ: Унифицированные стили для кнопок */
+/* CHANGE: Unified styles for buttons */
 .mod-spell-creation .button-container button {
     font-family: var(--font-interface) !important;
     font-size: var(--font-ui-small) !important;
 }
 
-/* Анимации */
+/* Animations */
 .spell-fade-in {
     animation: spellFadeIn 0.3s ease-in-out;
 }
@@ -221,7 +244,7 @@ export const SpellModalStyles = `
     }
 }
 
-/* Адаптивность */
+/* Responsiveness */
 @media (max-width: 768px) {
     .spell-modal-container {
         max-height: 70vh;

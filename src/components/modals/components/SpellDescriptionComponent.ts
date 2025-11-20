@@ -39,7 +39,6 @@ export class SpellDescriptionComponent {
       .onChange((value) => (this.spellData.description = value));
     textArea.inputEl.style.width = "100%";
     textArea.inputEl.rows = 6;
-    // ИЗМЕНЕНИЕ: Применены фиксированные стили как для languages-textarea
     textArea.inputEl.addClass("spell-description-textarea");
     textArea.inputEl.addClass("fixed-textarea");
 
@@ -54,7 +53,6 @@ export class SpellDescriptionComponent {
       .onChange((value) => (this.spellData.cantripUpgrade = value));
     upgradeTextArea.inputEl.style.width = "100%";
     upgradeTextArea.inputEl.rows = 3;
-    // ИЗМЕНЕНИЕ: Применены фиксированные стили как для languages-textarea
     upgradeTextArea.inputEl.addClass("cantrip-upgrade-textarea");
     upgradeTextArea.inputEl.addClass("fixed-textarea");
   }

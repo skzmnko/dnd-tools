@@ -5,7 +5,7 @@ export const CreatureModalStyles = `
     gap: 10px;
     margin-bottom: 20px;
     flex-wrap: wrap;
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
     font-size: var(--font-ui-small);
 }
@@ -23,7 +23,7 @@ export const CreatureModalStyles = `
     font-size: 14px;
     margin-bottom: 5px;
     color: var(--text-normal);
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -36,7 +36,7 @@ export const CreatureModalStyles = `
     background: var(--background-primary);
     color: var(--text-normal);
     margin-bottom: 3px;
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
     font-size: var(--font-ui-small);
 }
@@ -56,7 +56,7 @@ export const CreatureModalStyles = `
     color: var(--text-muted);
     font-style: italic;
     cursor: not-allowed;
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
     font-size: var(--font-ui-small);
 }
@@ -82,7 +82,7 @@ export const CreatureModalStyles = `
     font-size: 14px;
     margin-bottom: 5px;
     color: var(--text-normal);
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -96,7 +96,7 @@ export const CreatureModalStyles = `
     color: var(--text-normal);
     cursor: pointer;
     transition: all 0.2s ease;
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
     font-size: var(--font-ui-small);
 }
@@ -117,7 +117,7 @@ export const CreatureModalStyles = `
     color: var(--text-muted);
     margin-top: 2px;
     font-style: italic;
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -134,7 +134,7 @@ export const CreatureModalStyles = `
     margin-bottom: 8px;
     color: var(--text-normal);
     font-size: 14px;
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -152,7 +152,7 @@ export const CreatureModalStyles = `
     background: var(--background-primary);
     border-radius: 3px;
     border: 1px solid var(--background-modifier-border);
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
     font-size: var(--font-ui-small);
 }
@@ -169,7 +169,7 @@ export const CreatureModalStyles = `
     display: flex;
     align-items: center;
     justify-content: center;
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -182,7 +182,7 @@ export const CreatureModalStyles = `
     font-style: italic;
     text-align: center;
     padding: 10px;
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -203,7 +203,7 @@ export const CreatureModalStyles = `
     margin-bottom: 10px;
     color: var(--text-normal);
     font-size: 14px;
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -233,13 +233,13 @@ export const CreatureModalStyles = `
     font-size: 14px;
     line-height: 1.4;
     margin-bottom: 8px;
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
 .trait-remove, .action-remove {
     margin-top: 5px;
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -250,7 +250,7 @@ export const CreatureModalStyles = `
     padding: 20px;
     border: 1px dashed var(--background-modifier-border);
     border-radius: 4px;
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт */
+    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -260,7 +260,7 @@ export const CreatureModalStyles = `
     border-bottom: 1px solid var(--background-modifier-border);
 }
 
-/* Стили для текстовых областей с фиксированным размером */
+/* Styles for text areas with fixed size */
 .languages-textarea,
 .skills-textarea,
 .senses-textarea,
@@ -277,7 +277,7 @@ export const CreatureModalStyles = `
     resize: none !important;
     min-height: 60px !important;
     width: 100% !important;
-    /* ИЗМЕНЕНИЕ: Унифицированный шрифт для всех текстовых областей */
+    /* CHANGE: Unified font for all text areas */
     font-family: var(--font-interface) !important;
     font-size: var(--font-ui-small) !important;
 }
@@ -292,30 +292,30 @@ export const CreatureModalStyles = `
     width: 100% !important;
 }
 
-/* Центрирование заголовков */
+/* Centering section headers */
 .creature-section h3 {
     text-align: center !important;
     width: 100% !important;
     margin: 20px 0 15px 0 !important;
     border-bottom: 1px solid var(--background-modifier-border) !important;
     padding-bottom: 8px !important;
-    /* ИСКЛЮЧЕНИЕ: Заголовки остаются без изменений */
+    /* EXCEPTION: Headers remain unchanged */
 }
 
-/* ИЗМЕНЕНИЕ: Унифицированные стили для всех Setting элементов в Creature модальном окне */
+/* CHANGE: Unified styles for all Setting elements in Creature modal */
 .mod-creature-creation .setting-item-name,
 .mod-creature-creation .setting-item-description {
     font-family: var(--font-interface) !important;
     font-size: var(--font-ui-small) !important;
 }
 
-/* ИЗМЕНЕНИЕ: Унифицированные стили для кнопок в Creature модальном окне */
+/* CHANGE: Unified styles for buttons in Creature modal */
 .mod-creature-creation .button-container button {
     font-family: var(--font-interface) !important;
     font-size: var(--font-ui-small) !important;
 }
 
-/* ИЗМЕНЕНИЕ: Унифицированные стили для всех текстовых полей ввода в Creature модальном окне */
+/* CHANGE: Unified styles for all text input fields in Creature modal */
 .mod-creature-creation input[type="text"],
 .mod-creature-creation textarea,
 .mod-creature-creation select {
