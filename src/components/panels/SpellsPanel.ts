@@ -204,11 +204,10 @@ export class SpellsPanel extends ItemView {
 
   private sortSpellsByLevelAndName(spells: Spell[]): Spell[] {
     return [...spells].sort((a, b) => {
-      // Сначала сортируем по уровню (заклинания с уровнем 0 - заговоры - первыми)
       if (a.level !== b.level) {
         return a.level - b.level;
       }
-      // Если уровень одинаковый, сортируем по названию
+
       return a.name.localeCompare(b.name);
     });
   }
@@ -297,13 +296,14 @@ export class SpellsPanel extends ItemView {
     });
 
     const detailsRow = spellContent.createDiv({ cls: "spell-details-row" });
+
     const levelText =
       spell.level === 0
         ? i18n.t("SPELL_FIELDS.CANTRIP")
         : `${i18n.t("SPELL_FIELDS.SPELLEVEL")} ${spell.level}`;
 
     const basicInfo = detailsRow.createEl("span", {
-      text: `${levelText}`,
+      text: levelText,
       cls: "spell-basic-info",
     });
 
@@ -311,34 +311,6 @@ export class SpellsPanel extends ItemView {
       const classesInfo = detailsRow.createEl("span", {
         text: ` | ${spell.classes.map((className) => i18n.getSpellClass(className as any)).join(", ")}`,
         cls: "spell-classes-info",
-      });
-    }
-
-    const castingInfo = detailsRow.createEl("span", {
-      text: ` | ${spell.castingTime}`,
-      cls: "spell-casting-info",
-    });
-
-    const components = [];
-    if (spell.components.verbal) components.push("V");
-    if (spell.components.somatic) components.push("S");
-    if (spell.components.material) components.push("M");
-
-    if (components.length > 0) {
-      const componentsInfo = detailsRow.createEl("span", {
-        text: ` | ${components.join(", ")}`,
-        cls: "spell-components-info",
-      });
-    }
-
-    const flags = [];
-    if (spell.concentration) flags.push(i18n.t("SPELL_FIELDS.CONCENTRATION"));
-    if (spell.ritual) flags.push(i18n.t("SPELL_FIELDS.RITUAL"));
-
-    if (flags.length > 0) {
-      const flagsInfo = detailsRow.createEl("span", {
-        text: ` | ${flags.join(", ")}`,
-        cls: "spell-flags-info",
       });
     }
   }

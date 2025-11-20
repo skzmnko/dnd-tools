@@ -255,20 +255,6 @@
     font-size: 0.9em;
 }
 
-.spell-casting-info {
-    color: var(--text-muted);
-}
-
-.spell-components-info {
-    color: var(--text-muted);
-    font-style: italic;
-}
-
-.spell-flags-info {
-    color: var(--text-accent);
-    font-weight: 500;
-}
-
 .spell-actions {
     display: flex;
     gap: 5px;
