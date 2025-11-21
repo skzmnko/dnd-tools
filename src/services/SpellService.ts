@@ -1,5 +1,6 @@
 import { Spell, SpellsData } from "src/models/Spells";
 import { StorageService } from "src/services/StorageService";
+import { i18n } from "src/services/LocalizationService";
 
 export class SpellService {
   private storage: StorageService;
@@ -34,6 +35,8 @@ export class SpellService {
       materialDescription: spellData.components?.materialDescription || "",
     };
 
+    const currentLanguage = i18n.getCurrentLocale();
+    
     const spell: Spell = {
       name: spellData.name,
       level: spellData.level,
@@ -52,6 +55,8 @@ export class SpellService {
       summonCreature: spellData.summonCreature,
       summonedCreatures: spellData.summonedCreatures,
       manaCost: spellData.manaCost || false,
+      source: "Custom",
+      language: currentLanguage,
       id: this.generateId(),
       created: Date.now(),
       updated: Date.now(),
@@ -215,6 +220,8 @@ export class SpellService {
       summonCreature: spell.summonCreature,
       summonedCreatures: spell.summonedCreatures || [],
       manaCost: spell.manaCost || false,
+      source: spell.source || "Custom",
+      language: spell.language || "en",
       id: spell.id,
       created: spell.created,
       updated: spell.updated,

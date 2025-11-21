@@ -24,6 +24,8 @@ export interface Spell {
   summonCreature: boolean;
   summonedCreatures: string[];
   manaCost?: boolean;
+  source: string;
+  language: string;
   id: string;
   created: number;
   updated: number;

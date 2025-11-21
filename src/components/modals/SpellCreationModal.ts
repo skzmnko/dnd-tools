@@ -36,6 +36,8 @@ export class SpellCreationModal extends Modal {
     summonCreature: false,
     summonedCreatures: [],
     manaCost: false,
+    source: "Custom",
+    language: i18n.getCurrentLocale(),
   };
 
   private basicFields: SpellBasicFieldsComponent;
@@ -155,6 +157,8 @@ export class SpellCreationModal extends Modal {
       summonCreature: this.spellData.summonCreature || false,
       summonedCreatures: this.spellData.summonedCreatures || [],
       manaCost: this.spellData.manaCost || false,
+      source: "Custom",
+      language: i18n.getCurrentLocale(),
     };
 
     try {
