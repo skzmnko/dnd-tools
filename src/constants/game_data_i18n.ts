@@ -266,13 +266,13 @@ export const GAME_DATA_RU = {
   SPELL_CLASSES: {
     BARD: "Бард",
     WIZARD: "Волшебник",
-    CLERIC: "Жрец",
     DRUID: "Друид",
+    CLERIC: "Жрец",
     ARTIFICER: "Изобретатель",
+    WARLOCK: "Колдун",
     PALADIN: "Паладин",
     RANGER: "Следопыт",
     SORCERER: "Чародей",
-    WARLOCK: "Колдун",
   },
   ACTION_TYPES: {
     ACTION: "Действие",
