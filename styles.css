@@ -222,7 +222,11 @@
 }
 
 .spell-name-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 4px;
+    gap: 10px;
 }
 
 .spell-name-link {
@@ -230,10 +234,29 @@
     color: var(--text-accent);
     text-decoration: none;
     cursor: pointer;
+    flex: 1;
+    min-width: 0;
 }
 
 .spell-name-link:hover {
     text-decoration: underline;
+}
+
+/* NEW: Стили для индикатора источника заклинания */
+.spell-source-indicator {
+    flex-shrink: 0;
+}
+
+.spell-source-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background-color: var(--background-secondary);
+    color: var(--text-muted);
+    border-radius: 12px;
+    font-size: 0.75em;
+    font-weight: 500;
+    border: 1px solid var(--background-modifier-border);
+    white-space: nowrap;
 }
 
 .spell-details-row {
@@ -325,6 +348,16 @@
         align-self: flex-start;
     }
     
+    .spell-name-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .spell-source-indicator {
+        align-self: flex-end;
+    }
+    
     .spell-details-row {
         flex-direction: column;
         align-items: flex-start;
@@ -388,6 +421,10 @@
     .search-input {
         border-width: 2px;
     }
+    
+    .spell-source-badge {
+        border-width: 2px;
+    }
 }
 
 /* Reduced motion support */
@@ -408,6 +445,11 @@
 
 .theme-dark .spells-school-header {
     background-color: var(--background-primary-alt);
+}
+
+.theme-dark .spell-source-badge {
+    background-color: var(--background-primary-alt);
+    border-color: var(--background-modifier-border-hover);
 }
 
 /* Print styles */
@@ -431,5 +473,10 @@
     .spells-school-header {
         background: none;
         border-bottom: 2px solid #000;
+    }
+    
+    .spell-source-badge {
+        background: none;
+        border: 1px solid #000;
     }
 }

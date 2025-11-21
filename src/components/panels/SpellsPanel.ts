@@ -295,6 +295,16 @@ export class SpellsPanel extends ItemView {
       this.viewSpellDetails(spell);
     });
 
+    const sourceIndicator = nameRow.createDiv({
+      cls: "spell-source-indicator",
+    });
+    const sourceText =
+      spell.source && spell.source.trim() !== "" ? spell.source : "Unknown";
+    sourceIndicator.createEl("span", {
+      text: sourceText,
+      cls: "spell-source-badge",
+    });
+
     const detailsRow = spellContent.createDiv({ cls: "spell-details-row" });
 
     const levelText =
