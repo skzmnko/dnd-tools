@@ -242,7 +242,6 @@
     text-decoration: underline;
 }
 
-/* NEW: Стили для индикатора источника заклинания */
 .spell-source-indicator {
     flex-shrink: 0;
 }
