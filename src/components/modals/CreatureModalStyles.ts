@@ -5,7 +5,6 @@ export const CreatureModalStyles = `
     gap: 10px;
     margin-bottom: 20px;
     flex-wrap: wrap;
-    /* CHANGE: Unified font */
     font-family: var(--font-interface);
     font-size: var(--font-ui-small);
 }
@@ -23,7 +22,6 @@ export const CreatureModalStyles = `
     font-size: 14px;
     margin-bottom: 5px;
     color: var(--text-normal);
-    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -36,7 +34,6 @@ export const CreatureModalStyles = `
     background: var(--background-primary);
     color: var(--text-normal);
     margin-bottom: 3px;
-    /* CHANGE: Unified font */
     font-family: var(--font-interface);
     font-size: var(--font-ui-small);
 }
@@ -56,7 +53,6 @@ export const CreatureModalStyles = `
     color: var(--text-muted);
     font-style: italic;
     cursor: not-allowed;
-    /* CHANGE: Unified font */
     font-family: var(--font-interface);
     font-size: var(--font-ui-small);
 }
@@ -82,7 +78,6 @@ export const CreatureModalStyles = `
     font-size: 14px;
     margin-bottom: 5px;
     color: var(--text-normal);
-    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -96,7 +91,6 @@ export const CreatureModalStyles = `
     color: var(--text-normal);
     cursor: pointer;
     transition: all 0.2s ease;
-    /* CHANGE: Unified font */
     font-family: var(--font-interface);
     font-size: var(--font-ui-small);
 }
@@ -117,7 +111,6 @@ export const CreatureModalStyles = `
     color: var(--text-muted);
     margin-top: 2px;
     font-style: italic;
-    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -134,7 +127,6 @@ export const CreatureModalStyles = `
     margin-bottom: 8px;
     color: var(--text-normal);
     font-size: 14px;
-    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -152,7 +144,6 @@ export const CreatureModalStyles = `
     background: var(--background-primary);
     border-radius: 3px;
     border: 1px solid var(--background-modifier-border);
-    /* CHANGE: Unified font */
     font-family: var(--font-interface);
     font-size: var(--font-ui-small);
 }
@@ -169,7 +160,6 @@ export const CreatureModalStyles = `
     display: flex;
     align-items: center;
     justify-content: center;
-    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -182,7 +172,6 @@ export const CreatureModalStyles = `
     font-style: italic;
     text-align: center;
     padding: 10px;
-    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -203,7 +192,6 @@ export const CreatureModalStyles = `
     margin-bottom: 10px;
     color: var(--text-normal);
     font-size: 14px;
-    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -233,13 +221,11 @@ export const CreatureModalStyles = `
     font-size: 14px;
     line-height: 1.4;
     margin-bottom: 8px;
-    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
 .trait-remove, .action-remove {
     margin-top: 5px;
-    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -250,7 +236,6 @@ export const CreatureModalStyles = `
     padding: 20px;
     border: 1px dashed var(--background-modifier-border);
     border-radius: 4px;
-    /* CHANGE: Unified font */
     font-family: var(--font-interface);
 }
 
@@ -258,6 +243,22 @@ export const CreatureModalStyles = `
     margin-bottom: 25px;
     padding-bottom: 15px;
     border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.challenge-rating-dropdown {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    background: var(--background-primary);
+    color: var(--text-normal);
+    font-family: var(--font-interface);
+    font-size: var(--font-ui-small);
+}
+
+.challenge-rating-dropdown:focus {
+    border-color: var(--interactive-accent);
+    outline: none;
 }
 
 /* Styles for text areas with fixed size */

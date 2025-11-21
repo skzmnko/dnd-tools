@@ -22,6 +22,7 @@ export interface Creature {
   saving_throws: number[];
   skills: string;
   senses: string;
+  challengeRating: string;
   alchemy_ingredients: string;
   craft_ingredients: string;
   staements: string;

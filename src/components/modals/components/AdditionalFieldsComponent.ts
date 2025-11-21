@@ -4,6 +4,7 @@ import { i18n } from "src/services/LocalizationService";
 export class AdditionalFieldsComponent {
   private skills: string = "";
   private senses: string = "";
+  private challengeRating: string = "0";
   private alchemy_ingredients: string = "";
   private craft_ingredients: string = "";
   private statements: string = "";
@@ -41,6 +42,27 @@ export class AdditionalFieldsComponent {
           .onChange((value) => (this.senses = value));
         text.inputEl.addClass("senses-textarea");
         text.inputEl.addClass("fixed-textarea");
+      });
+
+    new Setting(section)
+      .setName(i18n.t("ADDITIONAL_FIELDS.CHALLENGE_RATING"))
+      .setDesc(i18n.t("ADDITIONAL_FIELDS.CHALLENGE_RATING_DESC"))
+      .addDropdown((dropdown) => {
+        const challengeRatings = [
+          "0", "1/8", "1/4", "1/2", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+          "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", 
+          "24", "25", "26", "27", "28", "29", "30"
+        ];
+        
+        challengeRatings.forEach(rating => {
+          dropdown.addOption(rating, rating);
+        });
+        
+        dropdown
+          .setValue(this.challengeRating)
+          .onChange((value) => (this.challengeRating = value));
+        
+        dropdown.selectEl.addClass("dropdown");
       });
 
     this.alchemySetting = new Setting(section)
@@ -118,6 +140,9 @@ export class AdditionalFieldsComponent {
   }
   getSenses(): string {
     return this.senses;
+  }
+  getChallengeRating(): string {
+    return this.challengeRating;
   }
   getAlchemyIngredients(): string {
     return this.alchemy_ingredients;

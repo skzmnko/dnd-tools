@@ -135,6 +135,7 @@ export class CreatureCreationModal extends Modal {
       saving_throws: this.abilityScores.calculateSavingThrows(),
       skills: this.additionalFields.getSkills(),
       senses: this.additionalFields.getSenses(),
+      challengeRating: this.additionalFields.getChallengeRating(),
       alchemy_ingredients: this.additionalFields.getAlchemyIngredients(),
       craft_ingredients: this.additionalFields.getCraftIngredients(),
       statements: this.additionalFields.getStatements(),
