@@ -156,6 +156,8 @@ export const LOCALE_EN = {
     DELETE_SUCCESS: 'Trait "{name}" deleted',
     VALIDATION: "Please enter trait name",
     MAX_REACHED: "Maximum number of traits reached (10)",
+    USES_SPELLS: "Using Spells",
+    USES_SPELLS_DESC: "Add the 'Using Spells' trait to a creature",
   },
   ACTIONS: {
     TITLE: "Actions",
@@ -402,6 +404,8 @@ export const LOCALE_RU = {
     DELETE_SUCCESS: 'Черта "{name}" удалена',
     VALIDATION: "Пожалуйста, введите название черты",
     MAX_REACHED: "Достигнуто максимальное количество черт (10)",
+    USES_SPELLS: "Использование заклинаний",
+    USES_SPELLS_DESC: "Добавить существу черту 'Использование заклинаний'",
   },
   ACTIONS: {
     TITLE: "Действия",

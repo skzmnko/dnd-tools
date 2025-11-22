@@ -6,6 +6,7 @@ export class TraitsComponent {
   private traits: CreatureTrait[] = [];
   private newTraitName: string = "";
   private newTraitDesc: string = "";
+  private usesSpells: boolean = false;
 
   render(container: HTMLElement) {
     const section = container.createDiv({ cls: "creature-section" });
@@ -42,6 +43,15 @@ export class TraitsComponent {
         text.inputEl.addClass("trait-desc-textarea");
         text.inputEl.addClass("wide-textarea");
       });
+
+    new Setting(addTraitContainer)
+      .setName(i18n.t("TRAITS.USES_SPELLS"))
+      .setDesc(i18n.t("TRAITS.USES_SPELLS_DESC"))
+      .addToggle((toggle) =>
+        toggle
+          .setValue(this.usesSpells)
+          .onChange((value) => (this.usesSpells = value)),
+      );
 
     new Setting(addTraitContainer).addButton((btn) =>
       btn
@@ -138,5 +148,9 @@ export class TraitsComponent {
 
   getTraits(): CreatureTrait[] {
     return this.traits;
+  }
+
+  getUsesSpells(): boolean {
+    return this.usesSpells;
   }
 }
