@@ -158,6 +158,7 @@ export const LOCALE_EN = {
     MAX_REACHED: "Maximum number of traits reached (10)",
     USES_SPELLS: "Using Spells",
     USES_SPELLS_DESC: "Add the 'Using Spells' trait to a creature",
+    SPELLS_TRAIT_NAME: "Spells Using",
   },
   ACTIONS: {
     TITLE: "Actions",
@@ -406,6 +407,7 @@ export const LOCALE_RU = {
     MAX_REACHED: "Достигнуто максимальное количество черт (10)",
     USES_SPELLS: "Использование заклинаний",
     USES_SPELLS_DESC: "Добавить существу черту 'Использование заклинаний'",
+    SPELLS_TRAIT_NAME: "Использование заклинаний",
   },
   ACTIONS: {
     TITLE: "Действия",

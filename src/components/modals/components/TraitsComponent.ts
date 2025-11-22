@@ -7,6 +7,7 @@ export class TraitsComponent {
   private newTraitName: string = "";
   private newTraitDesc: string = "";
   private usesSpells: boolean = false;
+  private traitNameInput: HTMLInputElement | null = null;
 
   render(container: HTMLElement) {
     const section = container.createDiv({ cls: "creature-section" });
@@ -24,14 +25,15 @@ export class TraitsComponent {
       cls: "add-trait-container",
     });
 
-    new Setting(addTraitContainer)
+    const nameSetting = new Setting(addTraitContainer)
       .setName(i18n.t("TRAITS.TRAIT_NAME"))
       .setDesc(i18n.t("TRAITS.TRAIT_NAME_DESC"))
-      .addText((text) =>
+      .addText((text) => {
         text
           .setPlaceholder(i18n.t("TRAITS.TRAIT_NAME_PLACEHOLDER"))
-          .onChange((value) => (this.newTraitName = value)),
-      );
+          .onChange((value) => (this.newTraitName = value));
+        this.traitNameInput = text.inputEl;
+      });
 
     new Setting(addTraitContainer)
       .setName(i18n.t("TRAITS.TRAIT_DESC"))
@@ -50,7 +52,7 @@ export class TraitsComponent {
       .addToggle((toggle) =>
         toggle
           .setValue(this.usesSpells)
-          .onChange((value) => (this.usesSpells = value)),
+          .onChange((value) => this.onUsesSpellsChange(value)),
       );
 
     new Setting(addTraitContainer).addButton((btn) =>
@@ -74,23 +76,48 @@ export class TraitsComponent {
           };
 
           this.traits.push(newTrait);
-
           this.newTraitName = "";
           this.newTraitDesc = "";
+          this.usesSpells = false;
 
-          const nameInput = addTraitContainer.querySelector(
-            `input[placeholder="${i18n.t("TRAITS.TRAIT_NAME_PLACEHOLDER")}"]`,
-          ) as HTMLInputElement;
+          if (this.traitNameInput) {
+            this.traitNameInput.value = "";
+            this.traitNameInput.readOnly = false;
+            this.traitNameInput.placeholder = i18n.t("TRAITS.TRAIT_NAME_PLACEHOLDER");
+          }
+
           const descInput = addTraitContainer.querySelector(
             "textarea",
           ) as HTMLTextAreaElement;
-          if (nameInput) nameInput.value = "";
           if (descInput) descInput.value = "";
+
+          const toggleInput = addTraitContainer.querySelector(
+            'input[type="checkbox"]',
+          ) as HTMLInputElement;
+          if (toggleInput) toggleInput.checked = false;
 
           this.updateTraitsList(container);
           new Notice(i18n.t("TRAITS.SUCCESS", { name: newTrait.name }));
         }),
     );
+  }
+
+  private onUsesSpellsChange(value: boolean) {
+    this.usesSpells = value;
+
+    if (this.traitNameInput) {
+      if (value) {
+        const spellTraitName = i18n.t("TRAITS.SPELLS_TRAIT_NAME");
+        this.traitNameInput.value = spellTraitName;
+        this.newTraitName = spellTraitName;
+        this.traitNameInput.readOnly = true;
+      } else {
+        this.traitNameInput.value = "";
+        this.newTraitName = "";
+        this.traitNameInput.readOnly = false;
+        this.traitNameInput.placeholder = i18n.t("TRAITS.TRAIT_NAME_PLACEHOLDER");
+      }
+    }
   }
 
   private renderTraitsList(container: HTMLElement) {
