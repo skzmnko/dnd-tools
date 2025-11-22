@@ -1,6 +1,8 @@
 import { Setting, Notice } from "obsidian";
 import { CreatureTrait } from "src/models/Bestiary";
 import { i18n } from "src/services/LocalizationService";
+import { SpellService } from "src/services/SpellService";
+import { Spell } from "src/models/Spells";
 
 export class TraitsComponent {
   private traits: CreatureTrait[] = [];
@@ -11,6 +13,7 @@ export class TraitsComponent {
   private spellCountingMode: "uses" | "slots" = "uses";
   private spellCountingContainer: HTMLElement | null = null;
   private spellOptionsContainer: HTMLElement | null = null;
+  private spellService: SpellService | null = null;
 
   private usesOptions = [
     { 
@@ -101,6 +104,16 @@ export class TraitsComponent {
       spell: "" 
     },
   ];
+
+  constructor(spellService?: SpellService) {
+    if (spellService) {
+      this.spellService = spellService;
+    }
+  }
+
+  setSpellService(spellService: SpellService) {
+    this.spellService = spellService;
+  }
 
   render(container: HTMLElement) {
     const section = container.createDiv({ cls: "creature-section" });
@@ -297,7 +310,7 @@ export class TraitsComponent {
     slotsLabel.setText(i18n.t("TRAITS.SPELL_COUNTING_SLOTS"));
   }
 
-  private renderSpellOptions() {
+  private async renderSpellOptions() {
     if (!this.spellOptionsContainer) return;
 
     this.spellOptionsContainer.empty();
@@ -305,6 +318,21 @@ export class TraitsComponent {
 
     const options =
       this.spellCountingMode === "uses" ? this.usesOptions : this.slotsOptions;
+
+    // Загружаем заклинания из SpellService
+    let spells: Spell[] = [];
+    try {
+      if (this.spellService && typeof this.spellService.getAllSpells === 'function') {
+        spells = this.spellService.getAllSpells();
+        console.log("Loaded spells:", spells.length);
+      } else {
+        console.warn("SpellService not available or getAllSpells method not found");
+        new Notice(i18n.t("TRAITS.SPELLS_SERVICE_UNAVAILABLE"));
+      }
+    } catch (error) {
+      console.error("Error loading spells:", error);
+      new Notice(i18n.t("TRAITS.SPELLS_LOAD_ERROR"));
+    }
 
     options.forEach((option) => {
       const optionContainer = this.spellOptionsContainer!.createDiv({
@@ -337,7 +365,7 @@ export class TraitsComponent {
       spellSelect.style.display = option.checked ? "block" : "none";
       spellSelect.value = option.spell;
 
-      this.populateSpellDropdown(spellSelect);
+      this.populateSpellDropdown(spellSelect, spells);
 
       spellSelect.addEventListener("change", () => {
         option.spell = spellSelect.value;
@@ -345,24 +373,42 @@ export class TraitsComponent {
     });
   }
 
-  private populateSpellDropdown(select: HTMLSelectElement) {
-    const demoSpells = [
-      { value: "", text: "Выберите заклинание..." },
-      { value: "fireball", text: "Огненный шар" },
-      { value: "heal", text: "Лечение" },
-      { value: "lightning_bolt", text: "Молниевая стрела" },
-      { value: "magic_missile", text: "Волшебная стрела" },
-      { value: "cure_wounds", text: "Лечение ран" },
-      { value: "shield", text: "Щит" },
-      { value: "mage_armor", text: "Доспех мага" },
-    ];
+  private populateSpellDropdown(select: HTMLSelectElement, spells: Spell[]) {
+    // Очищаем существующие опции
+    select.empty();
 
-    demoSpells.forEach((spell) => {
-      const option = select.createEl("option", {
-        value: spell.value,
-        text: spell.text,
-      });
+    // Добавляем опцию по умолчанию
+    const defaultOption = select.createEl("option", {
+      value: "",
+      text: i18n.t("TRAITS.SELECT_SPELL_PLACEHOLDER"),
     });
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+
+    // Добавляем заклинания из SpellService
+    if (spells.length > 0) {
+      spells.forEach((spell) => {
+        const option = select.createEl("option", {
+          value: spell.id,
+          text: `${spell.name} (${this.getSpellLevelText(spell.level)})`,
+        });
+        option.setAttribute("data-spell-level", spell.level.toString());
+      });
+    } else {
+      // Если заклинаний нет, показываем сообщение
+      const noSpellsOption = select.createEl("option", {
+        value: "",
+        text: i18n.t("TRAITS.NO_SPELLS_AVAILABLE"),
+      });
+      noSpellsOption.disabled = true;
+    }
+  }
+
+  private getSpellLevelText(level: number): string {
+    if (level === 0) {
+      return i18n.t("SPELLS.LEVELS.CANTRIP");
+    }
+    return i18n.t("SPELLS.LEVELS.LEVEL_" + level);
   }
 
   private resetSpellOptions() {
@@ -390,7 +436,7 @@ export class TraitsComponent {
     }
   }
 
-  private onUsesSpellsChange(value: boolean) {
+  private async onUsesSpellsChange(value: boolean) {
     this.usesSpells = value;
 
     if (this.traitNameInput) {
@@ -404,7 +450,7 @@ export class TraitsComponent {
           this.spellCountingContainer.style.display = "block";
         }
 
-        this.renderSpellOptions();
+        await this.renderSpellOptions();
       } else {
         this.traitNameInput.value = "";
         this.newTraitName = "";

@@ -54,7 +54,7 @@ export default class DnDToolsPlugin extends Plugin {
             
             this.registerView(
                 BESTIARY_VIEW_TYPE,
-                (leaf) => new BestiaryPanel(leaf, this.bestiaryService)
+                (leaf) => new BestiaryPanel(leaf, this.bestiaryService, this.spellService) // Передаем оба сервиса
             );
 
             this.registerView(

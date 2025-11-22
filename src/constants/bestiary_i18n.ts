@@ -162,7 +162,10 @@ export const LOCALE_EN = {
     SPELL_COUNTING_MODE: "Select spell counting mode",
     SPELL_COUNTING_USES: "Counters",
     SPELL_COUNTING_SLOTS: "Slots",
-    // Новые константы для опций использования заклинаний
+    SELECT_SPELL_PLACEHOLDER: "Select spell...",
+    NO_SPELLS_AVAILABLE: "No spells available",
+    SPELLS_LOAD_ERROR: "Error loading spells",
+    SPELLS_SERVICE_UNAVAILABLE: "Spell service not available",
     USES_OPTIONS: {
       UNLIMITED: "Unlimited",
       ONCE_PER_DAY: "1/day each",
@@ -433,7 +436,10 @@ export const LOCALE_RU = {
     SPELL_COUNTING_MODE: "Выберите режим счета заклинаний",
     SPELL_COUNTING_USES: "Счетчики",
     SPELL_COUNTING_SLOTS: "Слоты",
-    // Новые константы для опций использования заклинаний
+    SELECT_SPELL_PLACEHOLDER: "Выберите заклинание...",
+    NO_SPELLS_AVAILABLE: "Нет доступных заклинаний",
+    SPELLS_LOAD_ERROR: "Error loading spells",
+    SPELLS_SERVICE_UNAVAILABLE: "Spell service not available",
     USES_OPTIONS: {
       UNLIMITED: "Неограничено",
       ONCE_PER_DAY: "1/день каждое",

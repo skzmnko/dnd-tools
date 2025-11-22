@@ -12,6 +12,7 @@ import { BonusActionsComponent } from "./components/BonusActionsComponent";
 import { ReactionsComponent } from "./components/ReactionsComponent";
 import { LegendaryActionsComponent } from "./components/LegendaryActionsComponent";
 import { i18n } from "src/services/LocalizationService";
+import { SpellService } from "src/services/SpellService";
 import {
   CreatureTypeKey,
   SizeKey,
@@ -35,6 +36,7 @@ export class CreatureCreationModal extends Modal {
   constructor(
     app: App,
     private bestiaryService: any,
+    private spellService: SpellService,
     private onSave: (creature: Creature) => void,
   ) {
     super(app);
@@ -44,7 +46,7 @@ export class CreatureCreationModal extends Modal {
     this.abilityScores = new AbilityScoresComponent();
     this.additionalFields = new AdditionalFieldsComponent();
     this.immunities = new ImmunitiesComponent();
-    this.traits = new TraitsComponent();
+    this.traits = new TraitsComponent(spellService);
     this.actions = new ActionsComponent();
     this.bonusActions = new BonusActionsComponent();
     this.reactions = new ReactionsComponent();

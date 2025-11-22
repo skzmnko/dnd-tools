@@ -2,11 +2,14 @@ import { ItemView, WorkspaceLeaf, Notice } from "obsidian";
 import { Creature } from "src/models/Bestiary";
 import { CreatureCreationModal } from "src/components/modals/CreatureCreationModal";
 import { i18n } from "src/services/LocalizationService";
+import { BestiaryService } from "src/services/BestiaryService";
+import { SpellService } from "src/services/SpellService";
 
 export const BESTIARY_VIEW_TYPE = "bestiary-view";
 
 export class BestiaryPanel extends ItemView {
-  bestiaryService: any;
+  bestiaryService: BestiaryService;
+  spellService: SpellService;
   creatures: Creature[] = [];
   selectedCreatures: Set<string> = new Set();
   searchInput: HTMLInputElement | null = null;
@@ -15,9 +18,10 @@ export class BestiaryPanel extends ItemView {
   addButton: HTMLButtonElement | null = null;
   titleElement: HTMLElement | null = null;
 
-  constructor(leaf: WorkspaceLeaf, bestiaryService: any) {
+  constructor(leaf: WorkspaceLeaf, bestiaryService: BestiaryService, spellService: SpellService) {
     super(leaf);
     this.bestiaryService = bestiaryService;
+    this.spellService = spellService;
   }
 
   getViewType(): string {
@@ -376,6 +380,11 @@ export class BestiaryPanel extends ItemView {
       this.render();
     };
 
-    new CreatureCreationModal(this.app, this.bestiaryService, onSave).open();
+    new CreatureCreationModal(
+      this.app, 
+      this.bestiaryService, 
+      this.spellService, // Передаем SpellService
+      onSave
+    ).open();
   }
 }
