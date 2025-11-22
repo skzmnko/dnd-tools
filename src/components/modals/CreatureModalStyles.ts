@@ -261,7 +261,7 @@ export const CreatureModalStyles = `
     outline: none;
 }
 
-/* Styles for text areas with fixed size */
+/* Стили для текстовых областей с фиксированным размером */
 .languages-textarea,
 .skills-textarea,
 .senses-textarea,
@@ -278,7 +278,7 @@ export const CreatureModalStyles = `
     resize: none !important;
     min-height: 60px !important;
     width: 100% !important;
-    /* CHANGE: Unified font for all text areas */
+    /* ИЗМЕНЕНИЕ: Унифицированный шрифт для всех текстовых областей */
     font-family: var(--font-interface) !important;
     font-size: var(--font-ui-small) !important;
 }
@@ -293,30 +293,30 @@ export const CreatureModalStyles = `
     width: 100% !important;
 }
 
-/* Centering section headers */
+/* Выравнивание заголовков разделов по центру */
 .creature-section h3 {
     text-align: center !important;
     width: 100% !important;
     margin: 20px 0 15px 0 !important;
     border-bottom: 1px solid var(--background-modifier-border) !important;
     padding-bottom: 8px !important;
-    /* EXCEPTION: Headers remain unchanged */
+    /* ИСКЛЮЧЕНИЕ: Заголовки остаются без изменений */
 }
 
-/* CHANGE: Unified styles for all Setting elements in Creature modal */
+/* ИЗМЕНЕНИЕ: Унифицированные стили для всех элементов Setting в модальном окне создания существа */
 .mod-creature-creation .setting-item-name,
 .mod-creature-creation .setting-item-description {
     font-family: var(--font-interface) !important;
     font-size: var(--font-ui-small) !important;
 }
 
-/* CHANGE: Unified styles for buttons in Creature modal */
+/* ИЗМЕНЕНИЕ: Унифицированные стили для кнопок в модальном окне создания существа */
 .mod-creature-creation .button-container button {
     font-family: var(--font-interface) !important;
     font-size: var(--font-ui-small) !important;
 }
 
-/* CHANGE: Unified styles for all text input fields in Creature modal */
+/* ИЗМЕНЕНИЕ: Унифицированные стили для всех текстовых полей ввода в модальном окне создания существа */
 .mod-creature-creation input[type="text"],
 .mod-creature-creation textarea,
 .mod-creature-creation select {
@@ -324,7 +324,7 @@ export const CreatureModalStyles = `
     font-size: var(--font-ui-small) !important;
 }
 
-/* Styles for spell counting mode selection */
+/* Стили для выбора режима подсчета заклинаний */
 .spell-counting-container {
   margin: 10px 0;
   padding: 12px;
@@ -375,7 +375,7 @@ export const CreatureModalStyles = `
   white-space: nowrap;
 }
 
-/* Styles for spell options container */
+/* Стили для контейнера опций заклинаний */
 .spell-options-container {
   margin: 10px 0;
   padding: 12px;
@@ -396,8 +396,42 @@ export const CreatureModalStyles = `
   margin-bottom: 0;
 }
 
+/* Стили для чекбоксов выбора заклинаний - как у "Использование заклинаний" */
 .spell-option-row input[type="checkbox"] {
   margin: 0;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 3px;
+  background: var(--background-primary);
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.spell-option-row input[type="checkbox"]:focus {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: 2px;
+}
+
+.spell-option-row input[type="checkbox"]:checked {
+  background: var(--interactive-accent);
+  border-color: var(--interactive-accent);
+}
+
+.spell-option-row input[type="checkbox"]:checked::before {
+  display: none; /* Убираем галочку */
+}
+
+.spell-option-row input[type="checkbox"]:hover {
+  border-color: var(--interactive-accent-hover);
+}
+
+.spell-option-row input[type="checkbox"]:checked:hover {
+  background: var(--interactive-accent-hover);
+  border-color: var(--interactive-accent-hover);
 }
 
 .spell-option-row label {
@@ -406,6 +440,7 @@ export const CreatureModalStyles = `
   color: var(--text-normal);
   cursor: pointer;
   min-width: 180px;
+  user-select: none;
 }
 
 .spell-select-dropdown {
@@ -417,14 +452,50 @@ export const CreatureModalStyles = `
   color: var(--text-normal);
   font-family: var(--font-interface);
   font-size: var(--font-ui-small);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
 }
 
 .spell-select-dropdown:focus {
   border-color: var(--interactive-accent);
   outline: none;
+  box-shadow: 0 0 0 2px var(--interactive-accent-hover);
 }
 
-/* Ensure consistent styling with other modal elements */
+.spell-select-dropdown:hover {
+  border-color: var(--interactive-accent-hover);
+}
+
+/* Стили для состояния disabled */
+.spell-option-row input[type="checkbox"]:disabled,
+.spell-option-row label:disabled,
+.spell-select-dropdown:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Анимации для плавного появления/скрытия */
+.spell-options-container {
+  transition: all 0.3s ease;
+}
+
+.spell-select-dropdown {
+  transition: all 0.2s ease;
+}
+
+/* Стили для hover состояний */
+.spell-option-row:hover {
+  background-color: var(--background-modifier-hover);
+  border-radius: 4px;
+  padding: 6px 8px;
+  margin: 0 -8px 8px -8px;
+}
+
+.spell-option-row:last-child:hover {
+  margin-bottom: 0;
+}
+
+/* Обеспечение согласованного стилирования с другими элементами модального окна */
 .mod-creature-creation .spell-counting-container {
   font-family: var(--font-interface) !important;
 }
@@ -436,5 +507,46 @@ export const CreatureModalStyles = `
 
 .mod-creature-creation .spell-options-container {
   font-family: var(--font-interface) !important;
+}
+
+/* Адаптивные стили для экранов с меньшим разрешением */
+@media (max-width: 768px) {
+  .spell-counting-radio-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .spell-option-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .spell-option-row label {
+    min-width: auto;
+  }
+  
+  .spell-select-dropdown {
+    width: 100%;
+  }
+}
+
+/* Стили для группировки опций */
+.spell-options-group {
+  margin-bottom: 15px;
+}
+
+.spell-options-group:last-child {
+  margin-bottom: 0;
+}
+
+.spell-options-group-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: var(--text-normal);
+  font-size: 13px;
+  font-family: var(--font-interface);
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding-bottom: 4px;
 }
 `;
