@@ -342,17 +342,19 @@ export const CreatureModalStyles = `
   text-align: center;
 }
 
+/* Горизонтальное расположение радиокнопок */
 .spell-counting-radio-container {
   display: flex;
-  flex-direction: column;
-  gap: 5px; /* Уменьшено расстояние между опциями */
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px; /* Расстояние между опциями по горизонтали */
 }
 
 .spell-counting-option {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 8px;
+  gap: 6px;
+  padding: 6px 10px;
   border-radius: 4px;
   transition: background-color 0.2s ease;
 }
@@ -370,6 +372,7 @@ export const CreatureModalStyles = `
   font-size: var(--font-ui-small);
   color: var(--text-normal);
   cursor: pointer;
+  white-space: nowrap;
 }
 
 /* Ensure consistent styling with other modal elements */

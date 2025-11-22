@@ -141,7 +141,7 @@ export class TraitsComponent {
     });
     title.setText(i18n.t("TRAITS.SPELL_COUNTING_MODE"));
 
-    // Контейнер для радиокнопок
+    // Контейнер для радиокнопок - теперь горизонтальный
     const radioContainer = this.spellCountingContainer.createDiv({
       cls: "spell-counting-radio-container",
     });
